@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDiplomProject.Client", "DesktopDiplomProject.Client\DesktopDiplomProject.Client.csproj", "{292EE998-0E93-47FA-9FAA-2ABB44E44DBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDiplomProject.Server", "DesktopDiplomProject.Server\DesktopDiplomProject.Server.csproj", "{1C221C27-FD97-4EE8-A7BE-A5D36269C839}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{292EE998-0E93-47FA-9FAA-2ABB44E44DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292EE998-0E93-47FA-9FAA-2ABB44E44DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292EE998-0E93-47FA-9FAA-2ABB44E44DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292EE998-0E93-47FA-9FAA-2ABB44E44DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C221C27-FD97-4EE8-A7BE-A5D36269C839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C221C27-FD97-4EE8-A7BE-A5D36269C839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C221C27-FD97-4EE8-A7BE-A5D36269C839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C221C27-FD97-4EE8-A7BE-A5D36269C839}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E7CFEBE-A2BD-4613-80E2-6DFC48DA0B64}
+	EndGlobalSection
+EndGlobal

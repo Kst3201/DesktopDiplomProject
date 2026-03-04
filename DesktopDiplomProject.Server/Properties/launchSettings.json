@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DesktopDiplomProject.Server": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
