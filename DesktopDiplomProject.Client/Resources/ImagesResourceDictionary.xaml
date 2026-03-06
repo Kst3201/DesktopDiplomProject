@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Resources/MainResourcesDictionary.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <BitmapImage x:Key="User_Icon" UriSource="Images/profile_icon.png"/>
+    <BitmapImage x:Key="Add_User_Icon" UriSource="Images/add_user_icon.png"/>
+    <BitmapImage x:Key="Change_User_Icon" UriSource="Images/change_profile_icon.png"/>
+    <BitmapImage x:Key="Redact_User_Icon" UriSource="Images/redact_profile_icon.png"/>
+    <BitmapImage x:Key="Remove_User_Icon" UriSource="Images/remove_user_icon.png"/>
+    <BitmapImage x:Key="Search_User_Icon" UriSource="Images/Search_User_icon.png"/>
+    <BitmapImage x:Key="Selected_User_Icon" UriSource="Images/selected_user_icon.png"/>
+    <BitmapImage x:Key="User_Settings_Icon" UriSource="Images/user_settings_icon.png"/>
+</ResourceDictionary>

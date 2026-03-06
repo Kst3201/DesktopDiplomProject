@@ -7,6 +7,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/MainResourcesDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/ButtonResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/TextBlockResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/TextBoxResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/ImagesResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/CheckBoxResourcesDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

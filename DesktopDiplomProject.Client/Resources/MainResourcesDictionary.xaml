@@ -13,6 +13,7 @@
     <Color x:Key="DividerColor">#E0E0E0</Color>
     <Color x:Key="TextColor">#212121</Color>
     <Color x:Key="TextSecondaryColor">#757575</Color>
+    <Color x:Key="TextErrorColor">#E53935</Color>
     <Color x:Key="TextPlaceholderColor">#A0A0A0</Color>
 
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
@@ -27,6 +28,7 @@
     <SolidColorBrush x:Key="DividerBrush" Color="{StaticResource DividerColor}"/>
     <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}"/>
+    <SolidColorBrush x:Key="TextErrorBrush" Color="{StaticResource TextErrorColor}"/>
     <SolidColorBrush x:Key="TextPlaceholderBrush" Color="{StaticResource TextPlaceholderColor}"/>
 
     <FontFamily x:Key="DefaultFontFamily">Segoe UI Historic</FontFamily>
@@ -36,91 +38,4 @@
     <sys:Double x:Key="FontSizeMedium">16</sys:Double>
     <sys:Double x:Key="FontSizeLarge">18</sys:Double>
     <sys:Double x:Key="FontSizeHeader">24</sys:Double>
-
-    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="16,8"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="4"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          RecognizesAccessKey="True"/>
-                    </Border>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource PrimaryHoverBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{StaticResource PrimaryPressedBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="{StaticResource PrimaryDisabledBrush}"/>
-                            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
-                            <Setter Property="Cursor" Value="Arrow"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    <Style x:Key="PrimaryTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-    </Style>
-
-    <Style x:Key="TextBoxWithPlaceholder" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Border x:Name="border"
-                            Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="True">
-                        <Grid>
-                            <ScrollViewer x:Name="PART_ContentHost"/>
-                            <TextBlock x:Name="PART_Placeholder"
-                                       Margin="{TemplateBinding Padding}"
-                                       IsHitTestVisible="False"
-                                       Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
-                                       Foreground="{StaticResource TextPlaceholderBrush}"
-                                       VerticalAlignment="Center"
-                                       Visibility="Collapsed"/>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="Text" Value="">
-                            <Setter TargetName="PART_Placeholder" Property="Visibility" Value="Visible"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="PrimaryTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="Padding" Value="2"/>
-    </Style>
-
-    <Style x:Key="PrimaryTextBoxWithPlaceholderStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxWithPlaceholder}">
-        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
-        <Setter Property="Padding" Value="2"/>
-    </Style>
 </ResourceDictionary>

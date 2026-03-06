@@ -13,21 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestDiplomProject.Views.MainWindow.Pages
+namespace DesktopDiplomProject.Client.Views.MainWindow.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для SelectionPCPage.xaml
+    /// Логика взаимодействия для ComponentsSelectionPage.xaml
     /// </summary>
-    public partial class SelectionPCPage : Page
+    public partial class ComponentsSelectionPage : Page
     {
-        public SelectionPCPage()
+        public ComponentsSelectionPage()
         {
             InitializeComponent();
         }
 
-        private void UserPCButton_Click(object sender, RoutedEventArgs e)
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new UserPCPage());
+            NavigationService.Navigate(new ParametersSelectionPage());
         }
     }
 }

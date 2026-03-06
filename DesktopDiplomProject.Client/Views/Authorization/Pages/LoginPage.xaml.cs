@@ -32,7 +32,11 @@ namespace TestDiplomProject.Views.Authorization.Pages
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var thisWindow = Window.GetWindow(this);
+            var mainWindow = new MainWindow.MainWindow();
+            mainWindow.Owner = thisWindow;
+            mainWindow.Show();
+            thisWindow.Hide();
         }
     }
 }

@@ -9,6 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\add_user_icon.png" />
+    <None Remove="Resources\Images\change_profile_icon.png" />
+    <None Remove="Resources\Images\profile_icon.png" />
+    <None Remove="Resources\Images\redact_profile_icon.png" />
+    <None Remove="Resources\Images\remove_user_icon.png" />
+    <None Remove="Resources\Images\search_user_icon.png" />
+    <None Remove="Resources\Images\selected_user_icon.png" />
+    <None Remove="Resources\Images\user_settings_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\change_profile_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Assets\" />
     <Folder Include="Extensions\" />
@@ -18,6 +35,30 @@
     <Folder Include="ViewModels\Windows\Components\Pages\" />
     <Folder Include="ViewModels\Windows\MainWindow\Pages\" />
     <Folder Include="ViewModels\Windows\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\add_user_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\profile_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\redact_profile_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\remove_user_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\search_user_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\selected_user_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\user_settings_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

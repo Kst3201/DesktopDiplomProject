@@ -24,5 +24,10 @@ namespace TestDiplomProject.Views.MainWindow.Pages
         {
             InitializeComponent();
         }
+
+        private void SelectionPCButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new SelectionPCPage());
+        }
     }
 }

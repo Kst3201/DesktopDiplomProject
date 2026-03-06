@@ -28,6 +28,7 @@ namespace TestDiplomProject.Views.Authorization.Pages
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new LoginPage());
+            e.Handled = true;
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)

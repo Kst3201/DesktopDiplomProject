@@ -9,6 +9,7 @@
       Title="UserPCPage">
 
     <Grid>
-        
+        <Button x:Name="SelectionPCButton" Content="SelectionPC" Width="300" Height="50" Click="SelectionPCButton_Click"
+                Style="{StaticResource PrimaryButtonStyle}"/>
     </Grid>
 </Page>
