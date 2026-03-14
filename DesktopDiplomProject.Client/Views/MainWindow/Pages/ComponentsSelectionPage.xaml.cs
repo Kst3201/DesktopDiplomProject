@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.ViewModels.Windows.MainWindow.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TestDiplomProject.Views.MainWindow.Pages;
 
 namespace DesktopDiplomProject.Client.Views.MainWindow.Pages
 {
@@ -20,14 +22,18 @@ namespace DesktopDiplomProject.Client.Views.MainWindow.Pages
     /// </summary>
     public partial class ComponentsSelectionPage : Page
     {
+        private ComponentsSelectionViewModel _viewModel;
+
         public ComponentsSelectionPage()
         {
+            _viewModel = new ComponentsSelectionViewModel();
             InitializeComponent();
+            DataContext = _viewModel;
         }
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new ParametersSelectionPage());
+            NavigationService.Navigate(new SelectionPCPage());
         }
     }
 }

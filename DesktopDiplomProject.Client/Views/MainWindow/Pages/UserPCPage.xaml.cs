@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Views.MainWindow.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace TestDiplomProject.Views.MainWindow.Pages
 
         private void SelectionPCButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new SelectionPCPage());
+            NavigationService.Navigate(new ComponentsSelectionPage());
         }
     }
 }

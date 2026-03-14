@@ -26,15 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Assets\" />
     <Folder Include="Extensions\" />
     <Folder Include="Controllers\" />
     <Folder Include="UserControls\" />
     <Folder Include="ViewModels\Windows\Authorization\Pages\" />
     <Folder Include="ViewModels\Windows\Components\Pages\" />
-    <Folder Include="ViewModels\Windows\MainWindow\Pages\" />
-    <Folder Include="ViewModels\Windows\" />
   </ItemGroup>
 
   <ItemGroup>

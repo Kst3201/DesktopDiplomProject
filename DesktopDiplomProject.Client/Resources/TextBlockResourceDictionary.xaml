@@ -9,6 +9,16 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
     </Style>
 
+    <Style x:Key="Header1TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource PrimaryTextBlockStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeHeader}"/>
+    </Style>
+    <Style x:Key="Header2TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource PrimaryTextBlockStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>
+    </Style>
+    <Style x:Key="Header3TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource PrimaryTextBlockStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
+    </Style>
+
     <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Foreground" Value="{StaticResource TextErrorBrush}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>

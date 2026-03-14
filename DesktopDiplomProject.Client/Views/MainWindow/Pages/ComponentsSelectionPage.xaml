@@ -6,40 +6,96 @@
       xmlns:local="clr-namespace:DesktopDiplomProject.Client.Views.MainWindow.Pages"
       mc:Ignorable="d" 
       d:Background="{StaticResource SurfaceBrush}"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="720" d:DesignWidth="1280"
       Title="ComponentsSelectionPage">
+    <Page.Resources>
+        <ResourceDictionary>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="0" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource DividerBrush}"
+        <TextBlock Grid.Row="0" Text="Задание параметров подбора" Style="{StaticResource Header1TextBlockStyle}" Margin="9"/>
+        <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" Foreground="{StaticResource DividerBrush}"/>
+        <Grid Grid.Row="1" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
+                <TextBlock Style="{StaticResource Header3TextBlockStyle}" Text="Режим подбора" VerticalAlignment="Center"/>
+                <ComboBox VerticalAlignment="Center" Width="200" Margin="5 0 0 0" FontSize="{StaticResource FontSizeMedium}"
+                          ItemsSource="{Binding SelectionMods}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
+                <Slider Value="{Binding Budget}" Minimum="{Binding MinBudget}" Maximum="{Binding MaxBudget}"
+                        TickFrequency="1000000" TickPlacement="Both" SmallChange="1000" LargeChange="100000" 
+                        HorizontalAlignment="Stretch" Margin="5" Width="400"/>
+                <TextBox Style="{StaticResource PrimaryTextBoxStyle}" FontSize="{StaticResource FontSizeMedium}"  Width="120"
+                         d:Text="20000" Text="{Binding Budget, StringFormat={}₽{0:N2} }" 
+                         HorizontalContentAlignment="Right" HorizontalAlignment="Right"
+                         VerticalContentAlignment="Center">
+                </TextBox>
+            </StackPanel>
+            
+        </Grid>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
+            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding IsChecked}"
+          Style="{StaticResource PrimaryCheckBoxStyle}" Margin="5"
+          HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource Header3TextBlockStyle}"
+           Text="Персональный компьютер" VerticalAlignment="Center"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" Margin="0 5 0 5">
+            <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding PlugList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource DividerBrush}"
                             Margin="4" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" d:Content="Тест"
-                                      Style="{StaticResource PrimaryCheckBoxStyle}" Margin="5"
-                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <GridSplitter Grid.Row="0" Grid.Column="1" Width="3" Margin="5"/>
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}"
+                                          Style="{StaticResource PrimaryCheckBoxStyle}" Margin="5"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Style="{StaticResource PrimaryTextBlockStyle}"
+                                           d:Text="Тест" Text="{Binding Name}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Slider Value="{Binding Price}" Minimum="{Binding MinPrice}" Maximum="{Binding MaxPrice}"
+                                            TickFrequency="100000" SmallChange="100" LargeChange="10000" Width="400" Margin="5"
+                                            TickPlacement="Both"/>
+                                    <TextBox Style="{StaticResource PrimaryTextBoxStyle}" Width="120"
+                                             d:Text="20000" Text="{Binding Price, StringFormat={}₽{0:N2} }" 
+                                             HorizontalContentAlignment="Right" HorizontalAlignment="Right"
+                                             VerticalContentAlignment="Center">
+                                    </TextBox>
+                                </StackPanel>
+                                
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="ContinueButton" Content="Далее" Click="ContinueButton_Click"
-                    Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="200"/>
+                    Style="{StaticResource SelecetionWindowPrimaryButtonStyle}" Margin="5" Width="200"/>
         </StackPanel>
     </Grid>
 </Page>

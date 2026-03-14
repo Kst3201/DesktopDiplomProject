@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Views.MainWindow.Pages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace TestDiplomProject.Views.MainWindow
             _isUserMenuOpen = false;
             DataContext = this;
             InitializeComponent();
-            MainFrame.NavigationService.Navigate(new SelectionPCPage());
+            MainFrame.NavigationService.Navigate(new ComponentsSelectionPage());
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
