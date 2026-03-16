@@ -22,9 +22,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <DataGrid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding Items}">
                 <DataGrid.Columns>
@@ -36,22 +36,41 @@
                     BorderBrush="{StaticResource SurfaceSecondaryBrush}" Background="{StaticResource SurfaceSecondaryBrush}"
                     CornerRadius="10" Margin="0 5 5 5" MinWidth="160">
                 <StackPanel Orientation="Vertical">
-                    <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
-                                    <Button d:Content="Тестовый компонент" Content="{Binding Name}" Style="{StaticResource SecondaryButtonStyle}"
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
+                        <Button x:Name="PCButton" Content="Компьютер" Style="{StaticResource SecondaryButtonStyle}"
                                             Foreground="{StaticResource SecondaryBrush}"/>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    </Border>
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
+                        <Button x:Name="CPUButton" Content="Процессор" Style="{StaticResource SecondaryButtonStyle}"
+                                            Foreground="{StaticResource SecondaryBrush}"/>
+                    </Border>
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
+                        <Button x:Name="MotherboardButton" Content="Материнская плата" Style="{StaticResource SecondaryButtonStyle}"
+                                            Foreground="{StaticResource SecondaryBrush}"/>
+                    </Border>
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
+                        <Button x:Name="GPUButton" Content="Видеокарта" Style="{StaticResource SecondaryButtonStyle}"
+                                            Foreground="{StaticResource SecondaryBrush}"/>
+                    </Border>
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
+                        <Button x:Name="RAMButton" Content="Оперативная память" Style="{StaticResource SecondaryButtonStyle}"
+                                            Foreground="{StaticResource SecondaryBrush}"/>
+                    </Border>
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
+                        <Button x:Name="SSDButton" Content="Долговременная память" Style="{StaticResource SecondaryButtonStyle}"
+                                            Foreground="{StaticResource SecondaryBrush}"/>
+                    </Border>
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 0" Margin="5" Cursor="">
+                        <Button x:Name="BlockPowerButton" Content="Блок питания" Style="{StaticResource SecondaryButtonStyle}"
+                                            Foreground="{StaticResource SecondaryBrush}"/>
+                    </Border>
                 </StackPanel>
             </Border>
             <Border Grid.Row="2" Grid.Column="1" x:Name="ComponentInfoBorder" Height="auto"
                     BorderBrush="{StaticResource DividerBrush}" Background="{StaticResource SurfaceBrush}"
                     BorderThickness="2" CornerRadius="10" Margin="5 5 0 5">
-                
+                <Frame x:Name="ComponentInfoFrame">
+                </Frame>
             </Border>
         </Grid>
         <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" Margin="5"/>
