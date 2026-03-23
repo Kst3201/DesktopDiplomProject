@@ -15,10 +15,4 @@
     <PackageReference Include="System.Management" Version="9.0.14" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Entities\Authentification\" />
-    <Folder Include="Models\Entities\Components\Drives\" />
-    <Folder Include="Models\Entities\Components\VideoCards\GPUs\" />
-  </ItemGroup>
-
 </Project>
