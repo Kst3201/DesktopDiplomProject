@@ -28,10 +28,14 @@
   <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="UserControls\" />
-    <Folder Include="ViewModels\Windows\Authorization\Pages\" />
-    <Folder Include="ViewModels\Windows\Components\Pages\" />
+    <Folder Include="Features\PCComponentManagement\Models\" />
+    <Folder Include="Features\PCComponentManagement\ViewModels\Pages\" />
+    <Folder Include="Features\PCSelectMatch\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.14" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.14" />
   </ItemGroup>
 
   <ItemGroup>

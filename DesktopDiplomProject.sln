@@ -5,9 +5,11 @@ VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDiplomProject.Client", "DesktopDiplomProject.Client\DesktopDiplomProject.Client.csproj", "{292EE998-0E93-47FA-9FAA-2ABB44E44DBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDiplomProject.Server", "DesktopDiplomProject.Server\DesktopDiplomProject.Server.csproj", "{1C221C27-FD97-4EE8-A7BE-A5D36269C839}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDiplomProject.Database", "DesktopDiplomProject.Database\DesktopDiplomProject.Database.csproj", "{1C221C27-FD97-4EE8-A7BE-A5D36269C839}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomDataLibrary", "DiplomDataLibrary\DiplomDataLibrary.csproj", "{7955B1E6-5856-402C-B07F-42CF10613CE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDiplomProject.ServerASP", "DesktopDiplomProject.ServerASP\DesktopDiplomProject.ServerASP.csproj", "{9EF795AC-0ADF-4C72-8625-E8E3E4783173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{7955B1E6-5856-402C-B07F-42CF10613CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7955B1E6-5856-402C-B07F-42CF10613CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7955B1E6-5856-402C-B07F-42CF10613CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF795AC-0ADF-4C72-8625-E8E3E4783173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF795AC-0ADF-4C72-8625-E8E3E4783173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF795AC-0ADF-4C72-8625-E8E3E4783173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF795AC-0ADF-4C72-8625-E8E3E4783173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

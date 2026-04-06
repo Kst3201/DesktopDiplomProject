@@ -1,0 +1,46 @@
+﻿<Page x:Class="TestDiplomProject.Views.Authorization.Pages.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TestDiplomProject.Views.Authorization.Pages"
+      mc:Ignorable="d"
+      d:Background="{StaticResource SurfaceBrush}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="LoginPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Логин" Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
+            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Username}"
+                     Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Логин"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="Ошибка"
+                       Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
+            <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Password}"
+                     Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Пароль"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="Ошибка"
+                       Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Bottom">
+            <Button x:Name="EnterButton" Content="Войти"
+            Click="EnterButton_Click" Style="{StaticResource PrimaryButtonStyle}" Margin="5"/>
+            <Button x:Name="RegisterButton" Content="Регистрация"
+            Click="RegisterButton_Click"  Style="{StaticResource PrimaryButtonStyle}" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Page>

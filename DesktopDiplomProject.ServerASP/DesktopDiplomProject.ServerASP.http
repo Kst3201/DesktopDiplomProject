@@ -1,0 +1,6 @@
+@DesktopDiplomProject.ServerASP_HostAddress = http://localhost:5159
+
+GET {{DesktopDiplomProject.ServerASP_HostAddress}}/pcbuilder/
+Accept: application/json
+
+###
