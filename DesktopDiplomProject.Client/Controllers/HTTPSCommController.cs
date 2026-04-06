@@ -1,4 +1,5 @@
 ﻿using DesktopDiplomProject.Client.Services.URLBuilders;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,9 @@ namespace DesktopDiplomProject.Client.Controllers
         private IURLQueryBuilder _urlBuilder;
         private string? _token;
 
-        public HTTPSCommController(string baseURL)
+        public HTTPSCommController(IConfiguration configuration)
         {
+            var baseURL = configuration["ApiSettings:BaseURL"] ?? throw new ArgumentNullException(nameof(configuration));
             _handler = new HttpClientHandler();
             _client = new HttpClient(_handler, true) { BaseAddress = new Uri(baseURL) };
             _urlBuilder = new NativeURLQueryBuilder();

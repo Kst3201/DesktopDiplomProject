@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Abstractions
 {
-    internal class ObservableViewModel : INotifyPropertyChanged
+    public class ObservableViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -17,12 +17,19 @@ namespace DesktopDiplomProject.Client.Abstractions
             if (PropertyChanged == null) throw new ArgumentNullException(nameof(PropertyChanged));
             if (target?.Equals(value) ?? false) return;
             target = value;
+            RaisePropertyChanged(propertyName);
             action?.Invoke();
         }
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            RaisePropertyChanged(propertyName);
+        }
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

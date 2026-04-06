@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +22,20 @@ namespace TestDiplomProject.Views.Authorization.Pages
     /// </summary>
     public partial class RegisterPage : Page
     {
-        public RegisterPage()
+        RegisterViewModel _viewModel;
+        IServiceProvider _provider;
+
+        public RegisterPage(RegisterViewModel viewModel, IServiceProvider provider)
         {
+            _viewModel = viewModel;
+            _provider = provider;
+            DataContext = _viewModel;
             InitializeComponent();
         }
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new LoginPage());
+            NavigationService.Navigate(_provider.GetRequiredService<LoginPage>());
             e.Handled = true;
         }
 

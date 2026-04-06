@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +22,13 @@ namespace TestDiplomProject.Views.Authorization
     /// </summary>
     public partial class AuthorizationWindow : Window
     {
-        public AuthorizationWindow()
+        IServiceProvider _provider;
+
+        public AuthorizationWindow(IServiceProvider provider)
         {
+            _provider = provider;
             InitializeComponent();
-            AuthFrame.NavigationService.Navigate(new LoginPage());
+            AuthFrame.NavigationService.Navigate(_provider.GetRequiredService<LoginPage>());
         }
     }
 }

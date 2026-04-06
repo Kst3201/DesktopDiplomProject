@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
 {
-    internal class LoginViewModel : ObservableViewModel
+    public class LoginViewModel : ObservableViewModel
     {
         private string _username;
         private string _password;
-        private bool _isHidePassword;
+        private bool _isPasswordHide;
 
         public string Username
         {
@@ -21,28 +21,26 @@ namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
 
         public string Password
         {
-            get
-            {
-                if (!IsHidePassword) return _password;
-                return new string('*', _password.Length);
-            }
+            get => _password;
             set => SetProperty(ref _password, value);
         }
 
-        public bool IsHidePassword
+        public bool IsPasswordHide
         {
-            get => _isHidePassword;
-            set => SetProperty(ref _isHidePassword, value, () =>
+            get => _isPasswordHide;
+            set => SetProperty(ref _isPasswordHide, value, () =>
             {
-                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged(nameof(IsPasswordShow));
             });
         }
+
+        public bool IsPasswordShow => !IsPasswordHide;
 
         public LoginViewModel()
         {
             _username = string.Empty;
             _password = string.Empty;
-            _isHidePassword = true;
+            _isPasswordHide = true;
         }
 
     }

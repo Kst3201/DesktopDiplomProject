@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +22,20 @@ namespace TestDiplomProject.Views.Authorization.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
-        public LoginPage()
+        LoginViewModel _viewModel;
+        IServiceProvider _provider;
+
+        public LoginPage(LoginViewModel viewModel, IServiceProvider provider)
         {
+            _viewModel = viewModel;
+            _provider = provider;
+            DataContext = _viewModel;
             InitializeComponent();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new RegisterPage());
+            NavigationService.Navigate(_provider.GetRequiredService<RegisterPage>());
         }
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
@@ -37,6 +45,23 @@ namespace TestDiplomProject.Views.Authorization.Pages
             mainWindow.Owner = thisWindow;
             mainWindow.Show();
             thisWindow.Hide();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passBox)
+            {
+                _viewModel.Password = passBox.Password;
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (_viewModel.IsPasswordShow)
+                    HiddenPassword.Password = textBox.Text;
+            }
         }
     }
 }

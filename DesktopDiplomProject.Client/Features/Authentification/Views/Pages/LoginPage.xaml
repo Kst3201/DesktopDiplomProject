@@ -24,17 +24,27 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Логин" Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
-            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Username}"
+            <TextBox x:Name="UsernameBox"  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Username}"
                      Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Логин"/>
             <TextBlock Grid.Row="1" Grid.Column="1" Text="Ошибка"
                        Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Пароль" Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
-            <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Password}"
-                     Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Пароль"/>
+            <PasswordBox x:Name="HiddenPassword" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" PasswordChanged="PasswordBox_PasswordChanged"
+                         Margin="5" Tag="Пароль" Visibility="{Binding IsPasswordHide, Converter={StaticResource BoolToVisibilityConverter}}"
+                         Style="{StaticResource PrimaryPasswordBox}" Height="{Binding ElementName=UsernameBox, Path=ActualHeight}"> 
+            </PasswordBox>
+            <TextBox x:Name="ShowedPassword" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch"
+                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged"
+                     Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Пароль" 
+                     Height="{Binding ElementName=UsernameBox, Path=ActualHeight}"
+                     Visibility="{Binding IsPasswordShow, Converter={StaticResource BoolToVisibilityConverter}}">
+            </TextBox>
             <TextBlock Grid.Row="3" Grid.Column="1" Text="Ошибка"
                        Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
+            <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding IsPasswordHide}" Content="Скрыть пароль"/>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Bottom">
             <Button x:Name="EnterButton" Content="Войти"

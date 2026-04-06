@@ -46,4 +46,10 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
         <Setter Property="Padding" Value="2"/>
     </Style>
+
+    <Style x:Key="PrimaryPasswordBox" TargetType="PasswordBox">
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="Padding" Value="2"/>
+    </Style>
 </ResourceDictionary>
