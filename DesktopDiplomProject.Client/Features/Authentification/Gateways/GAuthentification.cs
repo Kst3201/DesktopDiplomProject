@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Features.Authentification.Gateways
 {
-    internal class GAuthentification
+    public class GAuthentification
     {
         public GAuthentification() { }
 
         public UserModel Login(UserLoginModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserModel Register(UserRegistrationModel model)
         {
             throw new NotImplementedException();
         }

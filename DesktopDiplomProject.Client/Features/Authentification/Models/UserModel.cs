@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Features.Authentification.Models
 {
-    internal class UserModel
+    public class UserModel
     {
         private string _username;
         private ITokenModel _accessToken;

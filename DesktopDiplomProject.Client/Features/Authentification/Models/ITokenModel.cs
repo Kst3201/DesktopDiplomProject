@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Features.Authentification.Models
 {
-    internal interface ITokenModel
+    public interface ITokenModel
     {
         string Token { get; }
         DateTime ExpiresAt { get; }

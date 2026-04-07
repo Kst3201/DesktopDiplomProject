@@ -1,4 +1,6 @@
 ﻿using DesktopDiplomProject.Client.Abstractions;
+using DesktopDiplomProject.Client.Features.Authentification.Gateways;
+using DesktopDiplomProject.Client.Managers.Sessions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
 {
     public class LoginViewModel : ObservableViewModel
     {
+        private ISessionManager _sessionManager;
+        private GAuthentification _gateway;
         private string _username;
         private string _password;
         private bool _isPasswordHide;
@@ -36,8 +40,10 @@ namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
 
         public bool IsPasswordShow => !IsPasswordHide;
 
-        public LoginViewModel()
+        public LoginViewModel(GAuthentification gateway, ISessionManager sessionManager)
         {
+            _sessionManager = sessionManager;
+            _gateway = gateway;
             _username = string.Empty;
             _password = string.Empty;
             _isPasswordHide = true;

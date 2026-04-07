@@ -1,5 +1,9 @@
 ﻿using DesktopDiplomProject.Client.Controllers;
+using DesktopDiplomProject.Client.Features.Authentification.Gateways;
 using DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages;
+using DesktopDiplomProject.Client.Managers.Sessions;
+using DesktopDiplomProject.Client.Services.Navigation.Page;
+using DesktopDiplomProject.Client.Services.Navigation.Window;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
@@ -23,12 +27,17 @@ namespace TestDiplomProject
         {
             var builder = Host.CreateApplicationBuilder();
             builder.Services.AddSingleton<ICommController, HTTPSCommController>();
+            builder.Services.AddSingleton<ISessionManager, SessionManager>();
+            builder.Services.AddSingleton<INavigationWindowService, NavigationWindowService>();
+            builder.Services.AddSingleton<INavigationPageService, NavigationPageService>();
             builder.Services.AddTransient<MainWindow>();
             builder.Services.AddTransient<AuthorizationWindow>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<RegisterViewModel>();
+            builder.Services.AddTransient<GAuthentification>();
+
 
             _host = builder.Build();
 

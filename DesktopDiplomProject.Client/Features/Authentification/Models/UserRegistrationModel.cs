@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Features.Authentification.Models
 {
-    internal class UserRegistrationModel : UserLoginModel
+    public class UserRegistrationModel : UserLoginModel
     {
         private string _email;
 
