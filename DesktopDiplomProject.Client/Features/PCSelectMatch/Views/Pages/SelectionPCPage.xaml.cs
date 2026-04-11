@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestDiplomProject.Views.MainWindow.Pages
+namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages
 {
     /// <summary>
     /// Логика взаимодействия для SelectionPCPage.xaml
@@ -24,16 +24,12 @@ namespace TestDiplomProject.Views.MainWindow.Pages
     {
         private SelectionPCViewModel _viewModel;
 
-        public SelectionPCPage()
+        public SelectionPCPage(SelectionPCViewModel viewModel)
         {
-            _viewModel = new SelectionPCViewModel();
-            InitializeComponent();
+            _viewModel = viewModel;
             DataContext = _viewModel;
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new ComponentsSelectionPage());
+            InitializeComponent();
+            _viewModel.InitializePage(ComponentInfoFrame);
         }
     }
 }

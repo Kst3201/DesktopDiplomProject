@@ -21,7 +21,7 @@ namespace DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPage
     public partial class InfoSSDPage : Page
     {
 
-        internal InfoSSDPage()
+        public InfoSSDPage()
         {
             InitializeComponent();
         }

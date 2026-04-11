@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestDiplomProject.Views.Authorization.Pages
+namespace DesktopDiplomProject.Client.Features.Authentification.Views.Pages
 {
     /// <summary>
     /// Логика взаимодействия для RegisterPage.xaml
@@ -31,12 +31,6 @@ namespace TestDiplomProject.Views.Authorization.Pages
             _provider = provider;
             DataContext = _viewModel;
             InitializeComponent();
-        }
-
-        private void EnterButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(_provider.GetRequiredService<LoginPage>());
-            e.Handled = true;
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)

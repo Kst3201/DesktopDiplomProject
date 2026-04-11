@@ -1,4 +1,5 @@
-﻿using DesktopDiplomProject.Client.Views.MainWindow.Pages;
+﻿using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages;
+using DesktopDiplomProject.Client.Views.MainWindow.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,21 +15,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestDiplomProject.Views.MainWindow.Pages
+namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages
 {
     /// <summary>
     /// Логика взаимодействия для UserPCPage.xaml
     /// </summary>
     public partial class UserPCPage : Page
     {
-        public UserPCPage()
+        private UserPCViewModel _viewModel;
+
+        public UserPCPage(UserPCViewModel viewModel)
         {
+            _viewModel = viewModel;
+            DataContext = _viewModel;
             InitializeComponent();
         }
 
-        private void SelectionPCButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new ComponentsSelectionPage());
-        }
     }
 }

@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestDiplomProject.Views.Authorization.Pages
+namespace DesktopDiplomProject.Client.Features.Authentification.Views.Pages
 {
     /// <summary>
     /// Логика взаимодействия для LoginPage.xaml
@@ -36,15 +36,6 @@ namespace TestDiplomProject.Views.Authorization.Pages
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(_provider.GetRequiredService<RegisterPage>());
-        }
-
-        private void EnterButton_Click(object sender, RoutedEventArgs e)
-        {
-            var thisWindow = Window.GetWindow(this);
-            var mainWindow = new MainWindow.MainWindow();
-            mainWindow.Owner = thisWindow;
-            mainWindow.Show();
-            thisWindow.Hide();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

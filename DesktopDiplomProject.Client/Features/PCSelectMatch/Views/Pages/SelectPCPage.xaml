@@ -1,0 +1,29 @@
+﻿<Page x:Class="DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages.SelectPCPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages"
+      mc:Ignorable="d" 
+      d:Background="{StaticResource SurfaceBrush}"
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="SelectPCPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Frame Grid.Row="0" x:Name="ContentFrame"
+               NavigationUIVisibility="Hidden"
+               JournalOwnership="OwnsJournal">
+        </Frame>
+        <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Margin="5"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button x:Name="BackButton" Content="Назад" Style="{StaticResource SelecetionWindowPrimaryButtonStyle}" Margin="5"
+                    Command="{Binding PreviousPageCommand}"/>
+            <Button x:Name="NextButton" Content="Вперед" Style="{StaticResource SelecetionWindowPrimaryButtonStyle}" Margin="5"
+                    Command="{Binding NextPageCommand}"/>
+        </StackPanel>
+    </Grid>
+</Page>

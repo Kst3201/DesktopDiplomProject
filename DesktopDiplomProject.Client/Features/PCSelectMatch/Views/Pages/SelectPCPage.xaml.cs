@@ -17,18 +17,18 @@ using System.Windows.Shapes;
 namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ComponentsSelectionPage.xaml
+    /// Логика взаимодействия для SelectPCPage.xaml
     /// </summary>
-    public partial class ComponentsSelectionPage : Page
+    public partial class SelectPCPage : Page
     {
+        SelectViewModel _viewModel;
 
-        private ComponentsSelectionViewModel _viewModel;
-
-        public ComponentsSelectionPage(ComponentsSelectionViewModel viewModel)
+        public SelectPCPage(SelectViewModel viewModel)
         {
             _viewModel = viewModel;
             DataContext = _viewModel;
             InitializeComponent();
+            _viewModel.InitializePage(ContentFrame);
         }
     }
 }

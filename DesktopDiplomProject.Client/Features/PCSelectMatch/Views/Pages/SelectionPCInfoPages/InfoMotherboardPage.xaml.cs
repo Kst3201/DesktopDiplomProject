@@ -21,7 +21,7 @@ namespace DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPage
     public partial class InfoMotherboardPage : Page
     {
 
-        internal InfoMotherboardPage()
+        public InfoMotherboardPage()
         {
             InitializeComponent();
         }

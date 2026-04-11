@@ -21,7 +21,7 @@ namespace DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPage
     public partial class InfoRAMPage : Page
     {
 
-        internal InfoRAMPage()
+        public InfoRAMPage()
         {
             InitializeComponent();
         }

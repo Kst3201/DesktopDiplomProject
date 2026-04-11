@@ -1,9 +1,9 @@
-﻿<Page x:Class="TestDiplomProject.Views.MainWindow.Pages.SelectionPCPage"
+﻿<Page x:Class="DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages.SelectionPCPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:TestDiplomProject.Views.MainWindow.Pages"
+      xmlns:local="clr-namespace:DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages"
       mc:Ignorable="d" 
       d:Background="{StaticResource SurfaceBrush}"
       d:DesignHeight="720" d:DesignWidth="1280"
@@ -12,8 +12,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Результаты подбора" Style="{StaticResource Header1TextBlockStyle}" Margin="5"/>
         <Grid Grid.Row="1" Margin="5">
@@ -38,31 +36,31 @@
                 <StackPanel Orientation="Vertical">
                     <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
                         <Button x:Name="PCButton" Content="Компьютер" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToPCPageCommand}"/>
                     </Border>
                     <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
                         <Button x:Name="CPUButton" Content="Процессор" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToCPUPageCommand}"/>
                     </Border>
                     <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
                         <Button x:Name="MotherboardButton" Content="Материнская плата" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToMBPageCommand}"/>
                     </Border>
                     <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
                         <Button x:Name="GPUButton" Content="Видеокарта" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToGPUPageCommand}"/>
                     </Border>
                     <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
                         <Button x:Name="RAMButton" Content="Оперативная память" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToRAMPageCommand}"/>
                     </Border>
                     <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5">
                         <Button x:Name="SSDButton" Content="Долговременная память" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToSSDPageCommand}"/>
                     </Border>
-                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 0" Margin="5" Cursor="">
+                    <Border BorderBrush="{StaticResource SurfaceBrush}" BorderThickness="0 0 0 2" Margin="5" Cursor="">
                         <Button x:Name="BlockPowerButton" Content="Блок питания" Style="{StaticResource SecondaryButtonStyle}"
-                                            Foreground="{StaticResource SecondaryBrush}"/>
+                                Foreground="{StaticResource SecondaryBrush}" Command="{Binding ToBPPageCommand}"/>
                     </Border>
                 </StackPanel>
             </Border>
@@ -73,9 +71,5 @@
                 </Frame>
             </Border>
         </Grid>
-        <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" Margin="5"/>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-            <Button x:Name="BackButton" Content="Назад" Style="{StaticResource SelecetionWindowPrimaryButtonStyle}" Click="BackButton_Click"/>
-        </StackPanel>
     </Grid>
 </Page>

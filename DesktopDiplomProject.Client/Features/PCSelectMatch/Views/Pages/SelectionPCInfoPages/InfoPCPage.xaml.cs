@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPages
+namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages.SelectionPCInfoPages
 {
     /// <summary>
     /// Логика взаимодействия для InfoPCPage.xaml
@@ -21,7 +21,7 @@ namespace DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPage
     public partial class InfoPCPage : Page
     {
 
-        internal InfoPCPage()
+        public InfoPCPage()
         {
             InitializeComponent();
         }

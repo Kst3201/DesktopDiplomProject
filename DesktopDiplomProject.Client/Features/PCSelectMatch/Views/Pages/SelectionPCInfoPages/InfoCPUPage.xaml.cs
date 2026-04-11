@@ -21,7 +21,7 @@ namespace DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPage
     public partial class InfoCPUPage : Page
     {
 
-        internal InfoCPUPage()
+        public InfoCPUPage()
         {
             InitializeComponent();
         }

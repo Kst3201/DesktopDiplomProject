@@ -1,15 +1,23 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Commands;
+using DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages;
+using DesktopDiplomProject.Client.Services.Navigation.Page;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
 {
-    internal class ComponentsSelectionViewModel
+    public class ComponentsSelectionViewModel
     {
+        private INavigationPageService _navigationPageService;
+        private RelayCommand? _nextPageCommand;
         private List<string> _selectionMods;
+
+        public ICommand? NextPageCommand => _nextPageCommand;
 
         public IReadOnlyList<string> SelectionMods
         {
@@ -39,8 +47,10 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
             set;
         }
 
-        public ComponentsSelectionViewModel()
+        public ComponentsSelectionViewModel(INavigationPageService navigationPageService)
         {
+            _navigationPageService = navigationPageService;
+            InitializeCommands();
             _selectionMods = new List<string>()
             {
                 "Игровой",
@@ -53,6 +63,11 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
             };
             MinBudget = 0;
             MaxBudget = 10000000;
+        }
+
+        public void InitializeCommands()
+        {
+            _nextPageCommand = new RelayCommand(() => _navigationPageService?.ShowScopedPage<SelectionPCPage>());
         }
     }
 }

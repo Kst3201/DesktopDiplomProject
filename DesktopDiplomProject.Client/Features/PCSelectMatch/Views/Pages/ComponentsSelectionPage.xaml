@@ -1,9 +1,9 @@
-﻿<Page x:Class="DesktopDiplomProject.Client.Views.MainWindow.Pages.ComponentsSelectionPage"
+﻿<Page x:Class="DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages.ComponentsSelectionPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:DesktopDiplomProject.Client.Views.MainWindow.Pages"
+      xmlns:local="clr-namespace:DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages"
       mc:Ignorable="d" 
       d:Background="{StaticResource SurfaceBrush}"
       d:DesignHeight="720" d:DesignWidth="1280"
@@ -22,7 +22,6 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Задание параметров подбора" Style="{StaticResource Header1TextBlockStyle}" Margin="9"/>
         <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" Foreground="{StaticResource DividerBrush}"/>
@@ -86,16 +85,12 @@
                                              VerticalContentAlignment="Center">
                                     </TextBox>
                                 </StackPanel>
-                                
+
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="ContinueButton" Content="Далее" Click="ContinueButton_Click"
-                    Style="{StaticResource SelecetionWindowPrimaryButtonStyle}" Margin="5" Width="200"/>
-        </StackPanel>
     </Grid>
 </Page>

@@ -1,4 +1,7 @@
-﻿using DesktopDiplomProject.Client.Views.MainWindow.Pages;
+﻿using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels;
+using DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages;
+using DesktopDiplomProject.Client.Services.Navigation.Page;
+using DesktopDiplomProject.Client.Views.MainWindow.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,35 +16,27 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TestDiplomProject.Views.Authorization.Pages;
-using TestDiplomProject.Views.MainWindow.Pages;
 
-namespace TestDiplomProject.Views.MainWindow
+namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private bool _isUserMenuOpen;
+        private INavigationPageService _navigationPageService;
+        private MainViewModel _viewModel;
 
-        public bool IsUserMenuOpen 
-        { 
-            get => _isUserMenuOpen; 
-            set
-            {
-                _isUserMenuOpen = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUserMenuOpen)));
-            }
-        }
-
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel, INavigationPageService navigationPageService, IServiceProvider provider)
         {
-            _isUserMenuOpen = false;
-            DataContext = this;
+
+            _viewModel = viewModel;
+            _navigationPageService = navigationPageService;
+            DataContext = _viewModel;
             InitializeComponent();
-            MainFrame.NavigationService.Navigate(new ComponentsSelectionPage());
+            _viewModel.InitializePage(MainFrame);
         }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -52,23 +47,12 @@ namespace TestDiplomProject.Views.MainWindow
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
-            IsUserMenuOpen = true;
+            _viewModel.IsUserMenuOpen = true;
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            Close();
-            Application.Current.Shutdown();
-        }
-
-        private void SelectionButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.NavigationService.Navigate(new SelectionPCPage());
-        }
-
-        private void MyPCButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.NavigationService.Navigate(new UserPCPage());
+            _viewModel.CloseCommand?.Execute(null);
         }
     }
 }
