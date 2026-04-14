@@ -1,4 +1,5 @@
-﻿using DesktopDiplomProject.Server.Models.Entities.PersonalComputers;
+﻿using DesktopDiplomProject.Database.Models.Entities.Authentification;
+using DesktopDiplomProject.Server.Models.Entities.PersonalComputers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,5 +23,6 @@ namespace DesktopDiplomProject.Server.Models.Entities.Authentification
         public RoleEntity Role { get; set; } = null!;
 
         public List<PCEntity> PCs { get; set; } = [];
+        public List<RefreshTokenEntity> RefreshTokens { get; set; } = [];
     }
 }

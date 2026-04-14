@@ -39,6 +39,11 @@ namespace DesktopDiplomProject.Server.Data.Configuration.Authentification
                 .WithOne(y => y.User)
                 .HasForeignKey(y => y.UserID)
                 .IsRequired();
+
+            builder.HasMany(x => x.RefreshTokens)
+                .WithOne(y => y.User)
+                .HasForeignKey(y => y.UserID)
+                .IsRequired();
         }
     }
 }

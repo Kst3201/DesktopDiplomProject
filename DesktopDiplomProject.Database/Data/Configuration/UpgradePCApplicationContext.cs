@@ -1,4 +1,6 @@
-﻿using DesktopDiplomProject.Server.Data.Configuration.Authentification;
+﻿using DesktopDiplomProject.Database.Data.Configuration.Authentification;
+using DesktopDiplomProject.Database.Models.Entities.Authentification;
+using DesktopDiplomProject.Server.Data.Configuration.Authentification;
 using DesktopDiplomProject.Server.Data.Configuration.Components.CPU;
 using DesktopDiplomProject.Server.Data.Configuration.Components.Drive;
 using DesktopDiplomProject.Server.Data.Configuration.Components.Motherboard;
@@ -52,6 +54,7 @@ namespace DesktopDiplomProject.Server.Data.Configuration
         public DbSet<RAMFrequencyEntity> RAMFrequencies { get; set; }
         public DbSet<RAMSingleModuleCapacityEntity> RAMSingleModuleCapacities { get; set; }
         public DbSet<RAMTypeEntity> RAMTypes { get; set; }
+        public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<GPUCountRasterizationBlocksEntity> GPURasterizationBlocksCounties { get; set; }
@@ -102,6 +105,7 @@ namespace DesktopDiplomProject.Server.Data.Configuration
             modelBuilder.ApplyConfiguration(new RAMSingleModuleCapacityConfiguration());
             modelBuilder.ApplyConfiguration(new RAMTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RAMPriceConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new GPUConfiguration());

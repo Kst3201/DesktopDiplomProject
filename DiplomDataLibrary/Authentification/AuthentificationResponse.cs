@@ -14,12 +14,12 @@ namespace DiplomDataLibrary.Authentification
         public DateTime RefreshTokenExpiresAt { get; set; }
 
 
-        public AuthentificationResponse(string accessToken, string refreshToken, DateTime accessAt, DateTime refreshAt)
+        public AuthentificationResponse(string accessToken, string refreshToken, DateTime accessExpiresAt, DateTime refreshExpiresAt)
         {
             AccessToken = accessToken;
             RefreshToken = refreshToken;
-            AccessTokenExpiresAt = accessAt;
-            RefreshTokenExpiresAt = refreshAt;
+            AccessTokenExpiresAt = accessExpiresAt;
+            RefreshTokenExpiresAt = refreshExpiresAt;
         }
     }
 }

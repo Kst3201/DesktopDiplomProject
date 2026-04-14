@@ -3,6 +3,7 @@ using System;
 using DesktopDiplomProject.Server.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DesktopDiplomProject.Database.Migrations
 {
     [DbContext(typeof(UpgradePCApplicationContext))]
-    partial class UpgradePCApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260414151058_SecondMigrationBy14-04-2026")]
+    partial class SecondMigrationBy14042026
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +51,8 @@ namespace DesktopDiplomProject.Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ReplacedByTokenID")
-                        .HasColumnType("integer");
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamp with time zone");
@@ -72,13 +75,10 @@ namespace DesktopDiplomProject.Database.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ReplacedByTokenID")
-                        .IsUnique();
-
                     b.HasIndex("Token")
                         .IsUnique();
 
-                    b.HasIndex("UserID", "IsRevoked", "ExpiryDate");
+                    b.HasIndex("UserID");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -1554,18 +1554,11 @@ namespace DesktopDiplomProject.Database.Migrations
 
             modelBuilder.Entity("DesktopDiplomProject.Database.Models.Entities.Authentification.RefreshTokenEntity", b =>
                 {
-                    b.HasOne("DesktopDiplomProject.Database.Models.Entities.Authentification.RefreshTokenEntity", "ReplacedByToken")
-                        .WithOne("ReplacedByTokenOf")
-                        .HasForeignKey("DesktopDiplomProject.Database.Models.Entities.Authentification.RefreshTokenEntity", "ReplacedByTokenID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("DesktopDiplomProject.Server.Models.Entities.Authentification.UserEntity", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ReplacedByToken");
 
                     b.Navigation("User");
                 });
@@ -1960,11 +1953,6 @@ namespace DesktopDiplomProject.Database.Migrations
                     b.Navigation("User");
 
                     b.Navigation("VideoCard");
-                });
-
-            modelBuilder.Entity("DesktopDiplomProject.Database.Models.Entities.Authentification.RefreshTokenEntity", b =>
-                {
-                    b.Navigation("ReplacedByTokenOf");
                 });
 
             modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.RoleEntity", b =>

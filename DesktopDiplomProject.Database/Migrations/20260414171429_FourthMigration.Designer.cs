@@ -3,6 +3,7 @@ using System;
 using DesktopDiplomProject.Server.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DesktopDiplomProject.Database.Migrations
 {
     [DbContext(typeof(UpgradePCApplicationContext))]
-    partial class UpgradePCApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260414171429_FourthMigration")]
+    partial class FourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,6 +52,9 @@ namespace DesktopDiplomProject.Database.Migrations
                         .HasColumnType("text");
 
                     b.Property<int?>("ReplacedByTokenID")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ReplacedByTokenOfID")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("RevokedAt")
