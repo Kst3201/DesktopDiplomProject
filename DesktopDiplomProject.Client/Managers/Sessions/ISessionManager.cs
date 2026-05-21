@@ -9,6 +9,8 @@ namespace DesktopDiplomProject.Client.Managers.Sessions
 {
     public interface ISessionManager
     {
+        event EventHandler<UserChangedArgs> UserChanged;
+
         UserModel? User { get; }
 
         bool IsLogged { get; }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopDiplomProject.Client.Features.PCSelectMatch.Views"
-        mc:Ignorable="d" Closed="Window_Closed"
+        mc:Ignorable="d" Closing="Window_Closing" Closed="Window_Closed"
         Title="MainWindow" Height="768" Width="1366"
         WindowStartupLocation="CenterOwner">
     <Grid>
@@ -31,7 +31,7 @@
                            Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                         <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1">
                             <StackPanel Orientation="Vertical" Background="{StaticResource SurfaceBrush}">
-                                <MenuItem Header="Сменить пользователя">
+                                <MenuItem Header="Сменить пользователя" Command="{Binding GoBackCommand}">
                                     <MenuItem.Icon>
                                         <Image Source="{StaticResource Change_User_Icon}" Stretch="Fill" RenderOptions.BitmapScalingMode="Fant"/>
                                     </MenuItem.Icon>
@@ -42,7 +42,7 @@
                     <TextBlock Grid.Column="1" Text="Пользователь Пользователев" Cursor="Hand" VerticalAlignment="Center" Margin="5">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Сменить пользователя" Click="MenuItem_Click" FontSize="{StaticResource FontSizeSmall}">
+                                <MenuItem Header="Сменить пользователя" Command="{Binding GoBackCommand}" FontSize="{StaticResource FontSizeSmall}">
                                     <MenuItem.Icon>
                                         <Image Source="{StaticResource Change_User_Icon}" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </MenuItem.Icon>
@@ -60,6 +60,9 @@
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5">
+                <Button x:Name="ComponentsButton" Content="Комплектующие" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                        Style="{StaticResource PrimaryButtonStyle}" Command="{Binding OpenComponentsCommand}"/>
+                <GridSplitter Foreground="{StaticResource DividerBrush}" Height="3" HorizontalAlignment="Stretch" Margin="0 5"/>
                 <Button x:Name="SelectionButton" Content="Подбор" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                         Style="{StaticResource PrimaryButtonStyle}" Command="{Binding OpenComponentsCommand}"/>
                 <GridSplitter Foreground="{StaticResource DividerBrush}" Height="3" HorizontalAlignment="Stretch" Margin="0 5"/>

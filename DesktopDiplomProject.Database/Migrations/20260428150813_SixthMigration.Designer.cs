@@ -3,6 +3,7 @@ using System;
 using DesktopDiplomProject.Server.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DesktopDiplomProject.Database.Migrations
 {
     [DbContext(typeof(UpgradePCApplicationContext))]
-    partial class UpgradePCApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260428150813_SixthMigration")]
+    partial class SixthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,52 +86,6 @@ namespace DesktopDiplomProject.Database.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.ActionPermissionEntity", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("PermissionActions");
-                });
-
-            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.DomainPermissionEntity", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("PermissionDomains");
-                });
-
             modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.RoleEntity", b =>
                 {
                     b.Property<int>("ID")
@@ -147,36 +104,6 @@ namespace DesktopDiplomProject.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.RolePermissionsEntity", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("ActionPermissionID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DomainPermissionID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ActionPermissionID");
-
-                    b.HasIndex("DomainPermissionID");
-
-                    b.HasIndex("RoleID", "DomainPermissionID", "ActionPermissionID")
-                        .IsUnique()
-                        .HasDatabaseName("IX_RolePermissions_Role_DomainPermission_ActionPermission");
-
-                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.UserEntity", b =>
@@ -1646,33 +1573,6 @@ namespace DesktopDiplomProject.Database.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.RolePermissionsEntity", b =>
-                {
-                    b.HasOne("DesktopDiplomProject.Server.Models.Entities.Authentification.ActionPermissionEntity", "ActionPermission")
-                        .WithMany("RoleRermissions")
-                        .HasForeignKey("ActionPermissionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DesktopDiplomProject.Server.Models.Entities.Authentification.DomainPermissionEntity", "DomainPermission")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("DomainPermissionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DesktopDiplomProject.Server.Models.Entities.Authentification.RoleEntity", "Role")
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActionPermission");
-
-                    b.Navigation("DomainPermission");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.UserEntity", b =>
                 {
                     b.HasOne("DesktopDiplomProject.Server.Models.Entities.Authentification.RoleEntity", "Role")
@@ -2070,20 +1970,8 @@ namespace DesktopDiplomProject.Database.Migrations
                     b.Navigation("ReplacedByTokenOf");
                 });
 
-            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.ActionPermissionEntity", b =>
-                {
-                    b.Navigation("RoleRermissions");
-                });
-
-            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.DomainPermissionEntity", b =>
-                {
-                    b.Navigation("RolePermissions");
-                });
-
             modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.Authentification.RoleEntity", b =>
                 {
-                    b.Navigation("Permissions");
-
                     b.Navigation("Users");
                 });
 

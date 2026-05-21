@@ -11,6 +11,7 @@ namespace DesktopDiplomProject.Server.Models.Entities.Authentification
         public int ID { get; set; }
         public string Name { get; set; } = null!;
 
+        public List<RolePermissionsEntity> Permissions { get; set; } = [];
         public List<UserEntity> Users { get; set; } = [];
     }
 }

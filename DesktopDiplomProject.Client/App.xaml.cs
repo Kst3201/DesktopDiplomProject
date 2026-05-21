@@ -13,10 +13,12 @@ using DesktopDiplomProject.Client.Managers.Sessions;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
 using DesktopDiplomProject.Client.Services.Navigation.Window;
 using DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -32,7 +34,13 @@ namespace TestDiplomProject
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             var builder = Host.CreateApplicationBuilder();
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, true);
+            foreach (var pair in builder.Configuration.AsEnumerable())
+            {
+                Debug.WriteLine($"{pair.Key} = {pair.Value}");
+            }
             builder.Services.AddSingleton<ICommController, HTTPSCommController>();
+            builder.Services.AddSingleton<HTTPSCommController>();
             builder.Services.AddSingleton<ISessionManager, SessionManager>();
             builder.Services.AddSingleton<INavigationWindowService, NavigationWindowService>();
             builder.Services.AddScoped<INavigationPageService, NavigationPageService>();
@@ -60,6 +68,8 @@ namespace TestDiplomProject
             builder.Services.AddTransient<InfoRAMPage>();
             builder.Services.AddTransient<InfoSSDPage>();
             builder.Services.AddTransient<InfoBlockPowerPage>();
+
+
 
             _host = builder.Build();
 

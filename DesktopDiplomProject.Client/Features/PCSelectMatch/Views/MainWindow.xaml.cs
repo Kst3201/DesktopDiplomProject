@@ -52,7 +52,13 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            _viewModel.CloseCommand?.Execute(null);
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (_viewModel == null) return;
+            if (!_viewModel.IsUserChanging)
+                _viewModel.CloseCommand?.Execute(null);
         }
     }
 }

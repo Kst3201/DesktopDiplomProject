@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiplomDataLibrary.Authentification
+namespace DiplomDataLibrary.Authentification.Requests
 {
     public class RefreshRequest
     {

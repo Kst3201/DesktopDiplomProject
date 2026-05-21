@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DesktopDiplomProject.Server.Data.Configuration.Authentification
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<RoleEntity>
+    public class ActionPermissionConfiguration : IEntityTypeConfiguration<ActionPermissionEntity>
     {
-        public void Configure(EntityTypeBuilder<RoleEntity> builder)
+        public void Configure(EntityTypeBuilder<ActionPermissionEntity> builder)
         {
             builder.HasKey(x => x.ID);
 
@@ -19,14 +19,11 @@ namespace DesktopDiplomProject.Server.Data.Configuration.Authentification
             builder.HasIndex(x => x.Name)
                 .IsUnique();
 
-            builder.HasMany(x => x.Permissions)
-                .WithOne(y => y.Role)
-                .HasForeignKey(y => y.RoleID)
-                .IsRequired();
+            builder.Property(x => x.Description);
 
-            builder.HasMany(x => x.Users)
-                .WithOne(y => y.Role)
-                .HasForeignKey(y => y.RoleID)
+            builder.HasMany(x => x.RoleRermissions)
+                .WithOne(y => y.ActionPermission)
+                .HasForeignKey(y => y.ActionPermissionID)
                 .IsRequired();
         }
     }

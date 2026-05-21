@@ -31,25 +31,25 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Логин"
                            Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
-                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Username}"
                          Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Логин"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="Ошибка"
                            Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Электронная почта"
                            Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
-                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch"
+                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Email}"
                          Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Email"/>
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="Ошибка"
                            Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Пароль"
                            Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
-                <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch"
+                <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Password}"
                          Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Пароль"/>
                 <TextBlock Grid.Row="5" Grid.Column="1" Text="Ошибка"
                            Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Повторить пароль"
                            Style="{StaticResource PrimaryTextBlockStyle}" Margin="5" Padding="2"/>
-                <TextBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch"
+                <TextBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding RePassword}"
                          Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Margin="5" Tag="Повтороить пароль"/>
                 <TextBlock Grid.Row="7" Grid.Column="1" Text="Ошибка"
                            Style="{StaticResource ErrorTextBlockStyle}" Margin="5 0 5 5" Padding="2"/>

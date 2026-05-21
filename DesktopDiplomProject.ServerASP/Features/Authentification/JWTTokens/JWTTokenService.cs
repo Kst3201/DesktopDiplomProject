@@ -1,11 +1,14 @@
 ﻿using DesktopDiplomProject.Database.Models.Entities.Authentification;
 using DesktopDiplomProject.Server.Data.Configuration;
 using DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens.RefreshTokenGenerators;
+using DesktopDiplomProject.ServerASP.Features.Authentification.Permissions;
 using DiplomDataLibrary.Authentification;
+using DiplomDataLibrary.Authentification.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens
 {
@@ -16,18 +19,20 @@ namespace DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens
         private IConfiguration _configuration;
         private IRefreshTokenGenerator _refreshTokenGenerator;
         private ILogger<JWTTokenService> _logger;
+        private IPermissionService _permissionService;
         private UpgradePCApplicationContext _context;
 
         public JWTTokenService(IConfiguration configureation, IRefreshTokenGenerator tokenGenerator,
-            ILogger<JWTTokenService> logger, UpgradePCApplicationContext context)
+            ILogger<JWTTokenService> logger, IPermissionService permissionService, UpgradePCApplicationContext context)
         {
             _configuration = configureation;
             _refreshTokenGenerator = tokenGenerator;
             _logger = logger;
+            _permissionService = permissionService;
             _context = context;
         }
 
-        public async Task<AuthentificationResponse?> GenerateTokensAsync(int userID, string role, string ipAddress)
+        public async Task<AuthentificationTokenModel?> GenerateTokensAsync(int userID, string role, string ipAddress)
         {
             var expiresMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryMinutes"]);
             var accessToken = GenerateAccessToken(userID, role, out string jwtID);
@@ -39,11 +44,11 @@ namespace DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens
 
             _logger.LogInformation("Generated tokens for user {UserID} from IP {IpAddress}", userID, ipAddress);
 
-            return new AuthentificationResponse(accessToken, refreshToken,
+            return new AuthentificationTokenModel(accessToken, refreshToken,
                 DateTime.UtcNow.AddMinutes(expiresMinutes), DateTime.UtcNow.AddDays(LIFETIMEINDAYS));
         }
 
-        public async Task<AuthentificationResponse?> RefreshTokensAsync(string refreshToken, string ipAddress)
+        public async Task<AuthentificationTokenModel?> RefreshTokensAsync(string refreshToken, string ipAddress)
         {
             var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token.Equals(refreshToken));
             if (storedToken == null)
@@ -52,7 +57,7 @@ namespace DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens
                 return null;
             }
             if (!CheckStoredRefreshToken(storedToken, ipAddress)) return null;
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.ID.Equals(storedToken.UserID));
+            var user = await _context.Users.Include(user => user.Role).FirstOrDefaultAsync(x => x.ID.Equals(storedToken.UserID));
             if (user == null) return null;
             var expiresMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryMinutes"]);
             var newAccessToken = GenerateAccessToken(user.ID, user.Role.Name, out string newJWTID);
@@ -64,7 +69,7 @@ namespace DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens
 
             _logger.LogInformation("Tokens refreshed for user {UserID} from IP {IpAddress}", user.ID, ipAddress);
 
-            return new AuthentificationResponse(newAccessToken, newRefreshToken,
+            return new AuthentificationTokenModel(newAccessToken, newRefreshToken,
                 DateTime.UtcNow.AddMinutes(expiresMinutes), DateTime.UtcNow.AddDays(LIFETIMEINDAYS));
         }
 
@@ -154,8 +159,18 @@ namespace DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens
                 new Claim(JwtRegisteredClaimNames.Jti, jwtID),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
                             ClaimValueTypes.Integer64),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role),
+                new Claim("Permissions", JsonSerializer.Serialize(GetPermissions(role)))
             };
+        }
+
+        private IList<PermissionDTO> GetPermissions(string role)
+        {
+            int roleID = _context.Roles.FirstOrDefault(x => x.Name.Equals(role))?.ID ?? -1;
+            if (roleID == -1) throw new ArgumentOutOfRangeException(nameof(role));
+            IList<IPermission> permissions = _permissionService.GetPermissions(roleID).ToList();
+            return permissions.Where(item => item != null).Select(item => new PermissionDTO(item.Domain, item.GetPermissionsInt())).ToList();
+
         }
 
         private RefreshTokenEntity CreateRefreshTokenEntity(string token, int userID, string jwtID, string ipAddress)

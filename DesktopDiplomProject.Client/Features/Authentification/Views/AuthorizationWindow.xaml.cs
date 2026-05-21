@@ -32,13 +32,13 @@ namespace DesktopDiplomProject.Client.Features.Authentification.Views
             _navigationPageService = navigationPageService;
             DataContext = _viewModel;
             InitializeComponent();
+            _navigationPageService.SetFrame(AuthFrame);
+            _viewModel.Initialize();
         }
 
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            _navigationPageService.SetFrame(AuthFrame);
-            _viewModel.Initialize();
         }
 
     }

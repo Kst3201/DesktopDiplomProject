@@ -1,6 +1,9 @@
 ﻿using DesktopDiplomProject.Client.Abstractions;
 using DesktopDiplomProject.Client.Commands;
+using DesktopDiplomProject.Client.Features.Authentification.Gateways;
+using DesktopDiplomProject.Client.Features.Authentification.Models;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages;
+using DesktopDiplomProject.Client.Managers.Sessions;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
 using DesktopDiplomProject.Client.Services.Navigation.Window;
 using System;
@@ -14,11 +17,14 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels
 {
     public class MainViewModel : ObservableViewModel
     {
+        private ISessionManager _sessionManager;
         private INavigationPageService _navigationPageService;
         private INavigationWindowService _navigationWindowService;
+        private GAuthentification _gatewayAuth;
         private RelayCommand? _openComponentsCommand;
         private RelayCommand? _openUserPCCommand;
         private RelayCommand? _closeCommand;
+        private RelayCommand? _goBackCommand;
         private bool _isUserMenuOpen;
 
         public bool IsUserMenuOpen
@@ -27,15 +33,25 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels
             set => SetProperty(ref _isUserMenuOpen, value);
         }
 
+        public bool IsUserChanging
+        {
+            get;
+            set;
+        }
+
         public ICommand? OpenComponentsCommand => _openComponentsCommand;
         public ICommand? OpenUserPCCommand => _openUserPCCommand;
         public ICommand? CloseCommand => _closeCommand;
+        public ICommand? GoBackCommand => _goBackCommand;
 
 
-        public MainViewModel(INavigationPageService navigationPageService, INavigationWindowService navigationWindowService)
+        public MainViewModel(INavigationPageService navigationPageService, INavigationWindowService navigationWindowService, ISessionManager sessionManager, GAuthentification gAuth)
         {
             _navigationPageService = navigationPageService;
             _navigationWindowService = navigationWindowService;
+            _sessionManager = sessionManager;
+            _gatewayAuth = gAuth;
+            IsUserChanging = false;
             InitCommands();
         }
 
@@ -65,12 +81,32 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels
                 return !(_navigationPageService.CurrentPage?.GetType().Equals(typeof(UserPCPage)) ?? false);
 
             });
-            _closeCommand = new RelayCommand(() =>
+            _closeCommand = new RelayCommand(async () =>
             {
+
                 _navigationPageService.Clear();
+                await Logout();
+                _navigationWindowService.CloseApplication();
+            });
+            _goBackCommand = new RelayCommand(async () =>
+            {
+                IsUserChanging = true;
+                _navigationPageService.Clear();
+                await Logout();
                 _navigationWindowService.GoBack();
             });
         }
 
+        private async Task Logout()
+        {
+            if (_sessionManager != null && _gatewayAuth != null)
+            {
+                UserModel? user = _sessionManager.User;
+                if (user == null) throw new ArgumentNullException(nameof(user));
+                await _gatewayAuth.Logout(new Authentification.Models.UserLogoutModel(user.AccessToken.Token, user.RefreshToken.Token));
+                _sessionManager.Logout();
+            }
+        }
     }
+
 }

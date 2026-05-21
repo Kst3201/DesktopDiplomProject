@@ -48,6 +48,8 @@ namespace DesktopDiplomProject.Server.Data.Configuration
         public DbSet<MBPriceEntity> MBPrices { get; set; }
         public DbSet<MotherboardEntity> Motherboards { get; set; }
         public DbSet<PCEntity> PCs { get; set; }
+        public DbSet<ActionPermissionEntity> PermissionActions { get; set; }
+        public DbSet<DomainPermissionEntity> PermissionDomains { get; set; }
         public DbSet<RAMCountModulesEntity> RAMModulesCounties { get; set; }
         public DbSet<RAMEntity> RAMs { get; set; }
         public DbSet<RAMPriceEntity> RAMPrices { get; set; }
@@ -56,6 +58,7 @@ namespace DesktopDiplomProject.Server.Data.Configuration
         public DbSet<RAMTypeEntity> RAMTypes { get; set; }
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
+        public DbSet<RolePermissionsEntity> RolePermissions { get; set; }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<GPUCountRasterizationBlocksEntity> GPURasterizationBlocksCounties { get; set; }
         public DbSet<GPUCountRTCoresEntity> GPURTCoresCounties { get; set; }
@@ -99,6 +102,8 @@ namespace DesktopDiplomProject.Server.Data.Configuration
             modelBuilder.ApplyConfiguration(new MBPriceConfiguration());
             modelBuilder.ApplyConfiguration(new MotherboardConfiguration());
             modelBuilder.ApplyConfiguration(new PCConfiguration());
+            modelBuilder.ApplyConfiguration(new ActionPermissionConfiguration());
+            modelBuilder.ApplyConfiguration(new DomainPermissionConfiguration());
             modelBuilder.ApplyConfiguration(new RAMConfiguration());
             modelBuilder.ApplyConfiguration(new RAMCountModulesConfiguration());
             modelBuilder.ApplyConfiguration(new RAMFrequencyConfiguration());
@@ -106,6 +111,7 @@ namespace DesktopDiplomProject.Server.Data.Configuration
             modelBuilder.ApplyConfiguration(new RAMTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RAMPriceConfiguration());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
+            modelBuilder.ApplyConfiguration(new RolePermissionsConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new GPUConfiguration());

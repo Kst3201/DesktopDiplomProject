@@ -17,5 +17,9 @@ namespace DesktopDiplomProject.Client.Services.Navigation.Window
         void ShowWindowAndCloseParent<TWindow>() where TWindow : System.Windows.Window;
 
         void GoBack();
+
+        void CloseWindow();
+
+        void CloseApplication();
     }
 }

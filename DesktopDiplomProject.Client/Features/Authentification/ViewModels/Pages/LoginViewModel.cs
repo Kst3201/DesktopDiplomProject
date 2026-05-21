@@ -1,6 +1,7 @@
 ﻿using DesktopDiplomProject.Client.Abstractions;
 using DesktopDiplomProject.Client.Commands;
 using DesktopDiplomProject.Client.Features.Authentification.Gateways;
+using DesktopDiplomProject.Client.Features.Authentification.Models;
 using DesktopDiplomProject.Client.Features.Authentification.Views.Pages;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views;
 using DesktopDiplomProject.Client.Managers.Sessions;
@@ -73,12 +74,24 @@ namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
             {
                 _navigationPageService.ShowPage<RegisterPage>();
             });
-            _loginCommand = new RelayCommand(() =>
+            _loginCommand = new RelayCommand(async () =>
             {
-                MessageBox.Show("!Вход!");
-                _navigationWindowService.ShowWindowAndHideParent<MainWindow>();
+                try
+                {
+                    UserModel user = await _gateway.Login(new UserLoginModel(Username, Password));
+                    if (user == null) throw new ArgumentNullException(nameof(user));
+                    _sessionManager.Login(user);
+                    _navigationWindowService.ShowWindowAndHideParent<MainWindow>();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+            }, (obj) =>
+            {
+                return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
             });
         }
-
     }
 }

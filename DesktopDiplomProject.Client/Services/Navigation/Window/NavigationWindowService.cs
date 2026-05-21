@@ -22,6 +22,22 @@ namespace DesktopDiplomProject.Client.Services.Navigation.Window
             _currentWindow = null;
         }
 
+        public void CloseApplication()
+        {
+            _scopeDictionary.Clear();
+            Application.Current.Shutdown();
+        }
+
+        public void CloseWindow()
+        {
+            if (_currentWindow == null) return;
+            if (_scopeDictionary.ContainsKey(_currentWindow))
+            {
+                _scopeDictionary.Remove(_currentWindow);
+            }
+            _currentWindow.Close();
+        }
+
         public void GoBack()
         {
             if (_currentWindow == null)
@@ -34,7 +50,9 @@ namespace DesktopDiplomProject.Client.Services.Navigation.Window
                 Application.Current.Shutdown();
                 return;
             }
+            System.Windows.Window last = _currentWindow;
             _currentWindow = _currentWindow.Owner;
+            last.Hide();
             _currentWindow.Show();
         }
 

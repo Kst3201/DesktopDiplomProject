@@ -1,16 +1,12 @@
 ﻿using DesktopDiplomProject.Client.Abstractions;
 using DesktopDiplomProject.Client.Commands;
 using DesktopDiplomProject.Client.Features.Authentification.Gateways;
+using DesktopDiplomProject.Client.Features.Authentification.Models;
 using DesktopDiplomProject.Client.Features.Authentification.Views.Pages;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views;
 using DesktopDiplomProject.Client.Managers.Sessions;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
 using DesktopDiplomProject.Client.Services.Navigation.Window;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -29,7 +25,7 @@ namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
         private string _rePassword;
         private string _email;
 
-        public string UserName
+        public string Username
         {
             get => _username;
             set => SetProperty(ref _username, value);
@@ -72,10 +68,25 @@ namespace DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages
 
         private void InitCommands()
         {
-            _registrationCommand = new RelayCommand(() =>
+            _registrationCommand = new RelayCommand(async () =>
             {
-                MessageBox.Show("!Регистрация!");
-                _navigationWindowService.ShowWindowAndHideParent<MainWindow>();
+                try
+                {
+                    bool result = await _gateway.Register(new UserRegistrationModel(Username, Password, Email));
+                    if (!result) return;
+                    UserModel user = await _gateway.Login(new UserLoginModel(Username, Password));
+                    if (user == null) throw new ArgumentNullException(nameof(user));
+                    _sessionManager.Login(user);
+                    _navigationWindowService.ShowWindowAndHideParent<MainWindow>();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+            }, (obj) =>
+            {
+                return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password);
             });
             _loginCommand = new RelayCommand(() => _navigationPageService.ShowPage<LoginPage>());
         }

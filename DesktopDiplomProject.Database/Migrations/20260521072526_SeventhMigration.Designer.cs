@@ -3,6 +3,7 @@ using System;
 using DesktopDiplomProject.Server.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DesktopDiplomProject.Database.Migrations
 {
     [DbContext(typeof(UpgradePCApplicationContext))]
-    partial class UpgradePCApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260521072526_SeventhMigration")]
+    partial class SeventhMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,9 +175,7 @@ namespace DesktopDiplomProject.Database.Migrations
 
                     b.HasIndex("DomainPermissionID");
 
-                    b.HasIndex("RoleID", "DomainPermissionID", "ActionPermissionID")
-                        .IsUnique()
-                        .HasDatabaseName("IX_RolePermissions_Role_DomainPermission_ActionPermission");
+                    b.HasIndex("RoleID");
 
                     b.ToTable("RolePermissions");
                 });
