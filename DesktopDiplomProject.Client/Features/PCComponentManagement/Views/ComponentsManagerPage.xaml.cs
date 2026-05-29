@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TestDiplomProject.Views.Components
+namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Views
 {
     /// <summary>
-    /// Логика взаимодействия для ComponentsWindow.xaml
+    /// Логика взаимодействия для ComponentsManagerPage.xaml
     /// </summary>
-    public partial class ComponentsWindow : Window
+    public partial class ComponentsManagerPage : Page
     {
-        public ComponentsWindow()
+        public ComponentsManagerPage()
         {
             InitializeComponent();
         }
