@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="/Resources/TextBoxResourceDictionary.xaml"/>
                 <ResourceDictionary Source="/Resources/ImagesResourceDictionary.xaml"/>
                 <ResourceDictionary Source="/Resources/CheckBoxResourcesDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/PanelElementsResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
