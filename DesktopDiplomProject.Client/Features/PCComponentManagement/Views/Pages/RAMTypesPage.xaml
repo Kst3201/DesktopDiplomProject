@@ -22,7 +22,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock d:Text="Тип комплектующих" Text="{Binding ComponentTypeName}" Style="{StaticResource Header1TextBlockStyle}"/>
+        <TextBlock d:Text="Тип комплектующих" Text="{Binding ComponentType}" Style="{StaticResource Header1TextBlockStyle}"/>
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -37,8 +37,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Название" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                         Text="{Binding Name}" Tag="Название"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding Name}" Tag="Название"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -48,12 +48,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Принадлежность к оценке 1" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <Slider Grid.Column="1" Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ScoreOne}"
-                        TickFrequency="0.05" TickPlacement="Both"
-                        VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
-                        />
+                TickFrequency="0.05" TickPlacement="Both"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
+                />
                         <TextBox Grid.Column="2"
-                         Text="{Binding ScoreOne}" Tag="1 балл с точностью (%)"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding ScoreOne}" Tag="μ(1) %"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -63,12 +63,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Принадлежность к оценке 2" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <Slider Grid.Column="1" Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ScoreTwo}"
-                        TickFrequency="0.05" TickPlacement="Both"
-                        VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
-                        />
+                TickFrequency="0.05" TickPlacement="Both"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
+                />
                         <TextBox Grid.Column="2"
-                         Text="{Binding ScoreTwo}" Tag="2 балла с точностью (%)"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding ScoreTwo}" Tag="μ(2) %"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -78,12 +78,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Принадлежности к оценке 3" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <Slider Grid.Column="1" Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ScoreThree}"
-                        TickFrequency="0.05" TickPlacement="Both"
-                        VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
-                        />
+                TickFrequency="0.05" TickPlacement="Both"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
+                />
                         <TextBox Grid.Column="2"
-                         Text="{Binding ScoreThree}" Tag="3 балла с точностью (%)"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding ScoreThree}" Tag="μ(3) %"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -93,12 +93,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Принадлежность к оценке 4" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <Slider Grid.Column="1" Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ScoreFour}"
-                        TickFrequency="0.05" TickPlacement="Both"
-                        VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
-                        />
+                TickFrequency="0.05" TickPlacement="Both"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
+                />
                         <TextBox Grid.Column="2"
-                         Text="{Binding ScoreFour}" Tag="4 балла с точностью (%)"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding ScoreFour}" Tag="μ(4) %"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -108,12 +108,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Принадлежность к оценке 5" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <Slider Grid.Column="1" Minimum="0" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ScoreFive}"
-                        TickFrequency="0.05" TickPlacement="Both"
-                        VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
-                        />
+                TickFrequency="0.05" TickPlacement="Both"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"
+                />
                         <TextBox Grid.Column="2"
-                         Text="{Binding ScoreFive}" Tag="5 балла с точностью (%)"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding ScoreFive}" Tag="μ(5) %"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                 </UniformGrid>
             </Grid>
@@ -131,17 +131,17 @@
                 <Button Content="Добавить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding AddComponent}"/>
                 <Button Content="Удалить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding RemoveComponent}"/>
             </StackPanel>
-            <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding Items}">
+            <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" ItemsSource="{Binding Items}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название" Width="auto" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Принадлежность к оценке 1" Width="auto" Binding="{Binding ScoreOne}"/>
-                    <DataGridTextColumn Header="Принадлежность к оценке 2" Width="auto" Binding="{Binding ScoreTwo}"/>
-                    <DataGridTextColumn Header="Принадлежность к оценке 3" Width="auto" Binding="{Binding ScoreThree}"/>
-                    <DataGridTextColumn Header="Принадлежность к оценке 4" Width="auto" Binding="{Binding ScoreFour}"/>
-                    <DataGridTextColumn Header="Принадлежность к оценке 5" Width="auto" Binding="{Binding ScoreFive}"/>
-                    <DataGridTextColumn Header="Итоговая оценка" Width="auto" Binding="{Binding TotalScore}"/>
+                    <DataGridTextColumn Header="Название" Width="1*" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="μ(1) %" Width="1*" Binding="{Binding ScoreOne}"/>
+                    <DataGridTextColumn Header="μ(2) %" Width="1*" Binding="{Binding ScoreTwo}"/>
+                    <DataGridTextColumn Header="μ(3) %" Width="1*" Binding="{Binding ScoreThree}"/>
+                    <DataGridTextColumn Header="μ(4) %" Width="1*" Binding="{Binding ScoreFour}"/>
+                    <DataGridTextColumn Header="μ(5) %" Width="1*" Binding="{Binding ScoreFive}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>
+            
 </Page>

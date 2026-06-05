@@ -4,6 +4,7 @@ using DesktopDiplomProject.Client.Features.Authentification.ViewModels;
 using DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages;
 using DesktopDiplomProject.Client.Features.Authentification.Views;
 using DesktopDiplomProject.Client.Features.Authentification.Views.Pages;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Services;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views;
@@ -43,6 +44,7 @@ namespace TestDiplomProject
             builder.Services.AddSingleton<HTTPSCommController>();
             builder.Services.AddSingleton<ISessionManager, SessionManager>();
             builder.Services.AddSingleton<INavigationWindowService, NavigationWindowService>();
+            builder.Services.AddSingleton<ComponentTypeNamedService>();
             builder.Services.AddScoped<INavigationPageService, NavigationPageService>();
             builder.Services.AddTransient<MainWindow>();
             builder.Services.AddTransient<MainViewModel>();

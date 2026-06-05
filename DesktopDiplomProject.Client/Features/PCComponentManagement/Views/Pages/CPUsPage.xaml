@@ -22,7 +22,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock d:Text="Тип комплектующих" Text="{Binding ComponentTypeName}" Style="{StaticResource Header1TextBlockStyle}"/>
+        <TextBlock d:Text="Тип комплектующих" Text="{Binding ComponentType}" Style="{StaticResource Header1TextBlockStyle}"/>
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -37,8 +37,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Название" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                         Text="{Binding Name}" Tag="Название"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding Name}" Tag="Название"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -47,8 +47,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Производитель" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                         Text="{Binding Manufacturer}" Tag="Производитель"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding Manufacturer}" Tag="Производитель"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -57,8 +57,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Модель" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                         Text="{Binding Model}" Tag="Модель"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                    Text="{Binding Model}" Tag="Модель"
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -67,8 +67,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Сокет" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <ComboBox Grid.Column="1" ItemsSource="{Binding Sockets}"
-                          SelectedItem="{Binding Socket}" DisplayMemberPath="Name" SelectedValuePath="ID"
-                          HorizontalAlignment="Stretch"/>
+                    SelectedItem="{Binding Socket}" DisplayMemberPath="Name" SelectedValuePath="ID"
+                    HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -76,10 +76,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Количество ядер" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding CountCores}"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Количество ядер"
-                         HorizontalAlignment="Stretch"/>
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Количество ядер"
+                    HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -87,10 +87,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Количество потоков" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding CountThreads}"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Количество потоков"
-                         HorizontalAlignment="Stretch"/>
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Количество потоков"
+                    HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -98,10 +98,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Базовая частота" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding BaseFrequency}"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Базовая частота"
-                         HorizontalAlignment="Stretch"/>
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Базовая частота"
+                    HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -109,10 +109,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Тип оперативной памяти" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <ComboBox Grid.Column="1" ItemsSource="{Binding RAMTypes}" SelectedItem="{Binding RAMType}"
-                          DisplayMemberPath="Name" SelectedValuePath="ID"
-                          HorizontalAlignment="Stretch"/>
+                    DisplayMemberPath="Name" SelectedValuePath="ID"
+                    HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
@@ -120,10 +120,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Цена" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding Price}"
-                         Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Цена"
-                         HorizontalAlignment="Stretch"/>
+                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Цена"
+                    HorizontalAlignment="Stretch"/>
                     </Grid>
                 </UniformGrid>
             </Grid>
@@ -141,20 +141,20 @@
                 <Button Content="Добавить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding AddComponent}"/>
                 <Button Content="Удалить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding RemoveComponent}"/>
             </StackPanel>
-            <DataGrid Grid.Row="1" Margin="5" ItemsSource="{Binding Items}">
+            <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" ItemsSource="{Binding Items}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название" Width="auto" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Производитель" Width="auto" Binding="{Binding Manufacturer}"/>
-                    <DataGridTextColumn Header="Модель" Width="auto" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Сокет" Width="auto" Binding="{Binding Socket.Name}"/>
-                    <DataGridTextColumn Header="Количество ядер" Width="auto" Binding="{Binding CountCores}"/>
-                    <DataGridTextColumn Header="Количество потоков" Width="auto" Binding="{Binding CountThreads}"/>
-                    <DataGridTextColumn Header="Базовая частота" Width="auto" Binding="{Binding BaseFrequency}"/>
-                    <DataGridTextColumn Header="Тип оперативной памяти" Width="auto" Binding="{Binding RAMType.Name}"/>
-                    <DataGridTextColumn Header="Цена" Width="auto" Binding="{Binding Price}"/>
-                    <DataGridTextColumn Header="Оценка" Width="auto" Binding="{Binding TotalScore}"/>
+                    <DataGridTextColumn Header="Название" Width="1*" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Производитель" Width="1*" Binding="{Binding Manufacturer}"/>
+                    <DataGridTextColumn Header="Модель" Width="1*" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Header="Сокет" Width="1*" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Header="Ядра/Потоки" Width="1*" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Header="Частота" Width="1*" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Header="Тип ОЗУ" Width="1*" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Header="Цена, р." Width="1*" Binding="{Binding Price}"/>
+                    <DataGridTextColumn Header="Оценка" Width="1*" Binding="{Binding TotalScore}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>
+            
 </Page>

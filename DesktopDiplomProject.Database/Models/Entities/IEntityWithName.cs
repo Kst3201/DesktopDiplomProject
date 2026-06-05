@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Server.Models.Entities
 {
-    internal interface IEntityWithName
+    public interface IEntityWithName
     {
         string Name { get; set; }
     }

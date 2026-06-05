@@ -36,7 +36,7 @@
     <Folder Include="Assets\" />
     <Folder Include="Extensions\" />
     <Folder Include="Features\Authentification\Services\" />
-    <Folder Include="Features\PCComponentManagement\Models\" />
+    <Folder Include="Features\PCComponentManagement\Services\" />
     <Folder Include="Features\PCComponentManagement\ViewModels\Pages\Validators\" />
     <Folder Include="Features\PCSelectMatch\Models\" />
     <Folder Include="Features\Profile\Models\" />

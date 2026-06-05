@@ -1,4 +1,6 @@
 ﻿using DesktopDiplomProject.Client.Abstractions;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Models.Components;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,52 +11,23 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.
 {
     public class RAMTypePageViewModel : ObservableViewModel
     {
-        private string _name;
-        private double _scoreOne;
-        private double _scoreTwo;
-        private double _scoreThree;
-        private double _scoreFour;
-        private double _scoreFive;
+        private RAMTypeViewModel _redactedItem;
+        private List<RAMTypeViewModel> _items;
 
-        public string Name
+        public string ComponentType => $"Тип оперативной памяти";
+
+        public RAMTypeViewModel RedactedItem
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => _redactedItem;
+            set => SetProperty(ref _redactedItem, value);
         }
 
-        public double ScoreOne
-        {
-            get => _scoreOne;
-            set => SetProperty(ref _scoreOne, value);
-        }
-
-        public double ScoreTwo
-        {
-            get => _scoreTwo;
-            set => SetProperty(ref _scoreTwo, value);
-        }
-
-        public double ScoreThree
-        {
-            get => _scoreThree;
-            set => SetProperty(ref _scoreThree, value);
-        }
-
-        public double ScoreFour
-        {
-            get => _scoreFour;
-            set => SetProperty(ref _scoreFour, value);
-        }
-
-        public double ScoreFive
-        {
-            get => _scoreFive;
-            set => SetProperty(ref _scoreFive, value);
-        }
+        public IReadOnlyList<RAMTypeViewModel> Items => _items;
 
         public RAMTypePageViewModel()
         {
-            _name = string.Empty;
+            _redactedItem = new RAMTypeViewModel();
+            _items = new List<RAMTypeViewModel>();
         }
     }
 }
