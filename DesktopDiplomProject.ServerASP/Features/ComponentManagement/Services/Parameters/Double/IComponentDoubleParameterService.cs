@@ -3,7 +3,9 @@ using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Param
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double
 {
-    public interface IComponentDoubleParameterService<TEntity> : IComponentParameterService<double, TEntity> where TEntity : DoubleValueScoredEntity
+    public interface IComponentDoubleParameterService<TEntity> 
+        : IComponentParameterService<double, TEntity> 
+        where TEntity : DoubleValueScoredEntity, new()
     {
 
     }

@@ -6,7 +6,7 @@
         public string PCIEInterface { get; set; }
         public int CountPCIELines { get; set; }
         public int RecommendedBlockPower { get; set; }
-        public int CountPinsAdditionalPowert { get; set; }
+        public int CountPinsAdditionalPower { get; set; }
         public int CapacityVideoMemory { get; set; }
         public int MaxThroughputCapacity { get; set; }
         public int MemoryFrequency { get; set; }
@@ -19,7 +19,7 @@
             PCIEInterface = string.Empty;
             CountPCIELines = 0;
             RecommendedBlockPower = 0;
-            CountPinsAdditionalPowert = 0;
+            CountPinsAdditionalPower = 0;
             CapacityVideoMemory = 0;
             MaxThroughputCapacity = 0;
             MemoryFrequency = 0;

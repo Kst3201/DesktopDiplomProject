@@ -4,6 +4,6 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyF
 {
     public interface IDefuzzifyFunction
     {
-        double Defuzzify(Score score);
+        double Defuzzify(IScore score);
     }
 }

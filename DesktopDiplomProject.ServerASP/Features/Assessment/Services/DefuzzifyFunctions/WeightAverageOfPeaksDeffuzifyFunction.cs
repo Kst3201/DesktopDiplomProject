@@ -4,7 +4,7 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyF
 {
     public class WeightAverageOfPeaksDeffuzifyFunction : IDefuzzifyFunction
     {
-        public double Defuzzify(Score score)
+        public double Defuzzify(IScore score)
         {
             double result = 0;
             double divider = 0;

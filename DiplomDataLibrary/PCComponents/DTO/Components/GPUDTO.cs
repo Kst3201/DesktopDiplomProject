@@ -1,6 +1,6 @@
 ﻿namespace DiplomDataLibrary.PCComponents.DTO.Components
 {
-    public class GPUDTO : BaseComponentDTO
+    public class GPUDTO : BaseComponentUnitDTO
     {
         public int BaseFrequency { get; set; } = 0;
         public int CountUniversalProcessors { get; set; } = 0;
@@ -9,7 +9,7 @@
         public int CountRTCores { get; set; } = 0;
         public int CountTensorCores { get; set; } = 0;
 
-        public GPUDTO(string name, string manufacturer, string model, double price, double totalScore)
-            : base(name, manufacturer, model, price, totalScore) { }
+        public GPUDTO(string name, string manufacturer, string model, double totalScore)
+            : base(name, manufacturer, model, totalScore) { }
     }
 }

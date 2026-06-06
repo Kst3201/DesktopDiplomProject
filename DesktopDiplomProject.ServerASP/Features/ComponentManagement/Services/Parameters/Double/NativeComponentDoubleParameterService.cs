@@ -5,20 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double
 {
-    public class NativeComponentDoubleParameterService<TEntity> : IComponentDoubleParameterService<TEntity> where TEntity : DoubleValueScoredEntity
+    public class NativeComponentDoubleParameterService<TEntity> 
+        : IComponentDoubleParameterService<TEntity> 
+        where TEntity : DoubleValueScoredEntity, new()
     {
         private UpgradePCApplicationContext _context;
         private DbSet<TEntity> _set;
         private IFuzzyService<double> _fuzzyService;
 
-        public async Task<TEntity> Add(TEntity value)
+        public async Task<TEntity> Add(double value)
         {
             var score = new ScoredEntity();
-            value.SetScore(score);
-            _set.Add(value);
+            var nwValue = new TEntity()
+            {
+                Value = value
+            };
+            nwValue.SetScore(score);
+            _set.Add(nwValue);
             await _context.SaveChangesAsync();
             await Reassessment(value);
-            return value;
+            return nwValue;
         }
 
         public async Task<double?> GetMax()
@@ -31,18 +37,17 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.P
             return await _set.Select(c => c.Value).DefaultIfEmpty().MinAsync();
         }
 
-        public async Task<TEntity> GetOrAdd(TEntity value)
+        public async Task<TEntity> GetOrAdd(double value)
         {
-            var founded = await _set.FirstOrDefaultAsync(item => item.Value.Equals(value.Value));
+            var founded = await _set.FirstOrDefaultAsync(item => item.Value.Equals(value));
             if (founded != null) return founded;
             return await Add(value);
         }
 
-        public async Task Reassessment(TEntity value)
+        public async Task Reassessment(double value)
         {
-            if (value == null) return;
-            double max = await GetMax() ?? value.Value;
-            double min = await GetMin() ?? value.Value;
+            double max = await GetMax() ?? value;
+            double min = await GetMin() ?? value;
             _fuzzyService.SetMaxMin(max, min);
             foreach (var item in _set)
             {

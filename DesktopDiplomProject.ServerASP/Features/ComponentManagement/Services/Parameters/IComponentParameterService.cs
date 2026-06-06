@@ -3,13 +3,13 @@
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters
 {
     public interface IComponentParameterService<TValue, TEntity> 
-        where TEntity : ScoredEntity
+        where TEntity : ScoredEntity, new()
         where TValue : struct
     {
-        Task<TEntity> Add(TEntity value);
+        Task<TEntity> Add(TValue value);
         Task<TValue?> GetMax();
         Task<TValue?> GetMin();
-        Task<TEntity> GetOrAdd(TEntity value);
-        Task Reassessment(TEntity value);
+        Task<TEntity> GetOrAdd(TValue value);
+        Task Reassessment(TValue value);
     }
 }
