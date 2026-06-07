@@ -1,4 +1,5 @@
 ﻿using DesktopDiplomProject.Client.Features.Authentification.Models;
+using DesktopDiplomProject.Client.Features.Notifications;
 using DesktopDiplomProject.Client.Managers.Sessions;
 using DesktopDiplomProject.Client.Services.URLBuilders;
 using DiplomDataLibrary.Authentification.Requests;
@@ -12,20 +13,24 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DesktopDiplomProject.Client.Controllers
 {
     public class HTTPSCommController : ICommController, IDisposable
     {
+        private INotificationService _notificationService;
         private HttpMessageHandler _handler;
         private HttpClient _client;
         private ISessionManager _sessionManager;
         private IURLQueryBuilder _urlBuilder;
         private string? _token;
 
-        public HTTPSCommController(IConfiguration configuration, ISessionManager sessionManager)
+        public HTTPSCommController(IConfiguration configuration, ISessionManager sessionManager
+            , INotificationService notifyService)
         {
             var baseURL = configuration["ApplicationSettings:BaseURL"] ?? throw new ArgumentNullException(nameof(configuration));
+            _notificationService = notifyService;
             _handler = new HttpClientHandler();
             _client = new HttpClient(_handler, true) { BaseAddress = new Uri(baseURL) };
             _urlBuilder = new NativeURLQueryBuilder();
@@ -49,31 +54,55 @@ namespace DesktopDiplomProject.Client.Controllers
 
         public async Task<TResponse?> GetAsync<TResponse>(string address)
         {
-            await RefreshToken();
-            var response = await _client.GetAsync(address);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.GetAsync(address);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"GET {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"GET {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<TResponse?> GetAsync<TResponse>(string address, object? queryParams)
         {
-            await RefreshToken();
-            var response = await _client.GetAsync(_urlBuilder.Build(address, queryParams));
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.GetAsync(_urlBuilder.Build(address, queryParams));
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"GET {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"GET {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<bool> GetAsync(string address, object? queryParams)
         {
-            await RefreshToken();
-            var response = await _client.GetAsync(_urlBuilder.Build(address, queryParams));
-            return response.IsSuccessStatusCode;
+            try
+            {
+                await RefreshToken();
+                var response = await _client.GetAsync(_urlBuilder.Build(address, queryParams));
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return false;
+            }
         }
 
         #endregion
@@ -82,41 +111,65 @@ namespace DesktopDiplomProject.Client.Controllers
 
         public async Task<TResponse?> PostAsync<TRequest, TResponse>(string address)
         {
-            await RefreshToken();
-            var response = await _client.PostAsync(address, null);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.PostAsync(address, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"POST {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"POST {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<TResponse?> PostAsync<TRequest, TResponse>(string address, TRequest request)
         {
-            await RefreshToken();
-            var response = await _client.PostAsJsonAsync(address, request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.PostAsJsonAsync(address, request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"POST {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"POST {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<bool> PostAsync<TRequest>(string address, TRequest request)
         {
-            await RefreshToken();
-            var response = await _client.PostAsJsonAsync(address, request);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                var error = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Ошибка {response.StatusCode}: {error}");
-                // или выбросить исключение с деталями
-                throw new HttpRequestException($"Ошибка {response.StatusCode}: {error}");
+                await RefreshToken();
+                var response = await _client.PostAsJsonAsync(address, request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Ошибка {response.StatusCode}: {error}");
+                    // или выбросить исключение с деталями
+                    throw new HttpRequestException($"Ошибка {response.StatusCode}: {error}");
+                }
+                return response.IsSuccessStatusCode;
             }
-            return response.IsSuccessStatusCode;
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return false;
+            }
         }
 
         #endregion
@@ -125,34 +178,58 @@ namespace DesktopDiplomProject.Client.Controllers
 
         public async Task<TResponse?> PutAsync<TRequest, TResponse>(string address)
         {
-            await RefreshToken();
-            var response = await _client.PutAsync(address, null);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.PutAsync(address, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"PUT {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"PUT {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<TResponse?> PutAsync<TRequest, TResponse>(string address, TRequest request)
         {
-            await RefreshToken();
-            var response = await _client.PutAsJsonAsync(address, request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.PutAsJsonAsync(address, request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"PUT {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"PUT {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<bool> PutAsync<TRequest>(string address, TRequest request)
         {
-            await RefreshToken();
-            var response = await _client.PutAsJsonAsync(address, request);
+            try
+            {
+                await RefreshToken();
+                var response = await _client.PutAsJsonAsync(address, request);
 
-            return response.IsSuccessStatusCode;
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return false;
+            }
         }
 
         #endregion
@@ -161,22 +238,38 @@ namespace DesktopDiplomProject.Client.Controllers
 
         public async Task<TResponse?> PatchAsync<TRequest, TResponse>(string address, TRequest request)
         {
-            await RefreshToken();
-            var response = await _client.PatchAsJsonAsync(address, request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.PatchAsJsonAsync(address, request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"PATCH {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"PATCH {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<bool> PatchAsync<TRequest>(string address, TRequest request)
         {
-            await RefreshToken();
-            var response = await _client.PatchAsJsonAsync(address, request);
+            try
+            {
+                await RefreshToken();
+                var response = await _client.PatchAsJsonAsync(address, request);
 
-            return response.IsSuccessStatusCode;
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return false;
+            }
         }
 
         #endregion
@@ -185,40 +278,72 @@ namespace DesktopDiplomProject.Client.Controllers
         
         public async Task<bool> DeleteAsync(string address)
         {
-            await RefreshToken();
-            var response = await _client.DeleteAsync(address);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                await RefreshToken();
+                var response = await _client.DeleteAsync(address);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return false;
+            }
         }
 
         public async Task<bool> DeleteAsync(string address, object? queryParams)
         {
-            await RefreshToken();
-            var response = await _client.DeleteAsync(_urlBuilder.Build(address, queryParams));
-            return response.IsSuccessStatusCode;
+            try
+            {
+                await RefreshToken();
+                var response = await _client.DeleteAsync(_urlBuilder.Build(address, queryParams));
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return false;
+            }
         }
         
         public async Task<TResponse?> DeleteAsync<TResponse>(string address)
         {
-            await RefreshToken();
-            var response = await _client.DeleteAsync(address);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.DeleteAsync(address);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"DELETE {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"DELETE {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         public async Task<TResponse?> DeleteAsync<TResponse>(string address, object? queryParams)
         {
-            await RefreshToken();
-            var response = await _client.DeleteAsync(_urlBuilder.Build(address, queryParams));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                await RefreshToken();
+                var response = await _client.DeleteAsync(_urlBuilder.Build(address, queryParams));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TResponse>();
+                }
+                throw new HttpRequestException($"DELETE {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
             }
-            throw new HttpRequestException($"DELETE {address} failed. Server returned status code: {(int)response.StatusCode} ({response.StatusCode}).");
+            catch (Exception e)
+            {
+                _notificationService.SendError(e.Message);
+                return default(TResponse?);
+            }
         }
 
         #endregion

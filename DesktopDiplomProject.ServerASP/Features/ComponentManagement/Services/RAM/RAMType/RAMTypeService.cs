@@ -1,45 +1,143 @@
-﻿using DiplomDataLibrary.PCComponents.DTO.Components;
+﻿using DesktopDiplomProject.Server.Data.Configuration;
+using DesktopDiplomProject.Server.Models.Entities.Components.RAMs;
+using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.RAM.RAMType
 {
     public class RAMTypeService : IComponentService<RAMTypeDTO>
     {
-        private DbContext _context;
+        private RAMTypeCreator _creator;
+        private UpgradePCApplicationContext _context;
 
-        public async Task<bool> AddItem(RAMTypeDTO item)
+        public RAMTypeService(UpgradePCApplicationContext context)
         {
-            throw new NotImplementedException();
+            _creator = new RAMTypeCreator();
+            _context = context;
+        }
+
+        public async Task<RAMTypeDTO> AddItem(RAMTypeDTO dto)
+        {
+            try
+            {
+                var foundedItem = await GetByName(dto.Name);
+                if (foundedItem != null) throw new ArgumentException(nameof(dto.Name));
+                var newItem = new RAMTypeEntity()
+                {
+                    Name = dto.Name,
+                    ScoreOne = dto.ScoreOne,
+                    ScoreTwo = dto.ScoreTwo,
+                    ScoreThree = dto.ScoreThree,
+                    ScoreFour = dto.ScoreFour,
+                    ScoreFive = dto.ScoreFive
+                };
+                await _context.RAMTypes.AddAsync(newItem);
+                await _context.SaveChangesAsync();
+                return await GetItem(dto.Name);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public async Task<RAMTypeDTO> GetItem(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var foundedItem = await GetByName(name);
+                if (foundedItem == null) throw new ArgumentOutOfRangeException(nameof(name));
+                return _creator.CreateDTO(foundedItem);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public async Task<RAMTypeDTO> GetItem(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var foundedItem = await _context.RAMTypes
+                    .FirstOrDefaultAsync(item => item.ID.Equals(id));
+                if (foundedItem == null) throw new ArgumentOutOfRangeException(nameof(id));
+                return _creator.CreateDTO(foundedItem);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<RAMTypeDTO>> GetItems()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var list = await _context.RAMTypes.ToListAsync();
+                return list?.Select(item => _creator.CreateDTO(item)).ToList() ?? new List<RAMTypeDTO>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
-        public async Task<bool> RemoveItem(string name)
+        public async Task RemoveItem(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var foundedItem = await GetByName(name);
+                if (foundedItem != null)
+                {
+                    _context.RAMTypes.Remove(foundedItem);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
-        public async Task<bool> UpdateItem(RAMTypeDTO item)
+        public async Task<RAMTypeDTO> UpdateItem(string name, RAMTypeDTO dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var foundedItem = await GetByName(name);
+                RAMTypeDTO? result = null;
+                if (foundedItem == null)
+                    result = await AddItem(dto);
+                else
+                {
+                    foundedItem.Name = dto.Name;
+                    foundedItem.ScoreOne = dto.ScoreOne;
+                    foundedItem.ScoreTwo = dto.ScoreTwo;
+                    foundedItem.ScoreThree = dto.ScoreThree;
+                    foundedItem.ScoreFour = dto.ScoreFour;
+                    foundedItem.ScoreFive = dto.ScoreFive;
+                    await _context.SaveChangesAsync();
+                    result = await GetItem(foundedItem.ID);
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
-        public RAMTypeService(DbContext context)
+        private async Task<RAMTypeEntity?> GetByName(string name)
         {
-            _context = context;
+            return await _context.RAMTypes
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
     }
 }

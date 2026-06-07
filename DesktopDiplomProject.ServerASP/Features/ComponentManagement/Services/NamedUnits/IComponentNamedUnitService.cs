@@ -1,15 +1,16 @@
 ﻿using DesktopDiplomProject.Server.Models.Entities;
 using DiplomDataLibrary.PCComponents.DTO;
+using DiplomDataLibrary.PCComponents.DTO.Components;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits
 {
-    public interface IComponentNamedUnitService<TEntity, TDTO>
+    public interface IComponentNamedUnitService<TEntity>
         where TEntity : IEntityWithName, new()
-        where TDTO : BaseComponentNamedUnitDTO
     {
-        Task<IEnumerable<TDTO>> GetItems();
+        Task<IEnumerable<ComponentNamedUnitDTO>> GetItems();
         Task<TEntity> GetOrAddByName(string value);
-        Task<TDTO?> GetItem(string name);
+        Task<ComponentNamedUnitDTO> Update(string name, ComponentNamedUnitDTO value);
+        Task<ComponentNamedUnitDTO> GetItem(string name);
         Task RemoveItem(string name);
     }
 }

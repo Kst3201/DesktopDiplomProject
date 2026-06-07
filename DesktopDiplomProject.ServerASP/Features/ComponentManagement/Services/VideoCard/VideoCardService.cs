@@ -18,12 +18,26 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
     {
         private VideoCardCreator _creator;
         private UpgradePCApplicationContext _context;
-        private NativeComponentNamedUnitService<PCIEInterfaceEntity> _pcieService;
+        private IComponentNamedUnitService<PCIEInterfaceEntity> _pcieService;
         private IComponentIntParameterService<VCCapacityVideoMemoryEntity> _videoMemoryService;
         private IComponentIntParameterService<VCCountMonitorsEntity> _monitorsService;
         private IComponentIntParameterService<VCThroughputCapacityEntity> _throughputService;
         private IComponentIntParameterService<VCMemoryFrequencyEntity> _frequencyService;
         private IComponentDoubleParameterService<VCPriceEntity> _priceService;
+
+        public VideoCardService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
+            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function
+            , IComponentNamedUnitService<PCIEInterfaceEntity> pcieService)
+        {
+            _creator = new VideoCardCreator(function);
+            _context = context;
+            _pcieService = pcieService;
+            _videoMemoryService = new NativeComponentIntParameterService<VCCapacityVideoMemoryEntity>(_context, fuzzyIntService);
+            _monitorsService = new NativeComponentIntParameterService<VCCountMonitorsEntity>(_context, fuzzyIntService);
+            _throughputService = new NativeComponentIntParameterService<VCThroughputCapacityEntity>(_context, fuzzyIntService);
+            _frequencyService = new NativeComponentIntParameterService<VCMemoryFrequencyEntity>(_context, fuzzyIntService);
+            _priceService = new NativeComponentDoubleParameterService<VCPriceEntity>(_context, fuzzyDoubleService);
+        }
 
         public async Task<VideoCardDTO> AddItem(VideoCardDTO dto)
         {
@@ -32,7 +46,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
                 var foundedItem = await GetByName(dto.Name);
                 if (foundedItem != null) throw new ArgumentException(nameof(dto.Name));
                 var gpu = await _context.GPUs
-                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.GPU, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.GPU));
                 var pcie = await _pcieService.GetOrAddByName(dto.PCIEInterface);
                 var capacityVM = await _videoMemoryService.GetOrAdd(dto.CapacityVideoMemory);
                 var monitors = await _monitorsService.GetOrAdd(dto.CountMonitors);
@@ -157,18 +171,18 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
             }
         }
 
-        public async Task<VideoCardDTO> UpdateItem(VideoCardDTO dto)
+        public async Task<VideoCardDTO> UpdateItem(string name, VideoCardDTO dto)
         {
             try
             {
-                var foundedItem = await GetByName(dto.Name);
+                var foundedItem = await GetByName(name);
                 VideoCardDTO? result = null;
                 if (foundedItem == null)
                     result = await AddItem(dto);
                 else
                 {
                     var gpu = await _context.GPUs
-                        .FirstOrDefaultAsync(item => item.Name.Equals(dto.GPU, StringComparison.OrdinalIgnoreCase));
+                        .FirstOrDefaultAsync(item => item.Name.Equals(dto.GPU));
                     var pcie = await _pcieService.GetOrAddByName(dto.PCIEInterface);
                     var capacityVM = await _videoMemoryService.GetOrAdd(dto.CapacityVideoMemory);
                     var monitors = await _monitorsService.GetOrAdd(dto.CountMonitors);
@@ -176,6 +190,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
                     var frequency = await _frequencyService.GetOrAdd(dto.MemoryFrequency);
                     var price = await _priceService.GetOrAdd(dto.Price);
                     if (gpu == null) throw new ArgumentException($"Видеочип не был найден");
+                    foundedItem.Name = dto.Name;
                     foundedItem.Manufacturer = dto.Manufacturer;
                     foundedItem.Model = dto.Model;
                     foundedItem.GPUID = gpu.ID;
@@ -244,26 +259,13 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
                 .Include(item => item.MaxThroughputCapacity)
                 .Include(item => item.MemoryFrequency)
                 .Include(item => item.Price)
-                .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
 
         private async Task<VideoCardEntity?> GetByName(string name)
         {
             return await _context.VideoCards
-                .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public VideoCardService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
-            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function)
-        {
-            _creator = new VideoCardCreator(function);
-            _context = context;
-            _pcieService = new NativeComponentNamedUnitService<PCIEInterfaceEntity>(_context);
-            _videoMemoryService = new NativeComponentIntParameterService<VCCapacityVideoMemoryEntity>(_context, fuzzyIntService);
-            _monitorsService = new NativeComponentIntParameterService<VCCountMonitorsEntity>(_context, fuzzyIntService);
-            _throughputService = new NativeComponentIntParameterService<VCThroughputCapacityEntity>(_context, fuzzyIntService);
-            _frequencyService = new NativeComponentIntParameterService<VCMemoryFrequencyEntity>(_context, fuzzyIntService);
-            _priceService = new NativeComponentDoubleParameterService<VCPriceEntity>(_context, fuzzyDoubleService);
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
     }
 }

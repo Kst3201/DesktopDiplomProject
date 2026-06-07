@@ -39,4 +39,26 @@
         <Setter Property="Margin" Value="0 0 10 0"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
+    <Style x:Key="ComponentRedactItemHeader" TargetType="TextBlock" BasedOn="{StaticResource Component_Item_TBlock_Header_Style}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0 0 10 0"/>
+    </Style>
+    <Style x:Key="ComponentDGItemElement" TargetType="TextBlock" BasedOn="{StaticResource PrimaryTextBlockStyle}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+    </Style>
+    <Style x:Key="ComponentDGItemHeader" TargetType="DataGridColumnHeader">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+    </Style>
+    <Style x:Key="ComponentDGSubItemElement" TargetType="TextBlock" BasedOn="{StaticResource PrimaryTextBlockStyle}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+    </Style>
 </ResourceDictionary>

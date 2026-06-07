@@ -2,6 +2,7 @@
 using DesktopDiplomProject.Server.Models.Entities.Components.RAMs;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyFunctions;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Int;
 using DiplomDataLibrary.PCComponents.DTO.Components;
@@ -11,7 +12,7 @@ using System.Xml.Linq;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.RAM
 {
-    public class RAMService : IComponentService<RAMDTO>
+    public class RAMService : IRAMService
     {
         private RAMCreator _creator;
         private UpgradePCApplicationContext _context;
@@ -20,6 +21,17 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.R
         private IComponentIntParameterService<RAMSingleModuleCapacityEntity> _ramCapacityService;
         private IComponentDoubleParameterService<RAMPriceEntity> _priceService;
 
+        public RAMService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
+            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function)
+        {
+            _creator = new RAMCreator(function);
+            _context = context;
+            _ramCountService = new NativeComponentIntParameterService<RAMCountModulesEntity>(_context, fuzzyIntService);
+            _ramFrequencyService = new NativeComponentIntParameterService<RAMFrequencyEntity>(_context, fuzzyIntService);
+            _ramCapacityService = new NativeComponentIntParameterService<RAMSingleModuleCapacityEntity>(_context, fuzzyIntService);
+            _priceService = new NativeComponentDoubleParameterService<RAMPriceEntity>(_context, fuzzyDoubleService);
+        }
+
         public async Task<RAMDTO> AddItem(RAMDTO dto)
         {
             try
@@ -27,7 +39,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.R
                 var foundedItem = await GetByName(dto.Name);
                 if (foundedItem != null) throw new ArgumentException(nameof(dto));
                 var ramType = await _context.RAMTypes
-                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name));
                 var capacity = await _ramCapacityService.GetOrAdd(dto.SingleModuleCapacity);
                 var count = await _ramCountService.GetOrAdd(dto.CountModules);
                 var frequency = await _ramFrequencyService.GetOrAdd(dto.Frequency);
@@ -129,23 +141,24 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.R
             }
         }
 
-        public async Task<RAMDTO> UpdateItem(RAMDTO dto)
+        public async Task<RAMDTO> UpdateItem(string name,RAMDTO dto)
         {
             try
             {
-                var foundedItem = await GetByName(dto.Name);
+                var foundedItem = await GetByName(name);
                 RAMDTO? result = null;
                 if (foundedItem == null)
                     result = await AddItem(dto);
                 else
                 {
                     var ramType = await _context.RAMTypes
-                        .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase));
+                        .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name));
                     var capacity = await _ramCapacityService.GetOrAdd(dto.SingleModuleCapacity);
                     var count = await _ramCountService.GetOrAdd(dto.CountModules);
                     var frequency = await _ramFrequencyService.GetOrAdd(dto.Frequency);
                     var price = await _priceService.GetOrAdd(dto.Price);
                     if (ramType == null) throw new ArgumentException($"Тип оперативной памяти не был найден");
+                    foundedItem.Name = dto.Name;
                     foundedItem.Manufacturer = dto.Manufacturer;
                     foundedItem.Model = dto.Model;
                     foundedItem.RAMTypeID = ramType.ID;
@@ -173,24 +186,33 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.R
                 .Include(item => item.CountModules)
                 .Include(item => item.Frequency)
                 .Include(item => item.Price)
-                .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
 
         private async Task<RAMEntity?> GetByName(string name)
         {
             return await _context.RAMs
-                .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
 
-        public RAMService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
-            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function)
+        public async Task<IEnumerable<RAMModel>> GetAll()
         {
-            _creator = new RAMCreator(function);
-            _context = context;
-            _ramCountService = new NativeComponentIntParameterService<RAMCountModulesEntity>(_context, fuzzyIntService);
-            _ramFrequencyService = new NativeComponentIntParameterService<RAMFrequencyEntity>(_context, fuzzyIntService);
-            _ramCapacityService = new NativeComponentIntParameterService<RAMSingleModuleCapacityEntity>(_context, fuzzyIntService);
-            _priceService = new NativeComponentDoubleParameterService<RAMPriceEntity>(_context, fuzzyDoubleService);
+            try
+            {
+                var list = await _context.RAMs
+                    .Include(item => item.RAMType)
+                    .Include(item => item.SingleModuleCapacity)
+                    .Include(item => item.CountModules)
+                    .Include(item => item.Frequency)
+                    .Include(item => item.Price)
+                    .ToListAsync();
+                return list.Select(item => _creator.CreateModel(item));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }

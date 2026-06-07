@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,18 @@ namespace TestDiplomProject.Views.Components.Pages
     /// </summary>
     public partial class MotherboardsPage : Page
     {
-        public MotherboardsPage()
+        private MotherboardPageViewModel _viewModel;
+
+        public MotherboardsPage(MotherboardPageViewModel viewModel)
         {
+            _viewModel = viewModel;
+            DataContext = _viewModel;
             InitializeComponent();
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.Initialize();
         }
     }
 }

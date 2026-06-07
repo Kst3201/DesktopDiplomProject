@@ -10,7 +10,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services
         Task<T> GetItem(int id);
         Task<T> AddItem(T item);
         Task RemoveItem(string name);
-        Task<T> UpdateItem(T item);
+        Task<T> UpdateItem(string name, T item);
 
     }
 }

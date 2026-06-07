@@ -31,22 +31,28 @@
                            Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                         <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1">
                             <StackPanel Orientation="Vertical" Background="{StaticResource SurfaceBrush}">
-                                <MenuItem Header="Сменить пользователя" Command="{Binding GoBackCommand}">
-                                    <MenuItem.Icon>
-                                        <Image Source="{StaticResource Change_User_Icon}" Stretch="Fill" RenderOptions.BitmapScalingMode="Fant"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                <Menu>
+                                    <MenuItem Header="Сменить пользователя" HorizontalContentAlignment="Left"
+                                          Command="{Binding GoBackCommand}">
+                                        <MenuItem.Icon>
+                                            <Image Source="{StaticResource Change_User_Icon}" Stretch="Fill" RenderOptions.BitmapScalingMode="Fant"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </Menu>
                             </StackPanel>
                         </Border>
                     </Popup>
                     <TextBlock Grid.Column="1" Text="Пользователь Пользователев" Cursor="Hand" VerticalAlignment="Center" Margin="5">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Сменить пользователя" Command="{Binding GoBackCommand}" FontSize="{StaticResource FontSizeSmall}">
-                                    <MenuItem.Icon>
-                                        <Image Source="{StaticResource Change_User_Icon}" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                <Menu>
+                                    <MenuItem Header="Сменить пользователя" HorizontalContentAlignment="Left"
+                                          Command="{Binding GoBackCommand}" FontSize="{StaticResource FontSizeSmall}">
+                                        <MenuItem.Icon>
+                                            <Image Source="{StaticResource Change_User_Icon}" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </Menu>
                             </ContextMenu>
                         </TextBlock.ContextMenu>
                     </TextBlock>
@@ -61,7 +67,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5">
                 <Button x:Name="ComponentsButton" Content="Комплектующие" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                        Style="{StaticResource PrimaryButtonStyle}" Command="{Binding OpenComponentsCommand}"/>
+                        Style="{StaticResource PrimaryButtonStyle}" Command="{Binding OpenComponentManagerCommand}"/>
                 <GridSplitter Foreground="{StaticResource DividerBrush}" Height="3" HorizontalAlignment="Stretch" Margin="0 5"/>
                 <Button x:Name="SelectionButton" Content="Подбор" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                         Style="{StaticResource PrimaryButtonStyle}" Command="{Binding OpenComponentsCommand}"/>

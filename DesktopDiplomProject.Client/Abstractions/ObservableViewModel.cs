@@ -14,7 +14,6 @@ namespace DesktopDiplomProject.Client.Abstractions
 
         public void SetProperty<T>(ref T target, T value, Action? action = null, [CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged == null) throw new ArgumentNullException(nameof(PropertyChanged));
             if (target?.Equals(value) ?? false) return;
             target = value;
             RaisePropertyChanged(propertyName);
@@ -28,8 +27,7 @@ namespace DesktopDiplomProject.Client.Abstractions
 
         private void RaisePropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

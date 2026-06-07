@@ -3,6 +3,7 @@ using DesktopDiplomProject.Server.Models.Entities.Components.CPUs;
 using DesktopDiplomProject.Server.Models.Entities.Components.Drives;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyFunctions;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Int;
@@ -12,21 +13,33 @@ using System.Xml.Linq;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Drive
 {
-    public class DriveService : IComponentService<DriveDTO>
+    public class DriveService : IDriveService
     {
         private DriveCreator _creator;
         private UpgradePCApplicationContext _context;
-        private NativeComponentNamedUnitService<DriveConnectionInterfaceEntity> _connectorService;
+        private IComponentNamedUnitService<DriveConnectionInterfaceEntity> _connectorService;
         private IComponentIntParameterService<DriveCapacityEntity> _capacityService;
         private IComponentIntParameterService<DriveSpeedDataTransferEntity> _sdtService;
         private IComponentDoubleParameterService<DrivePriceEntity> _priceService;
+
+        public DriveService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
+            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function
+            , IComponentNamedUnitService<DriveConnectionInterfaceEntity> connectorService)
+        {
+            _creator = new DriveCreator(function);
+            _context = context;
+            _connectorService = connectorService;
+            _capacityService = new NativeComponentIntParameterService<DriveCapacityEntity>(_context, fuzzyIntService);
+            _sdtService = new NativeComponentIntParameterService<DriveSpeedDataTransferEntity>(_context, fuzzyIntService);
+            _priceService = new NativeComponentDoubleParameterService<DrivePriceEntity>(_context, fuzzyDoubleService);
+        }
 
         public async Task<DriveDTO> AddItem(DriveDTO dto)
         {
             try
             {
                 var foundedItem = await _context.Drives
-                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name));
                 var capacity = await _capacityService.GetOrAdd(dto.Capacity);
                 var speed = await _sdtService.GetOrAdd(dto.SpeedDataTransfer);
                 var price = await _priceService.GetOrAdd(dto.Price);
@@ -61,7 +74,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.D
                     .Include(item => item.SpeedDataTransfer)
                     .Include(item => item.ConnectorInterface)
                     .Include(item => item.Price)
-                    .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(name));
                 if (result == null) throw new ArgumentOutOfRangeException(nameof(name));
                 return _creator.CreateDTO(result);
             }
@@ -116,7 +129,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.D
             try
             {
                 var foundedItem = await _context.Drives
-                    .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(name));
                 if (foundedItem != null)
                 {
                     _context.Drives.Remove(foundedItem);
@@ -130,12 +143,12 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.D
             }
         }
 
-        public async Task<DriveDTO> UpdateItem(DriveDTO item)
+        public async Task<DriveDTO> UpdateItem(string name, DriveDTO item)
         {
             try
             {
                 var foundedItem = await _context.Drives
-                    .FirstOrDefaultAsync(item => item.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(name));
                 DriveDTO? result = null;
                 if (foundedItem == null)
                     result = await AddItem(item);
@@ -145,6 +158,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.D
                     var speed = await _sdtService.GetOrAdd(item.SpeedDataTransfer);
                     var price = await _priceService.GetOrAdd(item.Price);
                     var connector = await _connectorService.GetOrAddByName(item.ConnectorInterface.Trim());
+                    foundedItem.Name = item.Name;
                     foundedItem.Manufacturer = item.Manufacturer;
                     foundedItem.Model = item.Model;
                     foundedItem.CapacityID = capacity.ID;
@@ -163,15 +177,23 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.D
             }
         }
 
-        public DriveService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
-            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function)
+        public async Task<IEnumerable<DriveModel>> GetAll()
         {
-            _creator = new DriveCreator(function);
-            _context = context;
-            _connectorService = new NativeComponentNamedUnitService<DriveConnectionInterfaceEntity>(_context);
-            _capacityService = new NativeComponentIntParameterService<DriveCapacityEntity>(_context, fuzzyIntService);
-            _sdtService = new NativeComponentIntParameterService<DriveSpeedDataTransferEntity>(_context, fuzzyIntService);
-            _priceService = new NativeComponentDoubleParameterService<DrivePriceEntity>(_context, fuzzyDoubleService);
+            try
+            {
+                var list = await _context.Drives
+                    .Include(item => item.Capacity)
+                    .Include(item => item.SpeedDataTransfer)
+                    .Include(item => item.ConnectorInterface)
+                    .Include(item => item.Price)
+                    .ToListAsync();
+                return list.Select(item => _creator.CreateModel(item));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }

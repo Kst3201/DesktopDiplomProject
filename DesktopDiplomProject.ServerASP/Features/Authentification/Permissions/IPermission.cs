@@ -1,4 +1,6 @@
-﻿namespace DesktopDiplomProject.ServerASP.Features.Authentification.Permissions
+﻿using DiplomDataLibrary.Authentification.DTO;
+
+namespace DesktopDiplomProject.ServerASP.Features.Authentification.Permissions
 {
     public interface IPermission
     {
@@ -10,6 +12,8 @@
         bool CanDelete { get; set; }
 
         int GetPermissionsInt();
+        void SetPermissionsInt(int permissionsInt);
+        IEnumerable<PermissionAction> GetPermissions();
 
     }
 }

@@ -4,12 +4,22 @@
         <ResourceDictionary Source="/Resources/MainResourcesDictionary.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="ComponentItemImage" TargetType="Image">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Stretch" Value="Fill"/>
+    </Style>
+    
     <BitmapImage x:Key="User_Icon" UriSource="Images/profile_icon.png"/>
     <BitmapImage x:Key="Add_User_Icon" UriSource="Images/add_user_icon.png"/>
     <BitmapImage x:Key="Change_User_Icon" UriSource="Images/change_profile_icon.png"/>
     <BitmapImage x:Key="Redact_User_Icon" UriSource="Images/redact_profile_icon.png"/>
+    <BitmapImage x:Key="Redact_Item_Icon" UriSource="Images/redact_item_icon.png"/>
     <BitmapImage x:Key="Remove_User_Icon" UriSource="Images/remove_user_icon.png"/>
+    <BitmapImage x:Key="Remove_Item_Icon" UriSource="Images/remove_item_icon.png"/>
     <BitmapImage x:Key="Search_User_Icon" UriSource="Images/Search_User_icon.png"/>
     <BitmapImage x:Key="Selected_User_Icon" UriSource="Images/selected_user_icon.png"/>
     <BitmapImage x:Key="User_Settings_Icon" UriSource="Images/user_settings_icon.png"/>
+    <Image x:Key="ImageRemoveItem" Source="{StaticResource Remove_Item_Icon}" Style="{StaticResource ComponentItemImage}"/>
+    <Image x:Key="ImageRedactItem" Source="{StaticResource Redact_Item_Icon}" Style="{StaticResource ComponentItemImage}"/>
 </ResourceDictionary>

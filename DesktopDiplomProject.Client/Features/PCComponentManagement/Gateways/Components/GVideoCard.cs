@@ -10,31 +10,42 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
 {
     public class GVideoCard : IGComponent<VideoCardDTO>
     {
+        private const string CONTROLLERADDRESS = "api/VideoCard";
         private ICommController _controller;
-
-        public async Task<bool> AddItem(VideoCardDTO item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<VideoCardDTO>> GetItems()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> RemoveItem(VideoCardDTO item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateItem(VideoCardDTO item)
-        {
-            throw new NotImplementedException();
-        }
 
         public GVideoCard(ICommController controller)
         {
             _controller = controller;
+        }
+
+        public async Task<bool> AddItem(VideoCardDTO item)
+        {
+            var result = await _controller.PostAsync(CONTROLLERADDRESS, item);
+            return result;
+        }
+
+        public async Task<VideoCardDTO> GetItem(string name)
+        {
+            var result = await _controller.GetAsync<VideoCardDTO>($"{CONTROLLERADDRESS}/{name}");
+            return result ?? new VideoCardDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
+        }
+
+        public async Task<IEnumerable<VideoCardDTO>> GetItems()
+        {
+            var result = await _controller.GetAsync<IEnumerable<VideoCardDTO>>(CONTROLLERADDRESS);
+            return result ?? new List<VideoCardDTO>();
+        }
+
+        public async Task<bool> RemoveItem(string name)
+        {
+            var result = await _controller.DeleteAsync($"{CONTROLLERADDRESS}/{name}");
+            return result;
+        }
+
+        public async Task<bool> UpdateItem(string name, VideoCardDTO item)
+        {
+            var result = await _controller.PutAsync($"{CONTROLLERADDRESS}/{name}", item);
+            return result;
         }
     }
 }

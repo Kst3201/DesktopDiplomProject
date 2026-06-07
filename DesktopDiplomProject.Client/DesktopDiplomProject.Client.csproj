@@ -13,7 +13,9 @@
     <None Remove="Resources\Images\add_user_icon.png" />
     <None Remove="Resources\Images\change_profile_icon.png" />
     <None Remove="Resources\Images\profile_icon.png" />
+    <None Remove="Resources\Images\redact_item_icon.png" />
     <None Remove="Resources\Images\redact_profile_icon.png" />
+    <None Remove="Resources\Images\remove_item_icon.png" />
     <None Remove="Resources\Images\remove_user_icon.png" />
     <None Remove="Resources\Images\search_user_icon.png" />
     <None Remove="Resources\Images\selected_user_icon.png" />
@@ -36,7 +38,6 @@
     <Folder Include="Assets\" />
     <Folder Include="Extensions\" />
     <Folder Include="Features\Authentification\Services\" />
-    <Folder Include="Features\PCComponentManagement\Services\" />
     <Folder Include="Features\PCComponentManagement\ViewModels\Pages\Validators\" />
     <Folder Include="Features\PCSelectMatch\Models\" />
     <Folder Include="Features\Profile\Models\" />
@@ -63,9 +64,11 @@
     <Resource Include="Resources\Images\profile_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\redact_item_icon.png" />
     <Resource Include="Resources\Images\redact_profile_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\remove_item_icon.png" />
     <Resource Include="Resources\Images\remove_user_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

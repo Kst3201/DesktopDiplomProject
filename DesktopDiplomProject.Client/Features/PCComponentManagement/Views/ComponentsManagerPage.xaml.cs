@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels;
+using DesktopDiplomProject.Client.Services.Navigation.Page;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,17 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Views
     /// </summary>
     public partial class ComponentsManagerPage : Page
     {
-        public ComponentsManagerPage()
+        private ComponentsManagerPageViewModel _viewModel;
+
+        //public ComponentsManagerPageViewModel ViewModel => _viewModel;
+
+        public ComponentsManagerPage(ComponentsManagerPageViewModel viewModel,
+            INavigationPageService navigationPageService)
         {
+            _viewModel = viewModel;
+            DataContext = _viewModel;
             InitializeComponent();
+            _viewModel.InitializePage(ComponentFrame);
         }
     }
 }

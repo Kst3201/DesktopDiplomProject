@@ -9,55 +9,93 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits
 {
-    public class NativeComponentNamedUnitService<TEntity> : IComponentNamedUnitService<TEntity, ComponentNamedUnitDTO>
+    public class NativeComponentNamedUnitService<TEntity> : IComponentNamedUnitService<TEntity>
         where TEntity : class, IEntityWithName, new()
     {
-        private readonly static Dictionary<Type, ComponentUnitTypes> _unitTypeDicitonary = new Dictionary<Type, ComponentUnitTypes>()
-        {
-            [typeof(CPUSocketEntity)] = ComponentUnitTypes.Socket,
-            [typeof(MBSizeEntity)] = ComponentUnitTypes.MotherboardSize,
-            [typeof(PCIEInterfaceEntity)] = ComponentUnitTypes.PCIEInterface,
-            [typeof(DriveConnectionInterfaceEntity)] = ComponentUnitTypes.DriveConnectionInterface
-        };
 
         private UpgradePCApplicationContext _context;
         private DbSet<TEntity> _set;
-        private readonly ComponentUnitTypes _unitType;
 
-        public async Task<ComponentNamedUnitDTO?> GetItem(string name)
+        public async Task<ComponentNamedUnitDTO> GetItem(string name)
         {
-            var value = await _set.FirstOrDefaultAsync(item => item.Name.Equals(name));
-            ComponentNamedUnitDTO? result = null;
-            if (value != null)
-                result = new ComponentNamedUnitDTO(value.Name, _unitType);
-            return result;
+            try
+            {
+                var value = await _set.FirstOrDefaultAsync(item => item.Name.Equals(name));
+                if (value == null) throw new ArgumentOutOfRangeException(nameof(name));
+                return new ComponentNamedUnitDTO(value.Name);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<ComponentNamedUnitDTO>> GetItems()
         {
-            return await _set.Select(item => new ComponentNamedUnitDTO(item.Name, _unitType)).ToListAsync();
+            try
+            {
+                return await _set.Select(item => new ComponentNamedUnitDTO(item.Name)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public async Task<TEntity> GetOrAddByName(string name)
         {
-            var value = await _set.FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-            if (value == null)
+            try
             {
-                value = new TEntity() { Name = name };
-                await _set.AddAsync(value);
-                await _context.SaveChangesAsync();
-                value = await GetOrAddByName(name);
+                var value = await _set.FirstOrDefaultAsync(item => item.Name.Equals(name));
+                if (value == null)
+                {
+                    value = new TEntity() { Name = name };
+                    await _set.AddAsync(value);
+                    await _context.SaveChangesAsync();
+                    value = await GetOrAddByName(name);
+                }
+                return value;
             }
-            return value;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<ComponentNamedUnitDTO> Update(string name, ComponentNamedUnitDTO value)
+        {
+            try
+            {
+                var foundedItem = await GetOrAddByName(name);
+                foundedItem.Name = value.Name;
+                await _context.SaveChangesAsync();
+                return await GetItem(value.Name);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public async Task RemoveItem(string name)
         {
-            var value = await _set.FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-            if (value != null)
+            try
             {
-                _set.Remove(value);
-                await _context.SaveChangesAsync();
+                var value = await _set.FirstOrDefaultAsync(item => item.Name.Equals(name));
+                if (value != null)
+                {
+                    _set.Remove(value);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
             }
         }
 
@@ -65,24 +103,6 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.N
         {
             _context = context;
             _set = context.Set<TEntity>();
-            _unitType = GetType(typeof(TEntity));
-        }
-
-        private static ComponentUnitTypes GetType(Type type)
-        {
-            ComponentUnitTypes result = ComponentUnitTypes.None;
-            if (type != null)
-            {
-                if (_unitTypeDicitonary.TryGetValue(type, out var resultValue))
-                {
-                    result = resultValue;
-                }
-                else
-                {
-                    result = ComponentUnitTypes.None;
-                }
-            }
-            return result;
         }
     }
 }

@@ -4,7 +4,14 @@ using DesktopDiplomProject.Client.Features.Authentification.ViewModels;
 using DesktopDiplomProject.Client.Features.Authentification.ViewModels.Pages;
 using DesktopDiplomProject.Client.Features.Authentification.Views;
 using DesktopDiplomProject.Client.Features.Authentification.Views.Pages;
+using DesktopDiplomProject.Client.Features.Notifications;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Components;
 using DesktopDiplomProject.Client.Features.PCComponentManagement.Services;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Services.CopmonentCreators;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.Pages;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Views;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Views.Pages;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views;
@@ -14,6 +21,7 @@ using DesktopDiplomProject.Client.Managers.Sessions;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
 using DesktopDiplomProject.Client.Services.Navigation.Window;
 using DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPages;
+using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,6 +30,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using TestDiplomProject.Views.Components.Pages;
 
 namespace TestDiplomProject
 {
@@ -40,11 +49,27 @@ namespace TestDiplomProject
             {
                 Debug.WriteLine($"{pair.Key} = {pair.Value}");
             }
+            builder.Services.AddSingleton<INotificationService, NativeNotificationService>();
             builder.Services.AddSingleton<ICommController, HTTPSCommController>();
             builder.Services.AddSingleton<HTTPSCommController>();
             builder.Services.AddSingleton<ISessionManager, SessionManager>();
             builder.Services.AddSingleton<INavigationWindowService, NavigationWindowService>();
-            builder.Services.AddSingleton<ComponentTypeNamedService>();
+            builder.Services.AddSingleton<IGComponent<CPUDTO>, GCPU>();
+            builder.Services.AddSingleton<IGComponent<DriveDTO>, GDrive>();
+            builder.Services.AddSingleton<IGComponent<GPUDTO>, GGPU>();
+            builder.Services.AddSingleton<IGComponent<MotherboardDTO>, GMotherboard>();
+            builder.Services.AddSingleton<GComponentNamedUnit>();
+            builder.Services.AddSingleton<IGComponent<RAMDTO>, GRAM>();
+            builder.Services.AddSingleton<IGComponent<RAMTypeDTO>, GRAMType>();
+            builder.Services.AddSingleton<IGComponent<VideoCardDTO>, GVideoCard>();
+            builder.Services.AddScoped<ICPUCreator, CPUCreator>();
+            builder.Services.AddScoped<IDriveCreator, DriveCreator>();
+            builder.Services.AddScoped<IGPUCreator, GPUCreator>();
+            builder.Services.AddScoped<IMotherboardCreator, MotherboardCreator>();
+            builder.Services.AddScoped<INamedUnitCreator, NamedUnitCreator>();
+            builder.Services.AddScoped<IRAMCreator, RAMCreator>();
+            builder.Services.AddScoped<IRAMTypeCreator, RAMTypeCreator>();
+            builder.Services.AddScoped<IVideoCardCreator, VideoCardCreator>();
             builder.Services.AddScoped<INavigationPageService, NavigationPageService>();
             builder.Services.AddTransient<MainWindow>();
             builder.Services.AddTransient<MainViewModel>();
@@ -70,7 +95,7 @@ namespace TestDiplomProject
             builder.Services.AddTransient<InfoRAMPage>();
             builder.Services.AddTransient<InfoSSDPage>();
             builder.Services.AddTransient<InfoBlockPowerPage>();
-
+            RegistrateComponentManagerServices(builder.Services);
 
 
             _host = builder.Build();
@@ -79,6 +104,28 @@ namespace TestDiplomProject
 
             INavigationWindowService navigationWindowService = _host.Services.GetRequiredService<INavigationWindowService>();
             navigationWindowService.ShowWindow<AuthorizationWindow>();
+        }
+
+        private void RegistrateComponentManagerServices(IServiceCollection services)
+        {
+            services.AddTransient<ComponentsManagerPage>();
+            services.AddTransient<ComponentsManagerPageViewModel>();
+            services.AddTransient<ComponentNamedOnlyUnitPage>();
+            services.AddTransient<ComponentNamedUnitViewModel>();
+            services.AddTransient<CPUsPage>();
+            services.AddTransient<CPUPageViewModel>();
+            services.AddTransient<DrivesPage>();
+            services.AddTransient<DrivePageViewModel>();
+            services.AddTransient<GPUsPage>();
+            services.AddTransient<GPUPageViewModel>();
+            services.AddTransient<MotherboardsPage>();
+            services.AddTransient<MotherboardPageViewModel>();
+            services.AddTransient<RAMsPage>();
+            services.AddTransient<RAMPageViewModel>();
+            services.AddTransient<RAMTypesPage>();
+            services.AddTransient<RAMTypePageViewModel>();
+            services.AddTransient<VideocardsPage>();
+            services.AddTransient<VideoCardPageViewModel>();
         }
 
         private async void Application_Exit(object sender, ExitEventArgs e)

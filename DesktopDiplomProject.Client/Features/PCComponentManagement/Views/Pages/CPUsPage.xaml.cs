@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +19,22 @@ namespace TestDiplomProject.Views.Components.Pages
     /// <summary>
     /// Логика взаимодействия для CPUsPage.xaml
     /// </summary>
+    /// 
+
     public partial class CPUsPage : Page
     {
-        public CPUsPage()
+        private CPUPageViewModel _viewModel;
+
+        public CPUsPage(CPUPageViewModel viewModel)
         {
+            _viewModel = viewModel;
+            DataContext = _viewModel;
             InitializeComponent();
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.Initialize();
         }
     }
 }

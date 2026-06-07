@@ -22,6 +22,19 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.G
         private IComponentIntParameterService<GPUCountTexturerBlocksEntity> _texturerService;
         private IComponentIntParameterService<GPUCountUniversalProcessorsEntity> _universalService;
 
+        public GPUService(UpgradePCApplicationContext context
+            , IFuzzyService<int> fuzzyIntService, IDefuzzifyFunction function)
+        {
+            _creator = new GPUCreator(function);
+            _context = context;
+            _frequencyService = new NativeComponentIntParameterService<GPUFrequencyEntity>(_context, fuzzyIntService);
+            _rasterService = new NativeComponentIntParameterService<GPUCountRasterizationBlocksEntity>(_context, fuzzyIntService);
+            _rtCoresService = new NativeComponentIntParameterService<GPUCountRTCoresEntity>(_context, fuzzyIntService);
+            _tensorService = new NativeComponentIntParameterService<GPUCountTensorCoresEntity>(_context, fuzzyIntService);
+            _texturerService = new NativeComponentIntParameterService<GPUCountTexturerBlocksEntity>(_context, fuzzyIntService);
+            _universalService = new NativeComponentIntParameterService<GPUCountUniversalProcessorsEntity>(_context, fuzzyIntService);
+        }
+
         public async Task<GPUDTO> AddItem(GPUDTO dto)
         {
             try
@@ -133,11 +146,11 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.G
             }
         }
 
-        public async Task<GPUDTO> UpdateItem(GPUDTO dto)
+        public async Task<GPUDTO> UpdateItem(string name, GPUDTO dto)
         {
             try
             {
-                var foundedItem = await GetByName(dto.Name);
+                var foundedItem = await GetByName(name);
                 GPUDTO? result = null;
                 if (foundedItem == null)
                     result = await AddItem(dto);
@@ -149,6 +162,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.G
                     var raster = await _rasterService.GetOrAdd(dto.CountRasterizationBlocks);
                     var rt = await _rtCoresService.GetOrAdd(dto.CountRTCores);
                     var tensor = await _tensorService.GetOrAdd(dto.CountTensorCores);
+                    foundedItem.Name = dto.Name;
                     foundedItem.Manufacturer = dto.Manufacturer;
                     foundedItem.Model = dto.Model;
                     foundedItem.BaseFrequencyID = frequency.ID;
@@ -199,26 +213,13 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.G
                 .Include(item => item.CountRasterizationBlocks)
                 .Include(item => item.CountRTCores)
                 .Include(item => item.CountTensorCores)
-                .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
 
         private async Task<GPUEntity?> GetByName(string name)
         {
             return await _context.GPUs
-                .FirstOrDefaultAsync(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public GPUService(UpgradePCApplicationContext context
-            , IFuzzyService<int> fuzzyIntService, IDefuzzifyFunction function)
-        {
-            _creator = new GPUCreator(function);
-            _context = context;
-            _frequencyService = new NativeComponentIntParameterService<GPUFrequencyEntity>(_context, fuzzyIntService);
-            _rasterService = new NativeComponentIntParameterService<GPUCountRasterizationBlocksEntity>(_context, fuzzyIntService);
-            _rtCoresService = new NativeComponentIntParameterService<GPUCountRTCoresEntity>(_context, fuzzyIntService);
-            _tensorService = new NativeComponentIntParameterService<GPUCountTensorCoresEntity>(_context, fuzzyIntService);
-            _texturerService = new NativeComponentIntParameterService<GPUCountTexturerBlocksEntity>(_context, fuzzyIntService);
-            _universalService = new NativeComponentIntParameterService<GPUCountUniversalProcessorsEntity>(_context, fuzzyIntService);
+                .FirstOrDefaultAsync(item => item.Name.Equals(name));
         }
     }
 }

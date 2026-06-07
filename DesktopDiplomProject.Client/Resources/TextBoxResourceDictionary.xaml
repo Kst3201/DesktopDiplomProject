@@ -52,4 +52,19 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
         <Setter Property="Padding" Value="2"/>
     </Style>
+
+    <Style x:Key="TextBoxComponentRedactItem" TargetType="TextBox" BasedOn="{StaticResource PrimaryTextBoxWithPlaceholderStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="ComboBoxRedactedItemReadOnly" TargetType="ComboBox">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+    </Style>
+
+    <Style x:Key="ComboBoxRedactedItemEditable" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxRedactedItemReadOnly}">
+        <Setter Property="IsEditable" Value="True"/>
+    </Style>
 </ResourceDictionary>

@@ -23,7 +23,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
         private IComponentIntParameterService<CPUCoreCountEntity> _coreCountiesService;
         private IComponentIntParameterService<CPUThreadsCountEntity> _threadsCountiesService;
         private IComponentDoubleParameterService<CPUPriceEntity> _priceService;
-        private NativeComponentNamedUnitService<CPUSocketEntity> _socketService;
+        private IComponentNamedUnitService<CPUSocketEntity> _socketService;
 
         public async Task<CPUDTO> AddItem(CPUDTO dto)
         {
@@ -31,7 +31,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
             {
                 var foundedItem = await _context.CPUs
                     .FirstOrDefaultAsync(item =>
-                    item.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase));
+                    item.Name.Equals(dto.Name));
                 if (foundedItem != null) throw new ArgumentException($"Процессор с названием {dto.Name} уже существует");
                 var socket = await _socketService.GetOrAddByName(dto.Socket);
                 var countCores = await _coreCountiesService.GetOrAdd(dto.CountCores);
@@ -75,7 +75,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
                     .Include(item => item.RAMType)
                     .Include(item => item.Price)
                     .FirstOrDefaultAsync(item =>
-                    item.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    item.Name.Equals(name));
                 if (result == null) throw new ArgumentOutOfRangeException(nameof(name));
                 return _creator.CreateDTO(result);
             }
@@ -135,7 +135,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
             try
             {
                 var result = await _context.CPUs
-                    .FirstOrDefaultAsync(cpu => cpu.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(cpu => cpu.Name.Equals(name));
                 if (result != null)
                 {
                     _context.CPUs.Remove(result);
@@ -149,18 +149,19 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
             }
         }
 
-        public async Task<CPUDTO> UpdateItem(CPUDTO item)
+        public async Task<CPUDTO> UpdateItem(string name,CPUDTO item)
         {
             try
             {
                 var dbItem = await _context.CPUs
-                    .FirstOrDefaultAsync(cpu => cpu.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefaultAsync(cpu => cpu.Name.Equals(name));
                 if (dbItem == null)
                     return await AddItem(item);
                 else
                 {
                     var ramType = await _context.RAMTypes.FirstOrDefaultAsync(ramType => ramType.Name.Equals(item.RAMType));
                     if (ramType == null) throw new ArgumentException($"Тип оперативной памяти не был найден");
+                    dbItem.Name = item.Name;
                     dbItem.Manufacturer = item.Manufacturer;
                     dbItem.Model = item.Model;
                     dbItem.SocketID = (await _socketService.GetOrAddByName(item.Socket)).ID;
@@ -204,11 +205,13 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
             }
         }
 
-        public CPUService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService, IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction defFunction)
+        public CPUService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
+            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction defFunction
+            , IComponentNamedUnitService<CPUSocketEntity> socketService)
         {
             _creator = new CPUCreator(defFunction);
             _context = context;
-            _socketService = new NativeComponentNamedUnitService<CPUSocketEntity>(_context);
+            _socketService = socketService;
             _frequencyService = new NativeComponentIntParameterService<CPUBaseFrequencyEntity>(_context, fuzzyIntService);
             _coreCountiesService = new NativeComponentIntParameterService<CPUCoreCountEntity>(_context, fuzzyIntService);
             _threadsCountiesService = new NativeComponentIntParameterService<CPUThreadsCountEntity>(_context, fuzzyIntService);

@@ -1,4 +1,5 @@
-﻿using DesktopDiplomProject.Client.Commands;
+﻿using DesktopDiplomProject.Client.Abstractions;
+using DesktopDiplomProject.Client.Commands;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
 using System;
@@ -11,11 +12,12 @@ using System.Windows.Input;
 
 namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
 {
-    public class ComponentsSelectionViewModel
+    public class ComponentsSelectionViewModel : ObservableViewModel
     {
         private INavigationPageService _navigationPageService;
         private RelayCommand? _nextPageCommand;
         private List<string> _selectionMods;
+        private bool _isChecked;
 
         public ICommand? NextPageCommand => _nextPageCommand;
 
@@ -45,6 +47,12 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
         {
             get;
             set;
+        }
+
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set => SetProperty(ref _isChecked, value);
         }
 
         public ComponentsSelectionViewModel(INavigationPageService navigationPageService)

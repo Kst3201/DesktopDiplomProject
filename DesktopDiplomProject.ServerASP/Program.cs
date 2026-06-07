@@ -1,11 +1,27 @@
 
 using DesktopDiplomProject.Server.Data.Configuration;
+using DesktopDiplomProject.Server.Models.Entities.Components.CPUs;
+using DesktopDiplomProject.Server.Models.Entities.Components.Drives;
+using DesktopDiplomProject.Server.Models.Entities.Components.Motherboards;
+using DesktopDiplomProject.Server.Models.Entities.Components.VideoCards;
+using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
+using DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyFunctions;
 using DesktopDiplomProject.ServerASP.Features.Authentification;
 using DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens;
 using DesktopDiplomProject.ServerASP.Features.Authentification.JWTTokens.RefreshTokenGenerators;
 using DesktopDiplomProject.ServerASP.Features.Authentification.Password.Cryptographer;
 using DesktopDiplomProject.ServerASP.Features.Authentification.Permissions;
 using DesktopDiplomProject.ServerASP.Features.Authentification.Verifiers;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.CPU;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Drive;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.GPU;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Motherboard;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.RAM;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.RAM.RAMType;
+using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.VideoCard;
+using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -102,7 +118,24 @@ namespace DesktopDiplomProject.ServerASP
                         }
                     };
                 });
-
+            builder.Services.AddScoped<IFuzzyService<int>, FuzzyIntService>();
+            builder.Services.AddScoped<IFuzzyService<double>, FuzzyDoubleService>();
+            builder.Services.AddScoped<IDefuzzifyFunction, WeightAverageOfPeaksDeffuzifyFunction>();
+            builder.Services.AddScoped<IComponentNamedUnitService<CPUSocketEntity>
+                , NativeComponentNamedUnitService<CPUSocketEntity>>();
+            builder.Services.AddScoped<IComponentNamedUnitService<MBSizeEntity>
+                , NativeComponentNamedUnitService<MBSizeEntity>>();
+            builder.Services.AddScoped<IComponentNamedUnitService<DriveConnectionInterfaceEntity>
+                , NativeComponentNamedUnitService<DriveConnectionInterfaceEntity>>();
+            builder.Services.AddScoped<IComponentNamedUnitService<PCIEInterfaceEntity>
+                , NativeComponentNamedUnitService<PCIEInterfaceEntity>>();
+            builder.Services.AddScoped<ICPUService, CPUService>();
+            builder.Services.AddScoped<IDriveService, DriveService>();
+            builder.Services.AddScoped<IGPUService, GPUService>();
+            builder.Services.AddScoped<IMotherboardService, MotherboardService>();
+            builder.Services.AddScoped<IComponentService<RAMTypeDTO>, RAMTypeService>(); 
+            builder.Services.AddScoped<IRAMService, RAMService>();
+            builder.Services.AddScoped<IVideoCardService, VideoCardService>();
             builder.Services.AddScoped<IPasswordService, NativePasswordService>();
             builder.Services.AddScoped<IPermissionService, PermissionService>();
             builder.Services.AddScoped<IUserVerifier, NativeUserVerifier>();

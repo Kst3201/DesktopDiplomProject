@@ -2,6 +2,7 @@
 using DesktopDiplomProject.Client.Commands;
 using DesktopDiplomProject.Client.Features.Authentification.Gateways;
 using DesktopDiplomProject.Client.Features.Authentification.Models;
+using DesktopDiplomProject.Client.Features.PCComponentManagement.Views;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages;
 using DesktopDiplomProject.Client.Managers.Sessions;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
@@ -21,6 +22,7 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels
         private INavigationPageService _navigationPageService;
         private INavigationWindowService _navigationWindowService;
         private GAuthentification _gatewayAuth;
+        private RelayCommand? _openComponentManagerCommand;
         private RelayCommand? _openComponentsCommand;
         private RelayCommand? _openUserPCCommand;
         private RelayCommand? _closeCommand;
@@ -39,6 +41,7 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels
             set;
         }
 
+        public ICommand? OpenComponentManagerCommand => _openComponentManagerCommand;
         public ICommand? OpenComponentsCommand => _openComponentsCommand;
         public ICommand? OpenUserPCCommand => _openUserPCCommand;
         public ICommand? CloseCommand => _closeCommand;
@@ -64,6 +67,14 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels
 
         private void InitCommands()
         {
+            _openComponentManagerCommand = new RelayCommand(() =>
+            {
+                _navigationPageService.ShowScopedPage<ComponentsManagerPage>();
+                CommandManager.InvalidateRequerySuggested();
+            }, (obj) =>
+            {
+                return !(_navigationPageService.CurrentPage?.GetType().Equals(typeof(ComponentsManagerPage)) ?? false);
+            });
             _openComponentsCommand = new RelayCommand(() => 
             { 
                 _navigationPageService.ShowScopedPage<SelectPCPage>();

@@ -8,11 +8,9 @@ namespace DiplomDataLibrary.PCComponents.DTO.Components
 {
     public class ComponentNamedUnitDTO : BaseComponentNamedUnitDTO
     {
-        public ComponentUnitTypes UnitType { get; set; }
 
-        public ComponentNamedUnitDTO(string name, ComponentUnitTypes unitType) : base(name)
+        public ComponentNamedUnitDTO(string name) : base(name)
         {
-            UnitType = unitType;
         }
     }
 }

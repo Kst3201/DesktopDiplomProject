@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Components\" />
     <Folder Include="Features\PCCombine\" />
   </ItemGroup>
 

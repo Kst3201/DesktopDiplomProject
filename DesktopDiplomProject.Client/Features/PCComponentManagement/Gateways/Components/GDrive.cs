@@ -10,31 +10,42 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
 {
     public class GDrive : IGComponent<DriveDTO>
     {
+        private const string CONTROLLERADDRESS = "api/Drive";
         private ICommController _controller;
-
-        public async Task<bool> AddItem(DriveDTO item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<DriveDTO>> GetItems()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> RemoveItem(DriveDTO item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateItem(DriveDTO item)
-        {
-            throw new NotImplementedException();
-        }
 
         public GDrive(ICommController controller)
         {
             _controller = controller;
+        }
+
+        public async Task<bool> AddItem(DriveDTO item)
+        {
+            var result = await _controller.PostAsync(CONTROLLERADDRESS, item);
+            return result;
+        }
+
+        public async Task<IEnumerable<DriveDTO>> GetItems()
+        {
+            var result = await _controller.GetAsync<IEnumerable<DriveDTO>>(CONTROLLERADDRESS);
+            return result ?? new List<DriveDTO>();
+        }
+
+        public async Task<bool> RemoveItem(string name)
+        {
+            var result = await _controller.DeleteAsync($"{CONTROLLERADDRESS}/{name}");
+            return result;
+        }
+
+        public async Task<bool> UpdateItem(string name, DriveDTO item)
+        {
+            var result = await _controller.PutAsync($"{CONTROLLERADDRESS}/{name}", item);
+            return result;
+        }
+
+        public async Task<DriveDTO> GetItem(string name)
+        {
+            var result = await _controller.GetAsync<DriveDTO>($"{CONTROLLERADDRESS}/{name}");
+            return result ?? new DriveDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty);
         }
     }
 }

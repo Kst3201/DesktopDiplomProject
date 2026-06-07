@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TestDiplomProject.Views.Components.Pages"
       mc:Ignorable="d" 
-      d:Background="{StaticResource SurfaceBrush}"
-      d:DesignHeight="720" d:DesignWidth="1280"
+      d:Background="{StaticResource SurfaceBrush}" Loaded="Page_Loaded"
+      d:DesignHeight="720" d:DesignWidth="1280" 
       Title="CPUsPage">
     <Page.Resources>
         <ResourceDictionary>
@@ -28,130 +28,185 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid>
+            <Grid DataContext="{Binding RedactedItem}">
                 <UniformGrid Rows="9">
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Название" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBlock Text="Название" Style="{StaticResource ComponentRedactItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                    Text="{Binding Name}" Tag="Название"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                                 Text="{Binding Name}" Tag="Название"
+                                 Style="{StaticResource TextBoxComponentRedactItem}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Производитель" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBlock Text="Производитель" Style="{StaticResource ComponentRedactItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                    Text="{Binding Manufacturer}" Tag="Производитель"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                                 Text="{Binding Manufacturer}" Tag="Производитель"
+                                 Style="{StaticResource TextBoxComponentRedactItem}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Модель" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBlock Text="Модель" Style="{StaticResource ComponentRedactItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1"
-                    Text="{Binding Model}" Tag="Модель"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" HorizontalAlignment="Stretch"/>
+                                 Text="{Binding Model}" Tag="Модель"
+                                 Style="{StaticResource TextBoxComponentRedactItem}" HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Сокет" Style="{StaticResource Component_Item_TBlock_Header_Style}" VerticalAlignment="Center" Margin="0 0 10 0"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Sockets}"
-                    SelectedItem="{Binding Socket}" DisplayMemberPath="Name" SelectedValuePath="ID"
-                    HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="Сокет" Style="{StaticResource ComponentRedactItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding DataContext.SocketItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                  Style="{StaticResource ComboBoxRedactedItemEditable}"
+                                  Text="{Binding Socket}"
+                                  HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Количество ядер" Style="{StaticResource Component_Item_TBlock_Header_Style}"
+                        <TextBlock Text="Количество ядер" Style="{StaticResource ComponentRedactItemHeader}"
                     VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding CountCores}"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Количество ядер"
-                    HorizontalAlignment="Stretch"/>
+                                 Style="{StaticResource TextBoxComponentRedactItem}" Tag="Количество ядер"
+                                 HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Количество потоков" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                    VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBlock Text="Количество потоков" Style="{StaticResource ComponentRedactItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding CountThreads}"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Количество потоков"
-                    HorizontalAlignment="Stretch"/>
+                                 Style="{StaticResource TextBoxComponentRedactItem}" Tag="Количество потоков"
+                                 HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Базовая частота" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                    VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBlock Text="Базовая частота" Style="{StaticResource ComponentRedactItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
                         <TextBox Grid.Column="1" Text="{Binding BaseFrequency}"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Базовая частота"
-                    HorizontalAlignment="Stretch"/>
+                                 Style="{StaticResource TextBoxComponentRedactItem}" Tag="Базовая частота"
+                                 HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Тип оперативной памяти" Style="{StaticResource Component_Item_TBlock_Header_Style}"
+                        <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentRedactItemHeader}"
                     VerticalAlignment="Center" Margin="0 0 10 0"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding RAMTypes}" SelectedItem="{Binding RAMType}"
-                    DisplayMemberPath="Name" SelectedValuePath="ID"
-                    HorizontalAlignment="Stretch"/>
+                        <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding DataContext.RAMTypeItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                  Style="{StaticResource ComboBoxRedactedItemReadOnly}"
+                                  SelectedItem="{Binding RAMType}"
+                                  HorizontalAlignment="Stretch"/>
                     </Grid>
                     <Grid Style="{StaticResource Component_Item_Grid_Style}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Цена" Style="{StaticResource Component_Item_TBlock_Header_Style}"
-                    VerticalAlignment="Center" Margin="0 0 10 0"/>
-                        <TextBox Grid.Column="1" Text="{Binding Price}"
-                    Style="{StaticResource PrimaryTextBoxWithPlaceholderStyle}" Tag="Цена"
-                    HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="Цена" Style="{StaticResource ComponentRedactItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBox Grid.Column="1" Text="{Binding Price, StringFormat={}{0:F2} ₽}"
+                                 Style="{StaticResource TextBoxComponentRedactItem}" Tag="Цена"
+                                 HorizontalAlignment="Stretch"/>
                     </Grid>
                 </UniformGrid>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Изменить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding ChangeComponent}"/>
+                <Button Content="Сохранить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding SaveCommand}"/>
+                <Button Content="Отменить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding CancelCommand}"/>
             </StackPanel>
         </Grid>
         <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="3" Margin="5 0"/>
         <Grid Grid.Column="2" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Добавить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding AddComponent}"/>
-                <Button Content="Удалить" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Width="100" Command="{Binding RemoveComponent}"/>
-            </StackPanel>
-            <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" ItemsSource="{Binding Items}">
+            <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" ItemsSource="{Binding Items}"
+                      d:ItemsSource="{d:SampleData ItemCount=10}" CanUserAddRows="False" CanUserDeleteRows="False"
+                      >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название" Width="1*" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Производитель" Width="1*" Binding="{Binding Manufacturer}"/>
-                    <DataGridTextColumn Header="Модель" Width="1*" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Сокет" Width="1*" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Ядра/Потоки" Width="1*" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Частота" Width="1*" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Тип ОЗУ" Width="1*" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Цена, р." Width="1*" Binding="{Binding Price}"/>
-                    <DataGridTextColumn Header="Оценка" Width="1*" Binding="{Binding TotalScore}"/>
+                    <DataGridTemplateColumn Header="Название" Width="3*" MinWidth="150" HeaderStyle="{StaticResource ComponentDGItemHeader}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource ComponentDGItemElement}"/>
+                                    <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource ComponentDGSubItemElement}"/>
+                                    <TextBlock Text="{Binding Model}" Style="{StaticResource ComponentDGSubItemElement}"/>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Сокет" Width="1*" MinWidth="50" Binding="{Binding Socket}" HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTemplateColumn Header="ЯПЧ" Width="3*" MinWidth="120" HeaderStyle="{StaticResource ComponentDGItemHeader}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Ядра: " Style="{StaticResource ComponentDGItemElement}"/>
+                                        <TextBlock Text="{Binding CountCores}" Style="{StaticResource ComponentDGItemElement}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Потоки: " Style="{StaticResource ComponentDGItemElement}"/>
+                                        <TextBlock Text="{Binding CountThreads}" Style="{StaticResource ComponentDGItemElement}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Частота: " Style="{StaticResource ComponentDGItemElement}"/>
+                                        <TextBlock Text="{Binding BaseFrequency}" Style="{StaticResource ComponentDGItemElement}"/>
+                                        <TextBlock Text=" Гц" Style="{StaticResource ComponentDGItemElement}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Тип ОЗУ" Width="1*" MinWidth="80" Binding="{Binding RAMType}" HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="Цена" Width="1*" MinWidth="100" Binding="{Binding Price, StringFormat={}{0:F2} ₽}"
+                                        HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="Оценка" Width="1*" MinWidth="80" Binding="{Binding TotalScore}"
+                                        HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTemplateColumn Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding DataContext.RedactCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}" HorizontalAlignment="Stretch"
+                                            Style="{StaticResource ButtonComponentItem}">
+                                        <Button.Content>
+                                            <Image Source="{StaticResource Redact_Item_Icon}" Style="{StaticResource ComponentItemImage}"/>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}" HorizontalAlignment="Stretch"
+                                            Style="{StaticResource ButtonComponentItem}">
+                                        <Button.Content>
+                                            <Image Source="{StaticResource Remove_Item_Icon}" Style="{StaticResource ComponentItemImage}"/>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

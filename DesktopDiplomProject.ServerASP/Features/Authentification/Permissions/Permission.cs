@@ -41,6 +41,28 @@ namespace DesktopDiplomProject.ServerASP.Features.Authentification.Permissions
             _vector = new BitVector32(0);
         }
 
+        public Permission(string domain, int permissions)
+        {
+            _domain = domain;
+            _vector = new BitVector32(permissions);
+        }
+
         public int GetPermissionsInt() => _vector.Data;
+
+        public void SetPermissionsInt(int permissionsInt)
+        {
+            _vector = new BitVector32(permissionsInt);
+        }
+
+        public IEnumerable<PermissionAction> GetPermissions()
+        {
+            var result = new List<PermissionAction>();
+            foreach (var item in Enum.GetValues<PermissionAction>())
+            {
+                if (_vector[(int)item])
+                    result.Add(item);
+            }
+            return result;
+        }
     }
 }
