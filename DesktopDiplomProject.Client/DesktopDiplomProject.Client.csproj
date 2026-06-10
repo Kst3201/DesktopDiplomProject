@@ -19,6 +19,7 @@
     <None Remove="Resources\Images\remove_user_icon.png" />
     <None Remove="Resources\Images\search_user_icon.png" />
     <None Remove="Resources\Images\selected_user_icon.png" />
+    <None Remove="Resources\Images\star_score_icon.png" />
     <None Remove="Resources\Images\user_settings_icon.png" />
   </ItemGroup>
 
@@ -39,7 +40,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="Features\Authentification\Services\" />
     <Folder Include="Features\PCComponentManagement\ViewModels\Pages\Validators\" />
-    <Folder Include="Features\PCSelectMatch\Models\" />
     <Folder Include="Features\Profile\Models\" />
     <Folder Include="Features\Profile\ViewModels\" />
     <Folder Include="Features\Profile\Gateways\" />
@@ -51,6 +51,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.25" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.14" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.14" />
+    <PackageReference Include="System.Management" Version="10.0.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +79,7 @@
     <Resource Include="Resources\Images\selected_user_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\star_score_icon.png" />
     <Resource Include="Resources\Images\user_settings_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

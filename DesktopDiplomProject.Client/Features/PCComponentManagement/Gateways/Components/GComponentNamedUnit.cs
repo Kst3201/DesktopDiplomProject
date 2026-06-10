@@ -64,6 +64,12 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
             return result ?? new ComponentNamedUnitDTO(string.Empty);
         }
 
+        public async Task<ComponentNamedUnitDTO> GetItemByFullname(string name)
+        {
+            var result = await _controller.GetAsync<ComponentNamedUnitDTO>($"{ControllerAddress}/ByFullname/{name}");
+            return result ?? new ComponentNamedUnitDTO(string.Empty);
+        }
+
         public async Task<IEnumerable<ComponentNamedUnitDTO>> GetItems()
         {
             var result = await _controller.GetAsync<IEnumerable<ComponentNamedUnitDTO>>(ControllerAddress);

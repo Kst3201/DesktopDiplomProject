@@ -99,12 +99,15 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Цена" Style="{StaticResource Component_Item_TBlock_Header_Style}"
+                        <TextBlock Text="Цена" Style="{StaticResource ComponentRedactItemHeader}"
                                    VerticalAlignment="Center" Margin="0 0 10 0"/>
-                        <TextBox Grid.Column="1" Text="{Binding Price, StringFormat={}{0:F2} ₽}"
+                        <TextBox Grid.Column="1" Text="{Binding Price, StringFormat={}{0:F2}}"
                                  Style="{StaticResource TextBoxComponentRedactItem}" Tag="Цена"
                                  HorizontalAlignment="Stretch"/>
+                        <TextBlock Grid.Column="2" Text=" ₽" Style="{StaticResource ComponentRedactItemHeader}" Width="auto"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
                     </Grid>
                 </UniformGrid>
             </Grid>

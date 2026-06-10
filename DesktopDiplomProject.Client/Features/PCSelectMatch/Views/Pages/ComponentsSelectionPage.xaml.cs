@@ -30,5 +30,15 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages
             DataContext = _viewModel;
             InitializeComponent();
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.InitializeSelectionMods();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Unload();
+        }
     }
 }

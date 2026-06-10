@@ -21,6 +21,9 @@ using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Named
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.RAM;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.RAM.RAMType;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.VideoCard;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Models.PersonalComputers;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Services;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Services.PCBuild;
 using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -142,6 +145,9 @@ namespace DesktopDiplomProject.ServerASP
             builder.Services.AddScoped<IRefreshTokenGenerator, NativeRefershTokenGenerator>();
             builder.Services.AddScoped<IJWTTokenService, JWTTokenService>();
             builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
+            builder.Services.AddScoped<IPCBuildService, PCBuildService>();
+            builder.Services.AddScoped<IPCUpgradeService, PCUpgradeService>();
+            builder.Services.AddScoped<PCPresetService>();
 
             var app = builder.Build();
 

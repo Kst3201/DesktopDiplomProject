@@ -31,5 +31,10 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages
             InitializeComponent();
             _viewModel.InitializePage(ComponentInfoFrame);
         }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.InitializeItems();
+        }
     }
 }

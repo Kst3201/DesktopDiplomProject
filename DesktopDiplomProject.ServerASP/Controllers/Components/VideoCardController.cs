@@ -63,6 +63,48 @@ namespace DesktopDiplomProject.ServerASP.Controllers.Components
             }
         }
 
+        // GET api/<VideoCardController>/5
+        [HttpGet("ByFullname/{name}")]
+        [RequirePermission("PCComponents", PermissionAction.Read)]
+        public async Task<IActionResult> GetByFullname(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return BadRequest(name);
+            try
+            {
+                var result = await _service.GetItemByFullName(name);
+                return Ok(result);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return NotFound(name);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET api/<VideoCardController>/5
+        [HttpGet("ByGPU/{name}")]
+        [RequirePermission("PCComponents", PermissionAction.Read)]
+        public async Task<IActionResult> GetByGPU(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return BadRequest(name);
+            try
+            {
+                var result = await _service.GetFirstItemByGPU(name);
+                return Ok(result);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return NotFound(name);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // POST api/<VideoCardController>
         [HttpPost]
         [RequirePermission("PCComponents", PermissionAction.Add)]

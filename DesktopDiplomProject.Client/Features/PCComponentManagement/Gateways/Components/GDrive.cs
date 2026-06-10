@@ -47,5 +47,11 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
             var result = await _controller.GetAsync<DriveDTO>($"{CONTROLLERADDRESS}/{name}");
             return result ?? new DriveDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty);
         }
+
+        public async Task<DriveDTO> GetItemByFullname(string name)
+        {
+            var result = await _controller.GetAsync<DriveDTO>($"{CONTROLLERADDRESS}/ByFullname/{name}", true);
+            return result ?? new DriveDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty);
+        }
     }
 }

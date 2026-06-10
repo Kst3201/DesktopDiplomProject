@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Server.Models.Entities.Components
 {
-    internal interface IComponentEntity : IEntityWithName
+    public interface IComponentEntity : IEntityWithName
     {
         string Manufacturer { get; set; }
         string Model { get; set; }

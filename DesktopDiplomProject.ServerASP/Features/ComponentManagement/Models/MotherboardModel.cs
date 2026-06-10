@@ -1,4 +1,6 @@
-﻿namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models
+﻿using DesktopDiplomProject.ServerASP.Features.Assessment.Models;
+
+namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models
 {
     public class MotherboardModel : BaseComponentModel
     {
@@ -25,6 +27,25 @@
             CountPCIEX16Slots = 0;
             CountM2Slots = 0;
             CountSATASlots = 0;
+        }
+
+        public MotherboardModel(MotherboardModel copy) : base(copy)
+        {
+            Size = copy.Size;
+            Socket = copy.Socket;
+            RAMType = copy.RAMType;
+            PCIEInterface = copy.PCIEInterface;
+            RAMCountSlots = copy.RAMCountSlots;
+            MaxRAMValue = copy.MaxRAMValue;
+            MaxRAMFrequency = copy.MaxRAMFrequency;
+            CountPCIEX16Slots = copy.CountPCIEX16Slots;
+            CountM2Slots = copy.CountM2Slots;
+            CountSATASlots = copy.CountSATASlots;
+        }
+
+        public override object Clone()
+        {
+            return new MotherboardModel(this);
         }
     }
 }

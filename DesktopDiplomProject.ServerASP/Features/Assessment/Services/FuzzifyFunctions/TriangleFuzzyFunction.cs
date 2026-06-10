@@ -17,9 +17,12 @@
 
         public double Fuzzify(int value)
         {
-            if (value <= _leftEdge) return 0;
-            if (value >= _rightEdge) return 1;
+            if (value <= _leftEdge || value >= _rightEdge) return 0;
+            double denominator = _peak - _leftEdge;
+            if (denominator == 0) return 0;
             if (value <= _peak) return Math.Round((double)((value - _leftEdge) / (_peak - _leftEdge)), 3);
+            denominator = _rightEdge - _peak;
+            if (denominator == 0) return 0;
             return Math.Round((double)((_rightEdge - value) / (_rightEdge - _peak)), 3);
         }
 
@@ -33,16 +36,15 @@
 
         public double FuzzifyMinShoulder(int value)
         {
-            if (value >= _rightEdge) return 0;
             if (value <= _peak) return 1;
+            if (value >= _rightEdge) return 0;
             if (value <= _peak) return Math.Round((double)((value - _leftEdge) / (_peak - _leftEdge)), 3);
             return Math.Round((double)((_rightEdge - value) / (_rightEdge - _peak)), 3);
         }
 
         public double FuzzifyDouble(double value)
         {
-            if (value <= _leftEdge) return 0;
-            if (value >= _rightEdge) return 1;
+            if (value <= _leftEdge || value >= _rightEdge) return 0;
             if (value <= _peak) return Math.Round((double)((value - _leftEdge) / (_peak - _leftEdge)), 3);
             return Math.Round((double)((_rightEdge - value) / (_rightEdge - _peak)), 3);
         }
@@ -57,8 +59,8 @@
 
         public double FuzzifyMinShoulderDouble(double value)
         {
-            if (value >= _rightEdge) return 0;
             if (value <= _peak) return 1;
+            if (value >= _rightEdge) return 0;
             if (value <= _peak) return Math.Round((double)((value - _leftEdge) / (_peak - _leftEdge)), 3);
             return Math.Round((double)((_rightEdge - value) / (_rightEdge - _peak)), 3);
         }

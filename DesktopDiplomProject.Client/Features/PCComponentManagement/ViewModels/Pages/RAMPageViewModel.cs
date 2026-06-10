@@ -77,6 +77,7 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.
         {
             var ramTypes = await _gatewayRAMType.GetItems();
             _ramTypeItems = ramTypes.Where(item => item != null).Select(item => item.Name).ToList();
+            _ramTypeItems.Add(string.Empty);
             OnPropertyChanged(nameof(RAMTypeItems));
         }
 

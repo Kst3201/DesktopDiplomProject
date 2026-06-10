@@ -1,5 +1,6 @@
 ﻿using DesktopDiplomProject.Server.Data.Configuration;
 using DesktopDiplomProject.Server.Models.Entities.Components.RAMs;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Models.Compatibilities;
 using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -74,6 +75,21 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.R
             }
         }
 
+        public async Task<RAMTypeDTO> GetItemByFullName(string name)
+        {
+            try
+            {
+                var foundedItem = await GetByName(name);
+                if (foundedItem == null) throw new ArgumentOutOfRangeException(nameof(name));
+                return _creator.CreateDTO(foundedItem);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<RAMTypeDTO>> GetItems()
         {
             try
@@ -86,6 +102,11 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.R
                 Console.WriteLine(e.Message);
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<RAMTypeDTO>> GetItems(ICompatibilitySet set)
+        {
+            return await GetItems();
         }
 
         public async Task RemoveItem(string name)

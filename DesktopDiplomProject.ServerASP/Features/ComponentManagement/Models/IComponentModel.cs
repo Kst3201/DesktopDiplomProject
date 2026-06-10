@@ -2,7 +2,7 @@
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models
 {
-    public interface IComponentModel
+    public interface IComponentModel : ICloneable
     {
         string Name { get; set; }
         string Manufacturer { get; set; }

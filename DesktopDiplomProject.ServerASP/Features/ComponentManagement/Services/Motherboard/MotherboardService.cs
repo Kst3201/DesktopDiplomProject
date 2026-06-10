@@ -1,6 +1,8 @@
 ﻿using DesktopDiplomProject.Server.Data.Configuration;
 using DesktopDiplomProject.Server.Data.Configuration.Components.Motherboard;
+using DesktopDiplomProject.Server.Models.Entities.Components;
 using DesktopDiplomProject.Server.Models.Entities.Components.CPUs;
+using DesktopDiplomProject.Server.Models.Entities.Components.Drives;
 using DesktopDiplomProject.Server.Models.Entities.Components.Motherboards;
 using DesktopDiplomProject.Server.Models.Entities.Components.VideoCards;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
@@ -9,6 +11,7 @@ using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Int;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Models.Compatibilities;
 using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -30,8 +33,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
         private IComponentIntParameterService<MBRAMFrequencyEntity> _ramFrequencyService;
         private IComponentDoubleParameterService<MBPriceEntity> _priceService;
 
-        public MotherboardService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
-            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function
+        public MotherboardService(UpgradePCApplicationContext context, IDefuzzifyFunction function
             , IComponentNamedUnitService<MBSizeEntity> sizeService
             , IComponentNamedUnitService<CPUSocketEntity> socketService
             , IComponentNamedUnitService<PCIEInterfaceEntity> pcieService)
@@ -41,13 +43,14 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
             _sizeService = sizeService;
             _socketService = socketService;
             _pcieService = pcieService;
-            _m2Service = new NativeComponentIntParameterService<MBCountM2SlotsEntity>(_context, fuzzyIntService);
-            _countPCIEX16Service = new NativeComponentIntParameterService<MBCountPCIEX16SlotsEntity>(_context, fuzzyIntService);
-            _sataService = new NativeComponentIntParameterService<MBCountSATASlotsEntity>(_context, fuzzyIntService);
-            _ramValueService = new NativeComponentIntParameterService<MBRAMValueEntity>(_context, fuzzyIntService);
-            _ramSlotsService = new NativeComponentIntParameterService<MBRAMCountSlotsEntity>(_context, fuzzyIntService);
-            _ramFrequencyService = new NativeComponentIntParameterService<MBRAMFrequencyEntity>(_context, fuzzyIntService);
-            _priceService = new NativeComponentDoubleParameterService<MBPriceEntity>(_context, fuzzyDoubleService);
+            var fuzzCreator = new FuzzyServiceCreator();
+            _m2Service = new NativeComponentIntParameterService<MBCountM2SlotsEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _countPCIEX16Service = new NativeComponentIntParameterService<MBCountPCIEX16SlotsEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _sataService = new NativeComponentIntParameterService<MBCountSATASlotsEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _ramValueService = new NativeComponentIntParameterService<MBRAMValueEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _ramSlotsService = new NativeComponentIntParameterService<MBRAMCountSlotsEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _ramFrequencyService = new NativeComponentIntParameterService<MBRAMFrequencyEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _priceService = new NativeComponentDoubleParameterService<MBPriceEntity>(_context, fuzzCreator.CreateDouble(FuzzyServiceType.Native));
         }
 
         public async Task<MotherboardDTO> AddItem(MotherboardDTO dto)
@@ -56,11 +59,11 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
             {
                 var foundedItem = await GetByName(dto.Name);
                 if (foundedItem != null) throw new ArgumentException(nameof(dto));
-                var size = await _sizeService.GetOrAddByName(dto.Name);
-                var socket = await _socketService.GetOrAddByName(dto.Name);
-                var pcie = await _pcieService.GetOrAddByName(dto.Name);
+                var size = await _sizeService.GetOrAddByName(dto.Size);
+                var socket = await _socketService.GetOrAddByName(dto.Socket);
+                var pcie = await _pcieService.GetOrAddByName(dto.PCIEInterface);
                 var ramType = await _context.RAMTypes
-                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name));
+                    .FirstOrDefaultAsync(item => item.Name.Equals(dto.RAMType));
                 var countM2 = await _m2Service.GetOrAdd(dto.CountM2Slots);
                 var countX16 = await _countPCIEX16Service.GetOrAdd(dto.CountPCIEX16Slots);
                 var countSATA = await _sataService.GetOrAdd(dto.CountSATASlots);
@@ -77,6 +80,7 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
                     SizeID = size.ID,
                     SocketID = socket.ID,
                     RAMTypeID = ramType.ID,
+                    PCIEInterfaceID = pcie.ID,
                     CountM2SlotsID = countM2.ID,
                     CountPCIEX16SlotsID = countX16.ID,
                     CountSATASlotsID = countSATA.ID,
@@ -101,6 +105,21 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
             try
             {
                 var result = await GetByNameAllIncluded(name);
+                if (result == null) throw new ArgumentOutOfRangeException(nameof(name));
+                return _creator.CreateDTO(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<MotherboardDTO> GetItemByFullName(string name)
+        {
+            try
+            {
+                var result = await GetByFullNameAllIncluded(name);
                 if (result == null) throw new ArgumentOutOfRangeException(nameof(name));
                 return _creator.CreateDTO(result);
             }
@@ -164,6 +183,33 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
             }
         }
 
+        public async Task<IEnumerable<MotherboardDTO>> GetItems(ICompatibilitySet set)
+        {
+            try
+            {
+                var listQ = _context.Motherboards
+                    .Include(item => item.Size)
+                    .Include(item => item.Socket)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.PCIEInterface)
+                    .Include(item => item.RAMCountSlots)
+                    .Include(item => item.MaxRAMValue)
+                    .Include(item => item.MaxRAMFrequency)
+                    .Include(item => item.CountPCIEX16Slots)
+                    .Include(item => item.CountM2Slots)
+                    .Include(item => item.CountSATASlots)
+                    .Include(item => item.Price)
+                    .AsQueryable();
+                var list = await SetCompatibilityQuery(listQ, set).ToListAsync();
+                return list.Select(item => _creator.CreateDTO(item)).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         public async Task RemoveItem(string name)
         {
             try
@@ -194,11 +240,11 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
                 }
                 else
                 {
-                    var size = await _sizeService.GetOrAddByName(dto.Name);
-                    var socket = await _socketService.GetOrAddByName(dto.Name);
-                    var pcie = await _pcieService.GetOrAddByName(dto.Name);
+                    var size = await _sizeService.GetOrAddByName(dto.Size);
+                    var socket = await _socketService.GetOrAddByName(dto.Socket);
+                    var pcie = await _pcieService.GetOrAddByName(dto.PCIEInterface);
                     var ramType = await _context.RAMTypes
-                        .FirstOrDefaultAsync(item => item.Name.Equals(dto.Name));
+                        .FirstOrDefaultAsync(item => item.Name.Equals(dto.RAMType));
                     var countM2 = await _m2Service.GetOrAdd(dto.CountM2Slots);
                     var countX16 = await _countPCIEX16Service.GetOrAdd(dto.CountPCIEX16Slots);
                     var countSATA = await _sataService.GetOrAdd(dto.CountSATASlots);
@@ -259,6 +305,33 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
             }
         }
 
+        public async Task<IEnumerable<MotherboardModel>> GetAll(ICompatibilitySet set)
+        {
+            try
+            {
+                var listQ = _context.Motherboards
+                    .Include(item => item.Size)
+                    .Include(item => item.Socket)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.PCIEInterface)
+                    .Include(item => item.RAMCountSlots)
+                    .Include(item => item.MaxRAMValue)
+                    .Include(item => item.MaxRAMFrequency)
+                    .Include(item => item.CountPCIEX16Slots)
+                    .Include(item => item.CountM2Slots)
+                    .Include(item => item.CountSATASlots)
+                    .Include(item => item.Price)
+                    .AsQueryable();
+                var list = await SetCompatibilityQuery(listQ, set).ToListAsync();
+                return list.Select(item => _creator.CreateModel(item)).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         private async Task<MotherboardEntity?> GetByNameAllIncluded(string name)
         {
             return await _context.Motherboards
@@ -280,6 +353,72 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.M
         {
             return await _context.Motherboards
                     .FirstOrDefaultAsync(item => item.Name.Equals(name));
+        }
+
+        private async Task<MotherboardEntity?> GetByFullNameAllIncluded(string name)
+        {
+            var foundedItem = await _context.Motherboards
+                    .Include(item => item.Size)
+                    .Include(item => item.Socket)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.PCIEInterface)
+                    .Include(item => item.RAMCountSlots)
+                    .Include(item => item.MaxRAMValue)
+                    .Include(item => item.MaxRAMFrequency)
+                    .Include(item => item.CountPCIEX16Slots)
+                    .Include(item => item.CountM2Slots)
+                    .Include(item => item.CountSATASlots)
+                    .Include(item => item.Price)
+                    .FirstOrDefaultAsync(item => item.Name.Equals(name)
+                    || (EF.Functions.ILike(name, "%" + item.Manufacturer + "%")
+                        && EF.Functions.ILike(name, "%" + item.Model + "%")));
+            return foundedItem;
+        }
+
+        private IQueryable<MotherboardEntity> SetCompatibilityQuery(IQueryable<MotherboardEntity> listQuery, ICompatibilitySet set)
+        {
+            if (set != null)
+            {
+                if (!string.IsNullOrWhiteSpace(set.Socket))
+                {
+                    listQuery = listQuery.Where(item => EF.Functions.ILike(item.Socket.Name, set.Socket));
+                }
+                if (!string.IsNullOrWhiteSpace(set.PCIEInterface))
+                {
+                    listQuery = listQuery.Where(item => EF.Functions.ILike(item.PCIEInterface.Name, set.PCIEInterface));
+                }
+                if (!string.IsNullOrWhiteSpace(set.RAMType))
+                {
+                    listQuery = listQuery.Where(item => EF.Functions.ILike(item.RAMType.Name, set.RAMType));
+                }
+                if (set.DriveConnectionInterfaces != null)
+                {
+                    if (set.DriveConnectionInterfaces.Contains("m2", StringComparer.OrdinalIgnoreCase))
+                    {
+                        listQuery = listQuery.Where(item => item.CountM2Slots.Value > 0);
+                    }
+                    if (set.DriveConnectionInterfaces.Contains("sata", StringComparer.OrdinalIgnoreCase))
+                    {
+                        listQuery = listQuery.Where(item => item.CountSATASlots.Value > 0);
+                    }
+                }
+                if (set.CountPCIELines != null)
+                {
+                    listQuery = listQuery.Where(item => (item.CountPCIEX16Slots.Value * 16) >= set.CountPCIELines);
+                }
+                if (set.MaxPrice != null && set.MaxPrice > 0)
+                {
+                    listQuery = listQuery.Where(item => item.Price.Value < set.MaxPrice.Value);
+                }
+            }
+            return listQuery;
+        }
+
+        private bool CheckOnEqualByFullName(IComponentEntity entity, string name)
+        {
+            return entity.Name.Equals(name)
+                || (EF.Functions.ILike(name, entity.Manufacturer)
+                    && EF.Functions.ILike(name, entity.Model));
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Components
 {
-    public class GVideoCard : IGComponent<VideoCardDTO>
+    public class GVideoCard : IGVideoCard
     {
         private const string CONTROLLERADDRESS = "api/VideoCard";
         private ICommController _controller;
@@ -27,6 +27,18 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
         public async Task<VideoCardDTO> GetItem(string name)
         {
             var result = await _controller.GetAsync<VideoCardDTO>($"{CONTROLLERADDRESS}/{name}");
+            return result ?? new VideoCardDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
+        }
+
+        public async Task<VideoCardDTO> GetItemByFullname(string name)
+        {
+            var result = await _controller.GetAsync<VideoCardDTO>($"{CONTROLLERADDRESS}/ByFullname/{name}", true);
+            return result ?? new VideoCardDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
+        }
+
+        public async Task<VideoCardDTO> GetItemByGPU(string name)
+        {
+            var result = await _controller.GetAsync<VideoCardDTO>($"{CONTROLLERADDRESS}/ByGPU/{name}", true);
             return result ?? new VideoCardDTO(string.Empty, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
         }
 

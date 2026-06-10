@@ -1,6 +1,8 @@
 ﻿using DesktopDiplomProject.Server.Data.Configuration;
 using DesktopDiplomProject.Server.Models.Entities;
+using DesktopDiplomProject.Server.Models.Entities.Components;
 using DesktopDiplomProject.Server.Models.Entities.Components.CPUs;
+using DesktopDiplomProject.Server.Models.Entities.PersonalComputers;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Models;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyFunctions;
@@ -8,6 +10,7 @@ using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Int;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Models.Compatibilities;
 using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
@@ -24,6 +27,19 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
         private IComponentIntParameterService<CPUThreadsCountEntity> _threadsCountiesService;
         private IComponentDoubleParameterService<CPUPriceEntity> _priceService;
         private IComponentNamedUnitService<CPUSocketEntity> _socketService;
+
+        public CPUService(UpgradePCApplicationContext context, IDefuzzifyFunction defFunction
+            , IComponentNamedUnitService<CPUSocketEntity> socketService)
+        {
+            _creator = new CPUCreator(defFunction);
+            _context = context;
+            _socketService = socketService;
+            var fuzzCreator = new FuzzyServiceCreator();
+            _frequencyService = new NativeComponentIntParameterService<CPUBaseFrequencyEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _coreCountiesService = new NativeComponentIntParameterService<CPUCoreCountEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _threadsCountiesService = new NativeComponentIntParameterService<CPUThreadsCountEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _priceService = new NativeComponentDoubleParameterService<CPUPriceEntity>(_context, fuzzCreator.CreateDouble(FuzzyServiceType.Native));
+        }
 
         public async Task<CPUDTO> AddItem(CPUDTO dto)
         {
@@ -86,6 +102,21 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
             }
         }
 
+        public async Task<CPUDTO> GetItemByFullName(string name)
+        {
+            try
+            {
+                var result = await GetByFullNameAllIncluded(name);
+                if (result == null) throw new ArgumentOutOfRangeException(nameof(name));
+                return _creator.CreateDTO(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         public async Task<CPUDTO> GetItem(int id)
         {
             try
@@ -121,6 +152,29 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
                     .Include(item => item.RAMType)
                     .Include(item => item.Price)
                     .ToListAsync();
+                return list.Select(item => _creator.CreateDTO(item)).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CPUDTO>> GetItems(ICompatibilitySet set)
+        {
+            try
+            {
+                var listQuery = _context.CPUs
+                    .Include(item => item.Socket)
+                    .Include(item => item.CountCores)
+                    .Include(item => item.CountThreads)
+                    .Include(item => item.BaseFrequency)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.Price)
+                    .AsQueryable();
+                listQuery = SetCompatibilityQuery(listQuery, set);
+                var list = await listQuery.ToListAsync();
                 return list.Select(item => _creator.CreateDTO(item)).ToList();
             }
             catch (Exception e)
@@ -205,17 +259,82 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.C
             }
         }
 
-        public CPUService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
-            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction defFunction
-            , IComponentNamedUnitService<CPUSocketEntity> socketService)
+        public async Task<IEnumerable<CPUModel>> GetAll(ICompatibilitySet set)
         {
-            _creator = new CPUCreator(defFunction);
-            _context = context;
-            _socketService = socketService;
-            _frequencyService = new NativeComponentIntParameterService<CPUBaseFrequencyEntity>(_context, fuzzyIntService);
-            _coreCountiesService = new NativeComponentIntParameterService<CPUCoreCountEntity>(_context, fuzzyIntService);
-            _threadsCountiesService = new NativeComponentIntParameterService<CPUThreadsCountEntity>(_context, fuzzyIntService);
-            _priceService = new NativeComponentDoubleParameterService<CPUPriceEntity>(_context, fuzzyDoubleService);
+            try
+            {
+                var listQuery = _context.CPUs
+                    .Include(item => item.Socket)
+                    .Include(item => item.CountCores)
+                    .Include(item => item.CountThreads)
+                    .Include(item => item.BaseFrequency)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.Price)
+                    .AsQueryable();
+                listQuery = SetCompatibilityQuery(listQuery, set);
+                var list = await listQuery.ToListAsync();
+                return list.Select(item => _creator.CreateModel(item)).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<CPUEntity?> GetByNameAllIncluded(string name)
+        {
+            var foundedItem = await _context.CPUs
+                    .Include(item => item.Socket)
+                    .Include(item => item.CountCores)
+                    .Include(item => item.CountThreads)
+                    .Include(item => item.BaseFrequency)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.Price)
+                    .FirstOrDefaultAsync(item => item.Name.Equals(name));
+            return foundedItem;
+        }
+
+        private async Task<CPUEntity?> GetByFullNameAllIncluded(string name)
+        {
+            var foundedItem = await _context.CPUs
+                    .Include(item => item.Socket)
+                    .Include(item => item.CountCores)
+                    .Include(item => item.CountThreads)
+                    .Include(item => item.BaseFrequency)
+                    .Include(item => item.RAMType)
+                    .Include(item => item.Price)
+                    .FirstOrDefaultAsync(item => item.Name.Equals(name)
+                    || (EF.Functions.ILike(name, "%" + item.Manufacturer + "%")
+                        && EF.Functions.ILike(name, "%" + item.Model + "%")));
+            return foundedItem;
+        }
+
+        private IQueryable<CPUEntity> SetCompatibilityQuery(IQueryable<CPUEntity> listQuery, ICompatibilitySet set)
+        {
+            if (set != null)
+            {
+                if (!string.IsNullOrEmpty(set.Socket))
+                {
+                    listQuery = listQuery.Where(item => item.Socket.Name.Equals(set.Socket));
+                }
+                if (!string.IsNullOrEmpty(set.RAMType))
+                {
+                    listQuery = listQuery.Where(item => item.RAMType.Name.Equals(set.RAMType));
+                }
+                if (set.MaxPrice != null && set.MaxPrice > 0)
+                {
+                    listQuery = listQuery.Where(item => item.Price.Value < set.MaxPrice.Value);
+                }
+            }
+            return listQuery;
+        }
+
+        private bool CheckOnEqualByFullName(IComponentEntity entity, string name)
+        {
+            return entity.Name.Equals(name)
+                || (EF.Functions.ILike(name, entity.Manufacturer)
+                    && EF.Functions.ILike(name, entity.Model));
         }
     }
 }

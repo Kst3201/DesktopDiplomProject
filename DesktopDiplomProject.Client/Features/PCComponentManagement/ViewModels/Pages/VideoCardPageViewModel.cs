@@ -16,7 +16,7 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.
 {
     public class VideoCardPageViewModel : ObservableViewModel
     {
-        private IGComponent<VideoCardDTO> _gateway;
+        private IGVideoCard _gateway;
         private IGComponent<GPUDTO> _gatewayGPU;
         private GComponentNamedUnit _gatewayUnits;
         private IVideoCardCreator _creator;
@@ -46,7 +46,7 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.
         public ICommand? RemoveCommand => _removeCommand;
         public ICommand? RedactCommand => _redactCommand;
 
-        public VideoCardPageViewModel(IGComponent<VideoCardDTO> gateway, IGComponent<GPUDTO> gatewayGPU
+        public VideoCardPageViewModel(IGVideoCard gateway, IGComponent<GPUDTO> gatewayGPU
             , GComponentNamedUnit gatewayUnits
             , IVideoCardCreator creator, INamedUnitCreator creatorUnits) : base()
         {
@@ -79,6 +79,7 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.ViewModels.
         {
             var gpus = (await _gatewayGPU.GetItems()).ToList();
             _gpuItems = gpus.Select(item => item.Name).ToList();
+            _gpuItems.Add(string.Empty);
             _pcieInterfaceItems = (await GetNamedUnitsList(ComponentUnitTypes.PCIEInterface)).ToList();
             OnPropertyChanged(nameof(GPUItems));
             OnPropertyChanged(nameof(PCIEInterfaceItems));

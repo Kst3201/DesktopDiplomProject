@@ -1,4 +1,5 @@
 ﻿using DesktopDiplomProject.Server.Models.Entities;
+using DesktopDiplomProject.Server.Models.Entities.Components;
 using DesktopDiplomProject.Server.Models.Entities.Components.Drives;
 using DesktopDiplomProject.Server.Models.Entities.Components.Motherboards;
 using DesktopDiplomProject.Server.Models.Entities.PersonalComputers;
@@ -7,6 +8,7 @@ using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyFunctions;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models;
 using DiplomDataLibrary.PCComponents.DTO.Components;
+using Microsoft.EntityFrameworkCore;
 
 namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Motherboard
 {

@@ -31,6 +31,13 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
                 , string.Empty, string.Empty, string.Empty, string.Empty);
         }
 
+        public async Task<MotherboardDTO> GetItemByFullname(string name)
+        {
+            var result = await _controller.GetAsync<MotherboardDTO>($"{CONTROLLERADDRESS}/ByFullname/{name}", true);
+            return result ?? new MotherboardDTO(string.Empty, string.Empty, string.Empty, 0, 0
+                , string.Empty, string.Empty, string.Empty, string.Empty);
+        }
+
         public async Task<IEnumerable<MotherboardDTO>> GetItems()
         {
             var result = await _controller.GetAsync<IEnumerable<MotherboardDTO>>(CONTROLLERADDRESS);

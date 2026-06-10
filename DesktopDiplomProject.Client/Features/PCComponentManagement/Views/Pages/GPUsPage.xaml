@@ -172,7 +172,7 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="РБ: " Style="{StaticResource ComponentDGItemElement}"/>
-                                        <TextBlock Text="{Binding CountRasterizatoinBlocks}" Style="{StaticResource ComponentDGItemElement}"/>
+                                        <TextBlock Text="{Binding CountRasterizationBlocks}" Style="{StaticResource ComponentDGItemElement}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="РТЯ: " Style="{StaticResource ComponentDGItemElement}"/>

@@ -30,6 +30,12 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
             return result ?? new RAMTypeDTO(string.Empty, 0, 0, 0, 0, 0);
         }
 
+        public async Task<RAMTypeDTO> GetItemByFullname(string name)
+        {
+            var result = await _controller.GetAsync<RAMTypeDTO>($"{CONTROLLERADDRESS}/ByFullname/{name}");
+            return result ?? new RAMTypeDTO(string.Empty, 0, 0, 0, 0, 0);
+        }
+
         public async Task<IEnumerable<RAMTypeDTO>> GetItems()
         {
             var result = await _controller.GetAsync<IEnumerable<RAMTypeDTO>>(CONTROLLERADDRESS);

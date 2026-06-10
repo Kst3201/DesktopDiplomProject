@@ -4,7 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
+      Loaded="Page_Loaded"
       d:Background="{StaticResource SurfaceBrush}"
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="SelectionPCPage">
@@ -26,6 +27,13 @@
             </Grid.RowDefinitions>
             <DataGrid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding Items}">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="CPU" Width="1*" Binding="{Binding CPU.Name}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="Drive" Width="1*" Binding="{Binding Drive.Name}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="Motherboard" Width="1*" Binding="{Binding Motherboard.Name}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="RAM" Width="1*" Binding="{Binding RAM.Name}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="VideoCard" Width="1*" Binding="{Binding VideoCard.Name}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Price}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
+                    <DataGridTextColumn Header="Score" Width="1*" Binding="{Binding TotalScore}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="4" HorizontalAlignment="Stretch" Margin="0 5 0 5"

@@ -1,7 +1,12 @@
-﻿using DesktopDiplomProject.Client.Commands;
+﻿using DesktopDiplomProject.Client.Abstractions;
+using DesktopDiplomProject.Client.Commands;
+using DesktopDiplomProject.Client.Features.PCSelectMatch.Gateway;
+using DesktopDiplomProject.Client.Features.PCSelectMatch.Services;
+using DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.PersonalComputer;
 using DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages.SelectionPCInfoPages;
 using DesktopDiplomProject.Client.Services.Navigation.Page;
 using DesktopDiplomProject.Client.Views.MainWindow.Pages.SelectionPCInfoPages;
+using DiplomDataLibrary.PCBuild;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +16,14 @@ using System.Windows.Input;
 
 namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
 {
-    public class SelectionPCViewModel
+    public class SelectionPCViewModel : ObservableViewModel
     {
+        private GPCBuild _gateway;
+        private IPCCreator _creator;
+        private IPCRequestCreator _requestCreator;
         private INavigationPageService _navigationPageService;
+        private IPCSelectConfigurateStateService _configService;
+        private List<IPCViewModel> _items;
         private RelayCommand? _toBPPageCommand;
         private RelayCommand? _toCPUPageCommand;
         private RelayCommand? _toGPUPageCommand;
@@ -22,6 +32,10 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
         private RelayCommand? _toRAMPageCommand;
         private RelayCommand? _toSSDPageCommand;
 
+        public IReadOnlyList<IPCViewModel> Items
+        {
+            get => _items;
+        }
 
         public ICommand? ToBPPageCommand => _toBPPageCommand;
         public ICommand? ToCPUPageCommand => _toCPUPageCommand;
@@ -31,10 +45,41 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
         public ICommand? ToRAMPageCommand => _toRAMPageCommand;
         public ICommand? ToSSDPageCommand => _toSSDPageCommand;
 
-        public SelectionPCViewModel(INavigationPageService navigationPageService)
+        public SelectionPCViewModel(INavigationPageService navigationPageService
+            , IPCSelectConfigurateStateService configService, GPCBuild gateway)
         {
             _navigationPageService = navigationPageService;
+            _gateway = gateway;
+            _configService = configService;
+            _creator = new NativePCCreator();
+            _requestCreator = new NativePCRequestCreator();
             InitializeCommands();
+        }
+
+        public async Task InitializeItems()
+        {
+            var config = _configService.GetConfiguration();
+            if (config == null) return;
+            IEnumerable<PCDTO> result;
+            if (config.IsUpgrade)
+            {
+                result = await _gateway.UpgradePCs(_requestCreator.CreateUpgradeRequest(config));
+            }
+            else
+            {
+                result = await _gateway.BuildPCs(_requestCreator.CreateBuildRequest(config));
+            }
+            var listModels = result.Select(item => _creator.Create(item)).Where(item => item != null).ToList();
+            var listViewModels = listModels.Select(item => _creator.Create(item)).ToList();
+            //var listViewModels = new List<IPCViewModel>();
+            //foreach (var item in listModels)
+            //{
+            //    var viewModel = _creator.Create(item);
+            //    if (viewModel != null)
+            //        listViewModels.Add(viewModel);
+            //}
+            _items = listViewModels?.Cast<IPCViewModel>().ToList() ?? new List<IPCViewModel>();
+            OnPropertyChanged(nameof(Items));
         }
 
         public void InitializePage(System.Windows.Controls.Frame frame)

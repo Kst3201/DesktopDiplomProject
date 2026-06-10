@@ -10,6 +10,7 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
     {
         Task<IEnumerable<T>> GetItems();
         Task<T> GetItem(string name);
+        Task<T> GetItemByFullname(string name);
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(string name);
         Task<bool> UpdateItem(string name, T item);

@@ -61,4 +61,10 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
         <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
     </Style>
+    <Style x:Key="ComponentUserPCItemHeader" TargetType="TextBlock" BasedOn="{StaticResource Component_Item_TBlock_Header_Style}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0 0 10 0"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+        <Setter Property="Width" Value="150"/>
+    </Style>
 </ResourceDictionary>

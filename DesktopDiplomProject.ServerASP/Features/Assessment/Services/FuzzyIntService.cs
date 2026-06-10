@@ -46,7 +46,7 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services
                 ScoreFour = _fuzzifyFucntions[3].Fuzzify(assessValue),
                 ScoreFive = _fuzzifyFucntions[4].FuzzifyMaxShoulder(assessValue)
             };
-            return ToMonotoned(score);
+            return ToCommulateMonotoned(score);
         }
 
         public void SetMax(int value)
@@ -95,7 +95,14 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services
             _fuzzifyFucntions[COUNTFUNCTIONS - 1] = new TriangleFuzzyFunction(max, width);
         }
 
-        public ScoredEntity ToMonotoned(ScoredEntity score)
+        public ScoredEntity ToCommulateMonotoned(ScoredEntity score)
+        {
+            var norm = Normalize(score);
+            var commulate = ToCommulateForm(norm);
+            return ToMonotoned(commulate);
+        }
+
+        private ScoredEntity ToMonotoned(ScoredEntity score)
         {
             List<double> values = new List<double>()
             {
@@ -105,11 +112,10 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services
                 score.ScoreFour,
                 score.ScoreFive
             };
-            double maxSoFar = 1;
-            for (int i = 0; i < values.Count; i++)
+            for (int i = 1; i < values.Count; i++)
             {
-                maxSoFar = Math.Min(maxSoFar, values[i]);
-                values[i] = maxSoFar;
+                if (values[i] > values[i - 1])
+                    values[i] = values[i - 1];
             }
             return new ScoredEntity()
             {
@@ -120,6 +126,46 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services
                 ScoreFive = values[4]
             };
         }
+
+        private ScoredEntity Normalize(ScoredEntity score)
+        {
+            double sum = score.ScoreOne + score.ScoreTwo + score.ScoreThree + score.ScoreFour + score.ScoreFive;
+            var result = new ScoredEntity()
+            {
+                ScoreOne = score.ScoreOne,
+                ScoreTwo = score.ScoreTwo,
+                ScoreThree = score.ScoreThree,
+                ScoreFour = score.ScoreFour,
+                ScoreFive = score.ScoreFive
+            };
+            if (sum > 0)
+            {
+                result.ScoreOne /= sum;
+                result.ScoreTwo /= sum;
+                result.ScoreThree /= sum;
+                result.ScoreFour /= sum;
+                result.ScoreFive /= sum;
+            }
+            return result;
+        }
+
+        private ScoredEntity ToCommulateForm(ScoredEntity score)
+        {
+            var result = new ScoredEntity()
+            {
+                ScoreOne = score.ScoreOne,
+                ScoreTwo = score.ScoreTwo,
+                ScoreThree = score.ScoreThree,
+                ScoreFour = score.ScoreFour,
+                ScoreFive = score.ScoreFive
+            };
+            result.ScoreFour += result.ScoreFive;
+            result.ScoreThree += result.ScoreFour;
+            result.ScoreTwo += result.ScoreThree;
+            result.ScoreOne += result.ScoreTwo;
+            return result;
+        }
+
     }
 
 }

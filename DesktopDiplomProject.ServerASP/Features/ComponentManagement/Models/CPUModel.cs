@@ -1,4 +1,6 @@
-﻿namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models
+﻿using DesktopDiplomProject.ServerASP.Features.Assessment.Models;
+
+namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models
 {
     public class CPUModel : BaseComponentModel
     {
@@ -15,6 +17,20 @@
             CountThreads = 0;
             BaseFrequency = 0;
             RAMType = string.Empty;
+        }
+
+        public CPUModel(CPUModel copy) : base(copy)
+        {
+            Socket = copy.Socket;
+            CountCores = copy.CountCores;
+            CountThreads = copy.CountThreads;
+            BaseFrequency = copy.BaseFrequency;
+            RAMType = copy.RAMType;
+        }
+
+        public override object Clone()
+        {
+            return new CPUModel(this);
         }
     }
 }

@@ -68,6 +68,7 @@ namespace DesktopDiplomProject.Server.Data.Configuration
         public DbSet<GPUEntity> GPUs { get; set; }
         public DbSet<GPUFrequencyEntity> GPUFrequencies { get; set; }
         public DbSet<PCIEInterfaceEntity> PCIEInterfaces { get; set; }
+        public DbSet<PCPresetEntity> PCPresets { get; set; }
         public DbSet<VCCapacityVideoMemoryEntity> VCVideoMemoryCapacities { get; set; }
         public DbSet<VCCountMonitorsEntity> VCMonitorsCounties { get; set; }
         public DbSet<VCMemoryFrequencyEntity> VCMemoryFrequencies { get; set; }
@@ -121,6 +122,7 @@ namespace DesktopDiplomProject.Server.Data.Configuration
             modelBuilder.ApplyConfiguration(new GPUCountTexturerBlocksConfiguration());
             modelBuilder.ApplyConfiguration(new GPUCountUniversalProcessorsConfiguration());
             modelBuilder.ApplyConfiguration(new PCIEInterfaceConfiguration());
+            modelBuilder.ApplyConfiguration(new PCPresetConfiguration());
             modelBuilder.ApplyConfiguration(new VCCapacityVideoMemoryConfiguration());
             modelBuilder.ApplyConfiguration(new VCCountMonitorsConfiguration());
             modelBuilder.ApplyConfiguration(new VCMemoryFrequencyConfiguration());

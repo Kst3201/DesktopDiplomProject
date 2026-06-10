@@ -53,4 +53,21 @@ namespace DesktopDiplomProject.Server.Data.Configuration.PersonalComputers
                 .IsRequired();
         }
     }
+
+    public class PCPresetConfiguration : IEntityTypeConfiguration<PCPresetEntity>
+    {
+        public void Configure(EntityTypeBuilder<PCPresetEntity> builder)
+        {
+            builder.HasKey(x => x.ID);
+
+            builder.Property(x => x.ID)
+                .UseIdentityAlwaysColumn();
+
+            builder.Property(x => x.Name)
+                .IsRequired();
+
+            builder.HasIndex(x => x.Name)
+                .IsUnique();
+        }
+    }
 }

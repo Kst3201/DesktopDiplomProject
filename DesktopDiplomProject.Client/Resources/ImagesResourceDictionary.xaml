@@ -20,6 +20,7 @@
     <BitmapImage x:Key="Search_User_Icon" UriSource="Images/Search_User_icon.png"/>
     <BitmapImage x:Key="Selected_User_Icon" UriSource="Images/selected_user_icon.png"/>
     <BitmapImage x:Key="User_Settings_Icon" UriSource="Images/user_settings_icon.png"/>
+    <BitmapImage x:Key="Score_Star_Icon" UriSource="Images/star_score_icon.png"/>
     <Image x:Key="ImageRemoveItem" Source="{StaticResource Remove_Item_Icon}" Style="{StaticResource ComponentItemImage}"/>
     <Image x:Key="ImageRedactItem" Source="{StaticResource Redact_Item_Icon}" Style="{StaticResource ComponentItemImage}"/>
 </ResourceDictionary>

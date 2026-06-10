@@ -1,5 +1,10 @@
 ﻿using DesktopDiplomProject.Server.Data.Configuration;
+using DesktopDiplomProject.Server.Models.Entities.Components;
+using DesktopDiplomProject.Server.Models.Entities.Components.Drives;
+using DesktopDiplomProject.Server.Models.Entities.Components.RAMs;
 using DesktopDiplomProject.Server.Models.Entities.Components.VideoCards;
+using DesktopDiplomProject.Server.Models.Entities.Components.VideoCards.GPUs;
+using DesktopDiplomProject.Server.Models.Entities.PersonalComputers;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services;
 using DesktopDiplomProject.ServerASP.Features.Assessment.Services.DefuzzifyFunctions;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Models;
@@ -7,6 +12,7 @@ using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.GPU;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.NamedUnits;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Double;
 using DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.Parameters.Int;
+using DesktopDiplomProject.ServerASP.Features.PCCombine.Models.Compatibilities;
 using DiplomDataLibrary.PCComponents.DTO.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -25,18 +31,18 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
         private IComponentIntParameterService<VCMemoryFrequencyEntity> _frequencyService;
         private IComponentDoubleParameterService<VCPriceEntity> _priceService;
 
-        public VideoCardService(UpgradePCApplicationContext context, IFuzzyService<int> fuzzyIntService
-            , IFuzzyService<double> fuzzyDoubleService, IDefuzzifyFunction function
+        public VideoCardService(UpgradePCApplicationContext context, IDefuzzifyFunction function
             , IComponentNamedUnitService<PCIEInterfaceEntity> pcieService)
         {
             _creator = new VideoCardCreator(function);
             _context = context;
             _pcieService = pcieService;
-            _videoMemoryService = new NativeComponentIntParameterService<VCCapacityVideoMemoryEntity>(_context, fuzzyIntService);
-            _monitorsService = new NativeComponentIntParameterService<VCCountMonitorsEntity>(_context, fuzzyIntService);
-            _throughputService = new NativeComponentIntParameterService<VCThroughputCapacityEntity>(_context, fuzzyIntService);
-            _frequencyService = new NativeComponentIntParameterService<VCMemoryFrequencyEntity>(_context, fuzzyIntService);
-            _priceService = new NativeComponentDoubleParameterService<VCPriceEntity>(_context, fuzzyDoubleService);
+            var fuzzCreator = new FuzzyServiceCreator();
+            _videoMemoryService = new NativeComponentIntParameterService<VCCapacityVideoMemoryEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _monitorsService = new NativeComponentIntParameterService<VCCountMonitorsEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _throughputService = new NativeComponentIntParameterService<VCThroughputCapacityEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _frequencyService = new NativeComponentIntParameterService<VCMemoryFrequencyEntity>(_context, fuzzCreator.CreateInt(FuzzyServiceType.Native));
+            _priceService = new NativeComponentDoubleParameterService<VCPriceEntity>(_context, fuzzCreator.CreateDouble(FuzzyServiceType.Native));
         }
 
         public async Task<VideoCardDTO> AddItem(VideoCardDTO dto)
@@ -96,6 +102,52 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
             }
         }
 
+        public async Task<VideoCardDTO> GetItemByFullName(string name)
+        {
+            try
+            {
+                var foundedItem = await GetByFullNameAllIncluded(name);
+                if (foundedItem == null) throw new ArgumentOutOfRangeException(nameof(name));
+                return _creator.CreateDTO(foundedItem);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<VideoCardDTO> GetFirstItemByGPU(string gpu)
+        {
+            try
+            {
+                var foundedGPU = await GetGPUByFullNameAllIncluded(gpu);
+                if (foundedGPU == null) throw new ArgumentOutOfRangeException(nameof(gpu));
+                var foundedItem = await _context.VideoCards
+                    .Include(item => item.GPU)
+                    .Include(item => item.GPU).ThenInclude(item => item.BaseFrequency)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountUniversalProcessors)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountTexturerBlocks)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountRasterizationBlocks)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountRTCores)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountTensorCores)
+                    .Include(item => item.PCIEInterface)
+                    .Include(item => item.CapacityVideoMemory)
+                    .Include(item => item.CountMonitors)
+                    .Include(item => item.MaxThroughputCapacity)
+                    .Include(item => item.MemoryFrequency)
+                    .Include(item => item.Price)
+                    .FirstOrDefaultAsync(item => item.GPUID.Equals(foundedGPU.ID)); ;
+                if (foundedItem == null) throw new ArgumentOutOfRangeException(nameof(gpu));
+                return _creator.CreateDTO(foundedItem);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         public async Task<VideoCardDTO> GetItem(int id)
         {
             try
@@ -144,6 +196,35 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
                     .Include(item => item.MemoryFrequency)
                     .Include(item => item.Price)
                     .ToListAsync();
+                return list.Select(item => _creator.CreateDTO(item)).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<VideoCardDTO>> GetItems(ICompatibilitySet set)
+        {
+            try
+            {
+                var listQ = _context.VideoCards
+                    .Include(item => item.GPU)
+                    .Include(item => item.GPU).ThenInclude(item => item.BaseFrequency)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountUniversalProcessors)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountTexturerBlocks)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountRasterizationBlocks)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountRTCores)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountTensorCores)
+                    .Include(item => item.PCIEInterface)
+                    .Include(item => item.CapacityVideoMemory)
+                    .Include(item => item.CountMonitors)
+                    .Include(item => item.MaxThroughputCapacity)
+                    .Include(item => item.MemoryFrequency)
+                    .Include(item => item.Price)
+                    .AsQueryable();
+                var list = await SetCompatibilityQuery(listQ, set).ToListAsync();
                 return list.Select(item => _creator.CreateDTO(item)).ToList();
             }
             catch (Exception e)
@@ -243,6 +324,35 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
             }
         }
 
+        public async Task<IEnumerable<VideoCardModel>> GetAll(ICompatibilitySet set)
+        {
+            try
+            {
+                var listQ = _context.VideoCards
+                    .Include(item => item.GPU)
+                    .Include(item => item.GPU).ThenInclude(item => item.BaseFrequency)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountUniversalProcessors)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountTexturerBlocks)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountRasterizationBlocks)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountRTCores)
+                    .Include(item => item.GPU).ThenInclude(item => item.CountTensorCores)
+                    .Include(item => item.PCIEInterface)
+                    .Include(item => item.CapacityVideoMemory)
+                    .Include(item => item.CountMonitors)
+                    .Include(item => item.MaxThroughputCapacity)
+                    .Include(item => item.MemoryFrequency)
+                    .Include(item => item.Price)
+                    .AsQueryable();
+                var list = await SetCompatibilityQuery(listQ, set).ToListAsync();
+                return list.Select(item => _creator.CreateModel(item)).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         private async Task<VideoCardEntity?> GetByNameAllIncluded(string name)
         {
             return await _context.VideoCards
@@ -266,6 +376,61 @@ namespace DesktopDiplomProject.ServerASP.Features.ComponentManagement.Services.V
         {
             return await _context.VideoCards
                 .FirstOrDefaultAsync(item => item.Name.Equals(name));
+        }
+
+        private async Task<VideoCardEntity?> GetByFullNameAllIncluded(string name)
+        {
+            var foundedItem = await _context.VideoCards
+                .Include(item => item.GPU)
+                .Include(item => item.GPU).ThenInclude(item => item.BaseFrequency)
+                .Include(item => item.GPU).ThenInclude(item => item.CountUniversalProcessors)
+                .Include(item => item.GPU).ThenInclude(item => item.CountTexturerBlocks)
+                .Include(item => item.GPU).ThenInclude(item => item.CountRasterizationBlocks)
+                .Include(item => item.GPU).ThenInclude(item => item.CountRTCores)
+                .Include(item => item.GPU).ThenInclude(item => item.CountTensorCores)
+                .Include(item => item.PCIEInterface)
+                .Include(item => item.CapacityVideoMemory)
+                .Include(item => item.CountMonitors)
+                .Include(item => item.MaxThroughputCapacity)
+                .Include(item => item.MemoryFrequency)
+                .Include(item => item.Price)
+                .FirstOrDefaultAsync(item => item.Name.Equals(name)
+                || (EF.Functions.ILike(name, "%" + item.Manufacturer + "%")
+                    && EF.Functions.ILike(name, "%" + item.Model + "%")));
+            return foundedItem;
+        }
+
+        private async Task<GPUEntity?> GetGPUByFullNameAllIncluded(string name)
+        {
+            var foundedItem = await _context.GPUs
+                .FirstOrDefaultAsync(item => item.Name.Equals(name)
+                || (EF.Functions.ILike(name, "%" + item.Manufacturer + "%")
+                    && EF.Functions.ILike(name, "%" + item.Model + "%")));
+            return foundedItem;
+        }
+
+
+        private IQueryable<VideoCardEntity> SetCompatibilityQuery(IQueryable<VideoCardEntity> listQuery, ICompatibilitySet set)
+        {
+            if (set != null)
+            {
+                if (!string.IsNullOrWhiteSpace(set.PCIEInterface))
+                {
+                    listQuery = listQuery.Where(item => EF.Functions.ILike(item.PCIEInterface.Name, set.PCIEInterface));
+                }
+                if (set.MaxPrice != null && set.MaxPrice > 0)
+                {
+                    listQuery = listQuery.Where(item => item.Price.Value < set.MaxPrice.Value);
+                }
+            }
+            return listQuery;
+        }
+
+        private bool CheckOnEqualByFullName(IComponentEntity entity, string name)
+        {
+            return entity.Name.Equals(name)
+                || (EF.Functions.ILike(name, entity.Manufacturer)
+                    && EF.Functions.ILike(name, entity.Model));
         }
     }
 }

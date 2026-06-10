@@ -25,5 +25,23 @@
             MemoryFrequency = 0;
             CountMonitors = 0;
         }
+
+        public VideoCardModel(VideoCardModel copy) : base(copy)
+        {
+            GPU = copy.GPU;
+            PCIEInterface = copy.PCIEInterface;
+            CountPCIELines = copy.CountPCIELines;
+            RecommendedBlockPower = copy.RecommendedBlockPower;
+            CountPinsAdditionalPower = copy.CountPinsAdditionalPower;
+            CapacityVideoMemory = copy.CapacityVideoMemory;
+            MaxThroughputCapacity = copy.MaxThroughputCapacity;
+            MemoryFrequency = copy.MemoryFrequency;
+            CountMonitors = copy.CountMonitors;
+        }
+
+        public override object Clone()
+        {
+            return new VideoCardModel(this);
+        }
     }
 }

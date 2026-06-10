@@ -52,7 +52,7 @@ namespace DesktopDiplomProject.Client.Controllers
 
         #region GET
 
-        public async Task<TResponse?> GetAsync<TResponse>(string address)
+        public async Task<TResponse?> GetAsync<TResponse>(string address, bool offMessage = false)
         {
             try
             {
@@ -66,12 +66,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<TResponse?> GetAsync<TResponse>(string address, object? queryParams)
+        public async Task<TResponse?> GetAsync<TResponse>(string address, object? queryParams, bool offMessage = false)
         {
             try
             {
@@ -85,12 +86,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<bool> GetAsync(string address, object? queryParams)
+        public async Task<bool> GetAsync(string address, object? queryParams, bool offMessage = false)
         {
             try
             {
@@ -100,7 +102,8 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return false;
             }
         }
@@ -109,7 +112,7 @@ namespace DesktopDiplomProject.Client.Controllers
 
         #region POST
 
-        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string address)
+        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string address, bool offMessage = false)
         {
             try
             {
@@ -124,12 +127,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string address, TRequest request)
+        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string address, TRequest request, bool offMessage = false)
         {
             try
             {
@@ -144,12 +148,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<bool> PostAsync<TRequest>(string address, TRequest request)
+        public async Task<bool> PostAsync<TRequest>(string address, TRequest request, bool offMessage = false)
         {
             try
             {
@@ -167,7 +172,8 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return false;
             }
         }
@@ -176,7 +182,7 @@ namespace DesktopDiplomProject.Client.Controllers
 
         #region PUT
 
-        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string address)
+        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string address, bool offMessage = false)
         {
             try
             {
@@ -191,12 +197,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string address, TRequest request)
+        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string address, TRequest request, bool offMessage = false)
         {
             try
             {
@@ -211,12 +218,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<bool> PutAsync<TRequest>(string address, TRequest request)
+        public async Task<bool> PutAsync<TRequest>(string address, TRequest request, bool offMessage = false)
         {
             try
             {
@@ -227,7 +235,8 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return false;
             }
         }
@@ -236,7 +245,7 @@ namespace DesktopDiplomProject.Client.Controllers
 
         #region PATCH
 
-        public async Task<TResponse?> PatchAsync<TRequest, TResponse>(string address, TRequest request)
+        public async Task<TResponse?> PatchAsync<TRequest, TResponse>(string address, TRequest request, bool offMessage = false)
         {
             try
             {
@@ -251,12 +260,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<bool> PatchAsync<TRequest>(string address, TRequest request)
+        public async Task<bool> PatchAsync<TRequest>(string address, TRequest request, bool offMessage = false)
         {
             try
             {
@@ -267,7 +277,8 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return false;
             }
         }
@@ -276,7 +287,7 @@ namespace DesktopDiplomProject.Client.Controllers
 
         #region DELETE
         
-        public async Task<bool> DeleteAsync(string address)
+        public async Task<bool> DeleteAsync(string address, bool offMessage = false)
         {
             try
             {
@@ -286,12 +297,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return false;
             }
         }
 
-        public async Task<bool> DeleteAsync(string address, object? queryParams)
+        public async Task<bool> DeleteAsync(string address, object? queryParams, bool offMessage = false)
         {
             try
             {
@@ -301,12 +313,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return false;
             }
         }
         
-        public async Task<TResponse?> DeleteAsync<TResponse>(string address)
+        public async Task<TResponse?> DeleteAsync<TResponse>(string address, bool offMessage = false)
         {
             try
             {
@@ -321,12 +334,13 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }
 
-        public async Task<TResponse?> DeleteAsync<TResponse>(string address, object? queryParams)
+        public async Task<TResponse?> DeleteAsync<TResponse>(string address, object? queryParams, bool offMessage = false   )
         {
             try
             {
@@ -341,7 +355,8 @@ namespace DesktopDiplomProject.Client.Controllers
             }
             catch (Exception e)
             {
-                _notificationService.SendError(e.Message);
+                if (!offMessage)
+                    _notificationService.SendError(e.Message);
                 return default(TResponse?);
             }
         }

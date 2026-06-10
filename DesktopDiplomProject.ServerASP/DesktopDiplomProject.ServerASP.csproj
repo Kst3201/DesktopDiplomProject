@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\PCCombine\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DesktopDiplomProject.Database\DesktopDiplomProject.Database.csproj" />
     <ProjectReference Include="..\DiplomDataLibrary\DiplomDataLibrary.csproj" />
   </ItemGroup>

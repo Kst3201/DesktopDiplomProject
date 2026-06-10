@@ -4,12 +4,1237 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DesktopDiplomProject.Client.Features.PCSelectMatch.Views.Pages"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
+      Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"
       d:Background="{StaticResource SurfaceBrush}"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="720" d:DesignWidth="1280"
       Title="UserPCPage">
-
     <Grid>
-        <TextBlock Text="USERPC" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{StaticResource FontSizeHeader}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Margin="5" DataContext="{Binding SourcePC}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Действительный" VerticalAlignment="Center" Style="{StaticResource Header1TextBlockStyle}"
+                       HorizontalAlignment="Left" />
+                <CheckBox IsChecked="{Binding DataContext.IsSourcePC, RelativeSource={RelativeSource AncestorType=Page}}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <CheckBox.RenderTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </CheckBox.RenderTransform>
+                </CheckBox>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <Expander Margin="0 5 0 5" DataContext="{Binding CPU}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Цетральный процессор" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                 Text="{Binding Name}" Tag="Название"
+                                 Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                 Text="{Binding Manufacturer}" Tag="Производитель"
+                                 Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Сокет" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Socket}" Tag="Сокет"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество ядер" Style="{StaticResource ComponentUserPCItemHeader}"
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountCores}"
+                                 Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество ядер"
+                                 HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество потоков" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountThreads}"
+                                 Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество потоков"
+                                 HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Базовая частота" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding BaseFrequency}"
+                                 Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Базовая частота"
+                                 HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding RAMType}" Tag="Тип оперативной памяти"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+
+                    <Expander Margin="0 5 0 5" DataContext="{Binding Drive}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Накопитель" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Объем памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding Capacity}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Объем памяти"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Максимальная скорость передачи данных" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding SpeedDataTransfer}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag=" Максимальная скорость передачи данных"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Интерфейс подключения" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding ConnectionInterface}" Tag="Интерфейс подключения"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                    <Expander Margin="0 5 0 5" DataContext="{Binding Motherboard}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Материнская плата" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Форм-фактор" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Size}" Tag="Размер"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Сокет" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Socket}" Tag="Сокет"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding RAMType}" Tag="Тип оперативной памяти"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество RAM-слотов" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding RAMCountSlots}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество RAM-слотов"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Макисмальный объём RAM" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxRAMValue}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Макисмальный объём RAM"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Максимальная частота RAM" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxRAMFrequency}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Максимальная частота RAM"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Версия PCIexpress" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding PCIEInterface}" Tag="Версия PCIexpress"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество слотов PCIe x16" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountPCIEX16Slots}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество слотов PCIe x16"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество разъёмов M2" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountM2Slots}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество разъёмов M2"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество разъёмов SATA" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountSATASlots}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество разъёмов SATA"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                    <Expander Margin="0 5 0 5" DataContext="{Binding RAM}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Оперативная память" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding RAMType}" Tag="Тип оперативной памяти"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Объем одного модуля" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding SingleModuleCapacity}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Объем одного модуля"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество модулей" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountModules}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество модулей"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тактовая частота" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding Frequency}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Тактовая частота"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                    <Expander Margin="0 5 0 5" DataContext="{Binding VideoCard}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Видеокарта" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Графический процессор" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding GPU}" Tag="Видеочип"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Версия PCIexpress" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding PCIEInterface}" Tag="Версия PCIexpress"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество линий PCIexpress" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountPCIELines}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество линий PCIexpress"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Рекомендуемый БП" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding RecommendedBlockPower}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Рекомендуемый БП"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество PIN на доп. питании" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountPinsAdditionalPower}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество PIN на доп. питании"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Объём видеопамяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CapacityVideoMemory}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Объём видеопамяти"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Максимальная пропускная способность" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxThroughputCapacity}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Максимальная пропускная способность"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Эффективная частота видеопамяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MemoryFrequency}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Эффективная частота видеопамяти"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество мониторов" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountMonitors}"
+                                         Style="{StaticResource TextBoxUserPCReadOnlyRedactItem}" Tag="Количество мониторов"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Width="3" 
+                      Background="{StaticResource DividerBrush}" Margin="5"/>
+        <Grid Grid.Column="2" Margin="5" DataContext="{Binding SuspectedPC}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Предполагаемый" VerticalAlignment="Center" Style="{StaticResource Header1TextBlockStyle}"
+                       HorizontalAlignment="Left" />
+                <CheckBox IsChecked="{Binding DataContext.IsSourcePC, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolRevConverter}}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <CheckBox.RenderTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </CheckBox.RenderTransform>
+                </CheckBox>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <Expander Margin="0 5 0 5" DataContext="{Binding CPU}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Цетральный процессор" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                 Text="{Binding Name}" Tag="Название"
+                                 Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                 Text="{Binding Manufacturer}" Tag="Производитель"
+                                 Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                 Text="{Binding Model}" Tag="Модель"
+                                 Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Сокет" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding DataContext.SocketItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                  Style="{StaticResource ComboBoxUserPCItemEditable}"
+                                  Text="{Binding Socket}"
+                                  HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество ядер" Style="{StaticResource ComponentUserPCItemHeader}"
+                    VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountCores}"
+                                 Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество ядер"
+                                 HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество потоков" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountThreads}"
+                                 Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество потоков"
+                                 HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Базовая частота" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding BaseFrequency}"
+                                 Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Базовая частота"
+                                 HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding DataContext.RAMTypeItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                  Style="{StaticResource ComboBoxUserPCItemNotEditable}"
+                                  SelectedItem="{Binding RAMType}"
+                                  HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Оценка" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Source="{StaticResource Score_Star_Icon}" Height="20" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding TotalScore}" Width="30"
+                                         Style="{StaticResource ComponentUserPCItemHeader}" Tag="Оценка"
+                                         HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+
+                    <Expander Margin="0 5 0 5" DataContext="{Binding Drive}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Накопитель" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Объем памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding Capacity}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Объем памяти"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Максимальная скорость передачи данных" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding SpeedDataTransfer}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag=" Максимальная скорость передачи данных"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Интерфейс подключения" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                          ItemsSource="{Binding DataContext.DriveConnectionInterfaceItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                          Text="{Binding ConnectionInterface}"
+                                          Style="{StaticResource ComboBoxUserPCItemEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Оценка" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Source="{StaticResource Score_Star_Icon}" Height="20" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding TotalScore}" Width="30"
+                                         Style="{StaticResource ComponentUserPCItemHeader}" Tag="Оценка"
+                                         HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                    <Expander Margin="0 5 0 5" DataContext="{Binding Motherboard}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Материнская плата" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Форм-фактор" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                          ItemsSource="{Binding DataContext.SizeItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                          Text="{Binding Size}"
+                                          Style="{StaticResource ComboBoxUserPCItemEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Сокет" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding DataContext.SocketItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                          Text="{Binding Socket}"
+                                          Style="{StaticResource ComboBoxUserPCItemEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                          ItemsSource="{Binding DataContext.RAMTypeItems, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          SelectedItem="{Binding RAMType}"
+                                          Style="{StaticResource ComboBoxUserPCItemNotEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество RAM-слотов" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding RAMCountSlots}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество RAM-слотов"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Макисмальный объём RAM" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxRAMValue}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Макисмальный объём RAM"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Максимальная частота RAM" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxRAMFrequency}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Максимальная частота RAM"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Версия PCIexpress" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                          ItemsSource="{Binding DataContext.PCIEInterfaceItems, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          Text="{Binding PCIEInterface}"
+                                          Style="{StaticResource ComboBoxUserPCItemEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество слотов PCIe x16" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountPCIEX16Slots}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество слотов PCIe x16"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество разъёмов M2" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountM2Slots}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество разъёмов M2"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество разъёмов SATA" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountSATASlots}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество разъёмов SATA"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Оценка" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Source="{StaticResource Score_Star_Icon}" Height="20" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding TotalScore}" Width="30"
+                                         Style="{StaticResource ComponentUserPCItemHeader}" Tag="Оценка"
+                                         HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                    <Expander Margin="0 5 0 5" DataContext="{Binding RAM}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Оперативная память" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тип оперативной памяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding DataContext.RAMTypeItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                          SelectedItem="{Binding RAMType}"
+                                          Style="{StaticResource ComboBoxUserPCItemNotEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Объем одного модуля" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding SingleModuleCapacity}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Объем одного модуля"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество модулей" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountModules}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество модулей"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Тактовая частота" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding Frequency}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Тактовая частота"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Оценка" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Source="{StaticResource Score_Star_Icon}" Height="20" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding TotalScore}" Width="30"
+                                         Style="{StaticResource ComponentUserPCItemHeader}" Tag="Оценка"
+                                         HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                    <Expander Margin="0 5 0 5" DataContext="{Binding VideoCard}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="Видеокарта" Style="{StaticResource Header3TextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <UniformGrid Columns="1" Margin="20 0 0 0">
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Название" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Name}" Tag="Название"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Производитель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Manufacturer}" Tag="Производитель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Модель" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Model}" Tag="Модель"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Графический процессор" Style="{StaticResource ComponentUserPCItemHeader}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1" 
+                                          ItemsSource="{Binding DataContext.GPUItems, RelativeSource={RelativeSource AncestorType=Page}}"
+                                          SelectedItem="{Binding GPU}"
+                                          Style="{StaticResource ComboBoxUserPCItemNotEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Версия PCIexpress" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding DataContext.PCIEInterfaceItems, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          Text="{Binding PCIEInterface}"
+                                          Style="{StaticResource ComboBoxUserPCItemEditable}"
+                                          HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество линий PCIexpress" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountPCIELines}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество линий PCIexpress"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Рекомендуемый БП" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding RecommendedBlockPower}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Рекомендуемый БП"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество PIN на доп. питании" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountPinsAdditionalPower}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество PIN на доп. питании"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Объём видеопамяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CapacityVideoMemory}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Объём видеопамяти"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Максимальная пропускная способность" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxThroughputCapacity}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Максимальная пропускная способность"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Эффективная частота видеопамяти" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding MemoryFrequency}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Эффективная частота видеопамяти"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Количество мониторов" Style="{StaticResource ComponentUserPCItemHeader}"
+                                           VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CountMonitors}"
+                                         Style="{StaticResource TextBoxUserPCRedactItem}" Tag="Количество мониторов"
+                                         HorizontalAlignment="Stretch"/>
+                            </Grid>
+                            <Grid Style="{StaticResource Component_Item_Grid_Style}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Оценка" Style="{StaticResource ComponentUserPCItemHeader}"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Source="{StaticResource Score_Star_Icon}" Height="20" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="{Binding TotalScore}" Width="30"
+                                         Style="{StaticResource ComponentUserPCItemHeader}" Tag="Оценка"
+                                         HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </UniformGrid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>

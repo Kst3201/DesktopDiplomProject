@@ -58,6 +58,16 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
+    <Style x:Key="TextBoxUserPCRedactItem" TargetType="TextBox" BasedOn="{StaticResource PrimaryTextBoxWithPlaceholderStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+    </Style>
+
+    <Style x:Key="TextBoxUserPCReadOnlyRedactItem" TargetType="TextBox" BasedOn="{StaticResource TextBoxUserPCRedactItem}">
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+
     <Style x:Key="ComboBoxRedactedItemReadOnly" TargetType="ComboBox">
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -65,6 +75,27 @@
     </Style>
 
     <Style x:Key="ComboBoxRedactedItemEditable" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxRedactedItemReadOnly}">
+        <Setter Property="IsEditable" Value="True"/>
+    </Style>
+
+    <Style x:Key="ComboBoxUserPCItemNotEditable" TargetType="ComboBox">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+    </Style>
+
+    <Style x:Key="ComboBoxUserPCItemEditable" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxUserPCItemNotEditable}">
+        <Setter Property="IsEditable" Value="True"/>
+    </Style>
+
+    <Style x:Key="ComboBoxUserPCItemReadOnlyNotEditable" TargetType="ComboBox">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+
+    <Style x:Key="ComboBoxUserPCItemReadOnlyEditable" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxUserPCItemNotEditable}">
         <Setter Property="IsEditable" Value="True"/>
     </Style>
 </ResourceDictionary>

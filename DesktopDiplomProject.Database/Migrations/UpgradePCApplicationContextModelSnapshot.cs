@@ -1628,6 +1628,41 @@ namespace DesktopDiplomProject.Database.Migrations
                     b.ToTable("PCs");
                 });
 
+            modelBuilder.Entity("DesktopDiplomProject.Server.Models.Entities.PersonalComputers.PCPresetEntity", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("ID"));
+
+                    b.Property<double>("CPUCoeff")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("DriveCoeff")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MotherboardCoeff")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("RAMCoeff")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("VideoCardCoeff")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("PCPresets");
+                });
+
             modelBuilder.Entity("DesktopDiplomProject.Database.Models.Entities.Authentification.RefreshTokenEntity", b =>
                 {
                     b.HasOne("DesktopDiplomProject.Database.Models.Entities.Authentification.RefreshTokenEntity", "ReplacedByToken")

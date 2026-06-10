@@ -30,6 +30,12 @@ namespace DesktopDiplomProject.Client.Features.PCComponentManagement.Gateways.Co
             return result ?? new GPUDTO(string.Empty, string.Empty, string.Empty, 0);
         }
 
+        public async Task<GPUDTO> GetItemByFullname(string name)
+        {
+            var result = await _controller.GetAsync<GPUDTO>($"{CONTROLLERADDRESS}/ByFullname/{name}", true);
+            return result ?? new GPUDTO(string.Empty, string.Empty, string.Empty, 0);
+        }
+
         public async Task<IEnumerable<GPUDTO>> GetItems()
         {
             var result = await _controller.GetAsync<IEnumerable<GPUDTO>>(CONTROLLERADDRESS);

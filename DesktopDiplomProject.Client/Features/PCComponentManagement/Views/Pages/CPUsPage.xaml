@@ -123,12 +123,15 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Цена" Style="{StaticResource ComponentRedactItemHeader}"
                                    VerticalAlignment="Center" Margin="0 0 10 0"/>
-                        <TextBox Grid.Column="1" Text="{Binding Price, StringFormat={}{0:F2} ₽}"
+                        <TextBox Grid.Column="1" Text="{Binding Price, StringFormat={}{0:F2}}"
                                  Style="{StaticResource TextBoxComponentRedactItem}" Tag="Цена"
                                  HorizontalAlignment="Stretch"/>
+                        <TextBlock Grid.Column="2" Text=" ₽" Style="{StaticResource ComponentRedactItemHeader}" Width="auto"
+                                   VerticalAlignment="Center" Margin="0 0 10 0"/>
                     </Grid>
                 </UniformGrid>
             </Grid>
@@ -181,7 +184,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Тип ОЗУ" Width="1*" MinWidth="80" Binding="{Binding RAMType}" HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
-                    <DataGridTextColumn Header="Цена" Width="1*" MinWidth="100" Binding="{Binding Price, StringFormat={}{0:F2} ₽}"
+                    <DataGridTextColumn Header="Цена" Width="1*" MinWidth="100" Binding="{Binding Price, StringFormat={}{0:N0} ₽}"
                                         HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>
                     <DataGridTextColumn Header="Оценка" Width="1*" MinWidth="80" Binding="{Binding TotalScore}"
                                         HeaderStyle="{StaticResource ComponentDGItemHeader}" ElementStyle="{StaticResource ComponentDGItemElement}"/>

@@ -28,6 +28,7 @@ namespace DesktopDiplomProject.Client.Features.PCSelectMatch.ViewModels.Pages
             _navigationPageService = navigationPageService;
             _pageTypeList = new List<(Type type, bool isScoped)>()
             {
+                (typeof(UserPCPage), false),
                 (typeof(ComponentsSelectionPage), false),
                 (typeof(SelectionPCPage), true)
             };

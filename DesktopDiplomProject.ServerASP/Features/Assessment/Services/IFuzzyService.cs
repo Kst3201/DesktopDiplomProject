@@ -16,7 +16,7 @@ namespace DesktopDiplomProject.ServerASP.Features.Assessment.Services
         void SetMin(T value);
         void SetMaxMin(T max, T min);
 
-        ScoredEntity ToMonotoned(ScoredEntity score);
+        ScoredEntity ToCommulateMonotoned(ScoredEntity score);
     }
 
 }

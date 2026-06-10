@@ -32,8 +32,10 @@ namespace DesktopDiplomProject.ServerASP.Controllers.Components
         {
             try
             {
-                var list = await _service.GetItems();
+                IList<GPUDTO> list = (await _service.GetItems()).ToList();
                 if (list == null) return new BadRequestResult();
+                // Пробуем сериализовать вручную
+                var json = System.Text.Json.JsonSerializer.Serialize(list);
                 return Ok(list);
             }
             catch (Exception ex)
@@ -51,6 +53,27 @@ namespace DesktopDiplomProject.ServerASP.Controllers.Components
             try
             {
                 var result = await _service.GetItem(name);
+                return Ok(result);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return NotFound(name);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET api/<GPUController>/5
+        [HttpGet("ByFullname/{name}")]
+        [RequirePermission("PCComponents", PermissionAction.Read)]
+        public async Task<IActionResult> GetByFullname(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return BadRequest(name);
+            try
+            {
+                var result = await _service.GetItemByFullName(name);
                 return Ok(result);
             }
             catch (ArgumentOutOfRangeException)
